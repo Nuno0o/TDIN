@@ -10,7 +10,7 @@ namespace TDIN
     {
         static void Main(string[] args)
         {
-
+            src.database.Database.createDatabase();
         }
     }
 }
