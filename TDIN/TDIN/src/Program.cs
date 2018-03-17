@@ -17,6 +17,9 @@ namespace TDIN
             db.AddUser("joaquims", "batata");
             db.AddDiginotes("joaquim", 3);
             db.AddDiginotes("joaquims", 3);
+            db.TransferDiginotes("joaquim", "joaquims", 3);
+            Console.WriteLine(db.GetUserDiginotes("joaquims"));
+            Console.ReadLine();
         }
     }
 }

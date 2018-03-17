@@ -115,6 +115,67 @@ namespace TDIN.src.database
                 return false;
             }
         }
+        public bool TransferDiginotes(string source,string destiny, int ammount)
+        {
+            try
+            {
+                List<int> diginotes = new List<int>();
+                using (SQLiteCommand getDiginotes = new SQLiteCommand(conn))
+                {
+                    getDiginotes.CommandText = "SELECT id FROM Diginote WHERE owner = @user ORDER BY id DESC LIMIT @ammount";
+                    getDiginotes.Parameters.Add(new SQLiteParameter("@user", source));
+                    getDiginotes.Parameters.Add(new SQLiteParameter("@ammount", ammount));
+                    SQLiteDataReader reader = getDiginotes.ExecuteReader();
+                    while(reader.Read())
+                    {
+                        diginotes.Add(reader.GetInt32(0));
+                    }
+                }
+                if (diginotes.Count < ammount)
+                    return false;
+
+                using (SQLiteTransaction trans = conn.BeginTransaction())
+                {
+                    foreach (int diginote in diginotes)
+                    {
+                        using (SQLiteCommand updateOwner = new SQLiteCommand(conn))
+                        {
+                            updateOwner.CommandText = "UPDATE Diginote SET owner=@user WHERE Diginote.id=@diginote";
+                            updateOwner.Parameters.Add(new SQLiteParameter("@user", destiny));
+                            updateOwner.Parameters.Add(new SQLiteParameter("@diginote", diginote));
+                            updateOwner.ExecuteNonQuery();
+                        }
+                    }
+                    trans.Commit();
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        public int GetUserDiginotes(string username)
+        {
+            try
+            {
+                using (SQLiteCommand getUser = new SQLiteCommand(conn))
+                {
+                    getUser.CommandText = "SELECT COUNT(*) FROM Diginote WHERE Diginote.owner = @username";
+                    getUser.Parameters.Add(new SQLiteParameter("@username", username));
+                    SQLiteDataReader reader = getUser.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        return reader.GetInt32(0);
+                    }
+                    return 0;
+                }
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
     }
 
 }
