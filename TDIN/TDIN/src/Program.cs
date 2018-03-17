@@ -10,7 +10,13 @@ namespace TDIN
     {
         static void Main(string[] args)
         {
-            src.database.Database.createDatabase();
+            string path = System.IO.Directory.GetCurrentDirectory().Replace("\\bin\\Debug", "") + "/db/database.db";
+            src.database.Database db = new src.database.Database(path);
+            db.ClearDatabase();
+            db.AddUser("joaquim", "batata");
+            db.AddUser("joaquims", "batata");
+            db.AddDiginotes("joaquim", 3);
+            db.AddDiginotes("joaquims", 3);
         }
     }
 }
