@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Runtime.Remoting;
 using Server.Database;
 
 namespace Server {
 
-    class Program
+    class Server
     {
         static void Main(string[] args)
         {
+            RemotingConfiguration.Configure("Server.exe.config",false);
+
             SQLiteDB.init();
             SQLiteDB.ClearDatabase();
             SQLiteDB.AddUser("joaquim", "batata");

@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BE8E4C05-E22C-473C-ABF5-61833AA6DEDD}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>TDIN</RootNamespace>
-    <AssemblyName>TDIN</AssemblyName>
+    <RootNamespace>Server</RootNamespace>
+    <AssemblyName>Server</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -64,7 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\db\SQLiteDB.cs" />
-    <Compile Include="src\Program.cs" />
+    <Compile Include="src\RemObj.cs" />
+    <Compile Include="src\Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
