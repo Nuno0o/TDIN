@@ -16,13 +16,17 @@ namespace Server.Database {
         public static readonly string DB_PATH = "../../db/db.sqlite";
         public static readonly string SQL_PATH = "../../db/db.sql";
 
-        public static void init(bool overwrite = false)
+        public static void Init(bool overwrite = false)
         {
             /* creates db file if it doesn't exist */
             if (!File.Exists(DB_PATH))
             {
                 SQLiteConnection.CreateFile(DB_PATH);
                 overwrite = true;
+            }
+            else if(overwrite)
+            {
+                File.Delete(DB_PATH);
             }
 
             /* created db connection*/
@@ -53,10 +57,10 @@ namespace Server.Database {
         }
         public static int ClearDatabase() {
             com.CommandText =
-                   @"DELETE FROM User;
-                    DELETE FROM Diginote;
-                    DELETE FROM BuyOrder;
-                    DELETE FROM SellOrder;";
+                   @"delete from User;
+                    delete from Diginote;
+                    delete from BuyOrder;
+                    delete from SellOrder;";
 
             int rows = -1;
             try
@@ -68,18 +72,17 @@ namespace Server.Database {
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                Console.WriteLine(e.StackTrace);
             }
 
             return rows;
         }
         public static int AddUser(string username, string password, double balance = 0.0)
         {
-            com.CommandText =
-                    @"INSERT INTO User(username,password,currency)
-                    VALUES (@user,@pass,@balance)";
+            com.CommandText = "insert into User values (@user, @pass, @balance)";
             com.Parameters.Add(new SQLiteParameter("@user", username));
             com.Parameters.Add(new SQLiteParameter("@pass", password));
-            com.Parameters.Add(new SQLiteParameter("@pass", balance.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@balance", balance.ToString()));
 
             int rows = -1;
             try
@@ -91,6 +94,7 @@ namespace Server.Database {
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                Console.WriteLine(e.StackTrace);
             }
 
             return rows;
@@ -99,9 +103,9 @@ namespace Server.Database {
         {
                          
             com.CommandText =
-                @"UPDATE User SET balance = @amount
-                WHERE User.username = @user";
-            com.Parameters.Add(new SQLiteParameter("@user", username));
+                @"update User set balance = @balance
+                where username = @username";
+            com.Parameters.Add(new SQLiteParameter("@username", username));
             com.Parameters.Add(new SQLiteParameter("@balance", balance.ToString()));
 
             int rows = -1;
@@ -114,6 +118,7 @@ namespace Server.Database {
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                Console.WriteLine(e.StackTrace);
             }
 
             return rows;
@@ -126,10 +131,11 @@ namespace Server.Database {
             
             try
             {
-                reader = SqliteDB.com.ExecuteReader();
+                reader = com.ExecuteReader();
             }
             catch (SQLiteException e)
             {
+                Console.WriteLine(e.StackTrace);
             }
 
             reader.Read();
@@ -149,10 +155,11 @@ namespace Server.Database {
 
             try
             {
-                reader = SqliteDB.com.ExecuteReader();
+                reader = com.ExecuteReader();
             }
             catch (SQLiteException e)
             {
+                Console.WriteLine(e.StackTrace);
             }
 
             List<Object> diginotes = new List<Object>();
@@ -164,7 +171,7 @@ namespace Server.Database {
             }           
             reader.Close();
 
-            return user;
+            return diginotes;
         }
         public static int AddDiginotes(string username, int amount = 1)
         { 
@@ -185,6 +192,7 @@ namespace Server.Database {
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                Console.WriteLine(e.StackTrace);
             }
 
             return rows;
@@ -207,6 +215,7 @@ namespace Server.Database {
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                Console.WriteLine(e.StackTrace);
             }
 
             return rows;
@@ -231,6 +240,7 @@ namespace Server.Database {
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                Console.WriteLine(e.StackTrace);
             }
 
             return rows;
@@ -255,6 +265,7 @@ namespace Server.Database {
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                Console.WriteLine(e.StackTrace);
             }
 
             return rows;
@@ -279,6 +290,7 @@ namespace Server.Database {
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                Console.WriteLine(e.StackTrace);
             }
 
             return rows;
@@ -299,6 +311,7 @@ namespace Server.Database {
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                Console.WriteLine(e.StackTrace);
             }
 
             return rows;
@@ -311,7 +324,6 @@ namespace Server.Database {
             int rows = -1;
             try
             {
-
                 trans = conn.BeginTransaction();
                 rows = com.ExecuteNonQuery();
                 trans.Commit();
@@ -319,6 +331,7 @@ namespace Server.Database {
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                Console.WriteLine(e.StackTrace);
             }
 
             return rows;
@@ -331,10 +344,11 @@ namespace Server.Database {
 
             try
             {
-                reader = SqliteDB.com.ExecuteReader();
+                reader = com.ExecuteReader();
             }
             catch (SQLiteException e)
             {
+                Console.WriteLine(e.StackTrace);
             }
 
             while (reader.Read())
@@ -358,10 +372,11 @@ namespace Server.Database {
 
             try
             {
-                reader = SqliteDB.com.ExecuteReader();
+                reader = com.ExecuteReader();
             }
             catch (SQLiteException e)
             {
+                Console.WriteLine(e.StackTrace);
             }
 
             while (reader.Read())
@@ -399,6 +414,7 @@ namespace Server.Database {
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                Console.WriteLine(e.StackTrace);
             }
 
             return rows;
@@ -424,6 +440,7 @@ namespace Server.Database {
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                Console.WriteLine(e.StackTrace);
             }
 
             return rows;
