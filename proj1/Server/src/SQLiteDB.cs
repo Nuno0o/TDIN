@@ -39,282 +39,394 @@ namespace Server.Database {
                 com.CommandText = File.ReadAllText(SQL_PATH);
 
                 /* executes sql script */
-                try { com.ExecuteNonQuery(); }
-                catch (SQLiteException e) { Console.WriteLine(e.StackTrace); }
+                try {
+                    trans = conn.BeginTransaction();
+                    com.ExecuteNonQuery();
+                    trans.Commit();
+                }
+                catch (SQLiteException e)
+                {
+                    trans.Rollback();
+                    Console.WriteLine(e.StackTrace);
+                }
             }            
         }
-        public static bool ClearDatabase()
-        {
-            try
-            {               
-                trans = conn.BeginTransaction();
-
-                com.CommandText =
-                    @"DELETE FROM User;
+        public static int ClearDatabase() {
+            com.CommandText =
+                   @"DELETE FROM User;
                     DELETE FROM Diginote;
                     DELETE FROM BuyOrder;
                     DELETE FROM SellOrder;";
-                com.ExecuteNonQuery();
 
-                trans.Commit();               
-                return true;
-            }
-            catch (Exception e){ return false; }
-
-        }
-        public static bool AddUser(string username, string password, double balance = 0.0)
-        {
+            int rows = -1;
             try
-            {                
-                com.CommandText =
+            {
+                trans = conn.BeginTransaction();
+                rows = com.ExecuteNonQuery();
+                trans.Commit();
+            }
+            catch (SQLiteException e)
+            {
+                trans.Rollback();
+            }
+
+            return rows;
+        }
+        public static int AddUser(string username, string password, double balance = 0.0)
+        {
+            com.CommandText =
                     @"INSERT INTO User(username,password,currency)
                     VALUES (@user,@pass,@balance)";
-                com.Parameters.Add(new SQLiteParameter("@user", username));
-                com.Parameters.Add(new SQLiteParameter("@pass", password));
-                com.Parameters.Add(new SQLiteParameter("@pass", balance.ToString()));
-                return com.ExecuteNonQuery() == 1;                
-            }catch(Exception e)
-            {
-                return false;
-            }
-        }
-        public static bool SetBalance(string username, double balance = 0.0)
-        {
-            try
-            {               
-                com.CommandText =
-                    @"UPDATE User SET balance = @amount
-                    WHERE User.username = @user";
-                com.Parameters.Add(new SQLiteParameter("@user", username));
-                com.Parameters.Add(new SQLiteParameter("@balance", balance.ToString()));
-                return com.ExecuteNonQuery() == 1;                
-            }
-            catch (Exception e) { return false; }
-        }
-        public static bool GetBalance(string username)
-        {
+            com.Parameters.Add(new SQLiteParameter("@user", username));
+            com.Parameters.Add(new SQLiteParameter("@pass", password));
+            com.Parameters.Add(new SQLiteParameter("@pass", balance.ToString()));
+
+            int rows = -1;
             try
             {
-                com.CommandText = "SELECT balance FROM User WHERE username = @user";
-                com.Parameters.Add(new SQLiteParameter("@user", username));
-                return com.ExecuteNonQuery() == 1;
-            }
-            catch (Exception e) { return false; }
-        }
-        public static bool AddDiginotes(string username, int amount = 1)
-        {
-            try {                
                 trans = conn.BeginTransaction();
-                com.CommandText = "";
-                for (int i = 0; i < amount; i++)
-                {                   
-                    com.CommandText += "INSERT INTO Diginote(id,owner) VALUES(NULL,@user);";                                      
-                }
-                com.Parameters.Add(new SQLiteParameter("@user", username));
+                rows = com.ExecuteNonQuery();
+                trans.Commit();
+            }
+            catch (SQLiteException e)
+            {
+                trans.Rollback();
+            }
+
+            return rows;
+        }
+        public static int SetBalance(string username, double balance = 0.0)
+        {
+                         
+            com.CommandText =
+                @"UPDATE User SET balance = @amount
+                WHERE User.username = @user";
+            com.Parameters.Add(new SQLiteParameter("@user", username));
+            com.Parameters.Add(new SQLiteParameter("@balance", balance.ToString()));
+
+            int rows = -1;
+            try
+            {
+                trans = conn.BeginTransaction();
                 com.ExecuteNonQuery();
                 trans.Commit();
-                
-                return true;
-            } catch (Exception e) { return false; }
-        }
-        public static bool RemoveDiginotes(string user, int amount = 1)
-        {
-            try {
-                trans = conn.BeginTransaction();
+            }
+            catch (SQLiteException e)
+            {
+                trans.Rollback();
+            }
 
-                com.CommandText =
-                    @"delete from Diginote where id in
-                    (select id from Diginote where owner = @user limit @amount)";
-                com.Parameters.Add(new SQLiteParameter("@user", user));
-                com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-                com.ExecuteNonQuery();
-                
+            return rows;
+        }
+        public static Object GetUser(string username)
+        {
+            
+            com.CommandText = "SELECT * FROM User WHERE username = @user";
+            com.Parameters.Add(new SQLiteParameter("@user", username));
+            
+            try
+            {
+                reader = SqliteDB.com.ExecuteReader();
+            }
+            catch (SQLiteException e)
+            {
+            }
+
+            reader.Read();
+            Object user = new {
+                username = reader["username"],
+                password = reader["password"],
+                balance = reader["balance"]
+            };
+            reader.Close();
+
+            return user;
+        }
+        public static List<Object> GetDiginotes(string username)
+        {
+            com.CommandText = "SELECT id FROM Diginote WHERE owner = @user";
+            com.Parameters.Add(new SQLiteParameter("@user", username));
+
+            try
+            {
+                reader = SqliteDB.com.ExecuteReader();
+            }
+            catch (SQLiteException e)
+            {
+            }
+
+            List<Object> diginotes = new List<Object>();
+            while (reader.Read())
+            {
+                diginotes.Add(new {
+                    id = reader["id"]
+                });
+            }           
+            reader.Close();
+
+            return user;
+        }
+        public static int AddDiginotes(string username, int amount = 1)
+        { 
+            com.CommandText = "";
+            for (int i = 0; i < amount; i++)
+            {                   
+                com.CommandText += "INSERT INTO Diginote(id,owner) VALUES(NULL,@user);";                                      
+            }
+            com.Parameters.Add(new SQLiteParameter("@user", username));
+
+            int rows = -1;
+            try
+            {
+                trans = conn.BeginTransaction();
+                rows = com.ExecuteNonQuery();
                 trans.Commit();
-                return true;
-            } catch (Exception e) { return false; }
-        }
-        public static bool TransferDiginotes(string from, string to, int amount = 1)
-        {
-            try {
-
-                trans = conn.BeginTransaction();
-
-                com.CommandText =
-                    @"update Diginote set owner = @to where id in
-                    (select id from Diginote where owner = @from limit @amount)";
-
-                com.Parameters.Add(new SQLiteParameter("@from", from));
-                com.Parameters.Add(new SQLiteParameter("@to", to));
-                com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-                com.ExecuteNonQuery();
-
-                trans = conn.BeginTransaction();
-                
-                return true;
             }
-            catch (Exception e) { return false; }
+            catch (SQLiteException e)
+            {
+                trans.Rollback();
+            }
+
+            return rows;
         }
-        public static bool AddBuyOrder(string user, int amount = 1, double price = 1.0)
+        public static int RemoveDiginotes(string user, int amount = 1)
+        {    
+            com.CommandText =
+                @"delete from Diginote where id in
+                (select id from Diginote where owner = @user limit @amount)";
+            com.Parameters.Add(new SQLiteParameter("@user", user));
+            com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
+
+            int rows = -1;
+            try
+            {
+                trans = conn.BeginTransaction();
+                rows = com.ExecuteNonQuery();                
+                trans.Commit();
+            }
+            catch (SQLiteException e)
+            {
+                trans.Rollback();
+            }
+
+            return rows;
+        }
+        public static int TransferDiginotes(string from, string to, int amount = 1)
         {
+            com.CommandText =
+                @"update Diginote set owner = @to where id in
+                (select id from Diginote where owner = @from limit @amount)";
+
+            com.Parameters.Add(new SQLiteParameter("@from", from));
+            com.Parameters.Add(new SQLiteParameter("@to", to));
+            com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
+
+            int rows = -1;
+            try
+            {
+                trans = conn.BeginTransaction();
+                rows = com.ExecuteNonQuery();
+                trans.Commit();
+            }
+            catch (SQLiteException e)
+            {
+                trans.Rollback();
+            }
+
+            return rows;
+        }
+        public static int AddBuyOrder(string user, int amount = 1, double price = 1.0)
+        {
+            com.CommandText =
+                @"insert into BuyOrder(id,user,amount,price,date)
+                values(NULL,@user,@amount,@price,datetime())";
+
+            com.Parameters.Add(new SQLiteParameter("@user", user));
+            com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
+
+            int rows = -1;
+            try
+            {
+                trans = conn.BeginTransaction();
+                com.ExecuteNonQuery();
+                trans.Commit();
+            }
+            catch (SQLiteException e)
+            {
+                trans.Rollback();
+            }
+
+            return rows;
+        }
+        public static int AddSellOrder(string user, int amount = 1, double price = 1.0)
+        {
+            com.CommandText =
+                @"insert into SellOrder(id,user,amount,price,date)
+                values(NULL,@user,@amount,@price,datetime())";
+
+            com.Parameters.Add(new SQLiteParameter("@user", user));
+            com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
+
+            int rows = -1;
+            try
+            {
+                trans = conn.BeginTransaction();
+                com.ExecuteNonQuery();
+                trans.Commit();
+            }
+            catch (SQLiteException e)
+            {
+                trans.Rollback();
+            }
+
+            return rows;
+        }
+        public static int RemoveBuyOrder(int id)
+        {
+            com.CommandText = @"delete from BuyOrder where id = @id";
+            com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
+
+            int rows = -1;
             try
             {
 
                 trans = conn.BeginTransaction();
-
-                com.CommandText =
-                    @"insert into BuyOrder(id,user,amount,price,date)
-                    values(NULL,@user,@amount,@price,datetime())";
-
-                com.Parameters.Add(new SQLiteParameter("@user", user));
-                com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-                com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
-                com.ExecuteNonQuery();
-
-                trans = conn.BeginTransaction();
-
-                return true;
+                rows = com.ExecuteNonQuery();
+                trans.Commit();
             }
-            catch (Exception e) { return false; }
+            catch (SQLiteException e)
+            {
+                trans.Rollback();
+            }
+
+            return rows;
         }
-        public static bool AddSellOrder(string user, int amount = 1, double price = 1.0)
+        public static int RemoveSellOrder(int id)
         {
+            com.CommandText = @"delete from SellOrder where id = @id";
+            com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
+
+            int rows = -1;
             try
             {
 
                 trans = conn.BeginTransaction();
-
-                com.CommandText =
-                    @"insert into SellOrder(id,user,amount,price,date)
-                    values(NULL,@user,@amount,@price,datetime())";
-
-                com.Parameters.Add(new SQLiteParameter("@user", user));
-                com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-                com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
-                com.ExecuteNonQuery();
-
-                trans = conn.BeginTransaction();
-
-                return true;
+                rows = com.ExecuteNonQuery();
+                trans.Commit();
             }
-            catch (Exception e) { return false; }
+            catch (SQLiteException e)
+            {
+                trans.Rollback();
+            }
+
+            return rows;
         }
-        public static bool RemoveBuyOrder(int id)
+        public static List<Object> GetBuyOrders(String user)
         {
+            List<Object> orders = new List<Object>();
+            com.CommandText = @"select * from BuyOrder where user = @user";
+            com.Parameters.Add(new SQLiteParameter("@user", user));
+
             try
             {
-
-                trans = conn.BeginTransaction();
-
-                com.CommandText = @"delete from BuyOrder where id = @id";
-
-                com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
-                com.ExecuteNonQuery();
-
-                trans = conn.BeginTransaction();
-
-                return true;
+                reader = SqliteDB.com.ExecuteReader();
             }
-            catch (Exception e) { return false; }
+            catch (SQLiteException e)
+            {
+            }
+
+            while (reader.Read())
+            {
+                orders.Add(new {
+                    user = reader["user"],
+                    amount = reader["amount"],
+                    price = reader["price"],
+                    date = reader["date"],
+                });
+            }
+            reader.Close();
+
+            return orders;
         }
-        public static bool RemoveSellOrder(int id)
+        public static List<Object> GetSellOrders(String user)
         {
+            List<Object> orders = new List<Object>();
+            com.CommandText = @"select * from SellOrder where user = @user";
+            com.Parameters.Add(new SQLiteParameter("@user", user));
+
             try
             {
-
-                trans = conn.BeginTransaction();
-
-                com.CommandText = @"delete from SellOrder where id = @id";
-
-                com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
-                com.ExecuteNonQuery();
-
-                trans = conn.BeginTransaction();
-
-                return true;
+                reader = SqliteDB.com.ExecuteReader();
             }
-            catch (Exception e) { return false; }
-        }
-        public static bool GetBuyOrders(String user)
-        {
+            catch (SQLiteException e)
+            {
+            }
+
+            while (reader.Read())
+            {
+                orders.Add(new
+                {
+                    user = reader["user"],
+                    amount = reader["amount"],
+                    price = reader["price"],
+                    date = reader["date"],
+                });
+            }
+            reader.Close();
+
+            return orders;
+        }       
+        public static int EditBuyOrder(int id, int amount, double price)
+        {           
+            com.CommandText =
+                @"update BuyOrder
+                set amount = @amount, price = @price
+                where id = @id";
+
+            com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
+
+            int rows = -1;
             try
             {
-
                 trans = conn.BeginTransaction();
-
-                com.CommandText = @"select * from BuyOrder where user = @user";
-
-                com.Parameters.Add(new SQLiteParameter("@user", user));
-                com.ExecuteNonQuery();
-
-                trans = conn.BeginTransaction();
-
-                return true;
+                rows = com.ExecuteNonQuery();
+                trans.Commit();
             }
-            catch (Exception e) { return false; }
+            catch (SQLiteException e)
+            {
+                trans.Rollback();
+            }
+
+            return rows;
         }
-        public static bool GetSellOrders(String user)
+        public static int EditSellOrder(int id, int amount, double price)
         {
+            com.CommandText =
+                @"update SellOrder
+                set amount = @amount, price = @price
+                where id = @id";
+
+            com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
+
+            int rows = -1;
             try
             {
-
                 trans = conn.BeginTransaction();
-
-                com.CommandText = @"select * from SellOrder where user = @user";
-
-                com.Parameters.Add(new SQLiteParameter("@user", user));
-                com.ExecuteNonQuery();
-
-                trans = conn.BeginTransaction();
-
-                return true;
+                rows = com.ExecuteNonQuery();
+                trans.Commit();
             }
-            catch (Exception e) { return false; }
-        }
-        public static bool EditBuyOrder(int id, int amount, double price)
-        {
-            try
+            catch (SQLiteException e)
             {
-
-                trans = conn.BeginTransaction();
-
-                com.CommandText =
-                    @"update BuyOrder
-                    set amount = @amount, price = @price
-                    where id = @id";
-
-                com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-                com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
-                com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
-                com.ExecuteNonQuery();
-
-                trans = conn.BeginTransaction();
-
-                return true;
+                trans.Rollback();
             }
-            catch (Exception e) { return false; }
-        }
-        public static bool EditSellOrder(int id, int amount, double price)
-        {
-            try
-            {
 
-                trans = conn.BeginTransaction();
-
-                com.CommandText =
-                    @"update SellOrder
-                    set amount = @amount, price = @price
-                    where id = @id";
-
-                com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-                com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
-                com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
-                com.ExecuteNonQuery();
-
-                trans = conn.BeginTransaction();
-
-                return true;
-            }
-            catch (Exception e) { return false; }
-        }
+            return rows;
+        }       
     }
 }
