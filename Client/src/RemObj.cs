@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Client.RemObj
+namespace Client.Remoting
 {
     class RemObj : MarshalByRefObject
     {
@@ -41,6 +41,14 @@ namespace Client.RemObj
             return null;
         }
         public String RemoveSellOrder(int id)
+        {
+            return null;
+        }
+        public String DepositBalance(double amount)
+        {
+            return null;
+        }
+        public String WhitdrawBalance(double amount)
         {
             return null;
         }

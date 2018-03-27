@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Server.RemObj
+namespace Server.Remoting
 {
     class RemObj : MarshalByRefObject
     {
@@ -44,5 +44,13 @@ namespace Server.RemObj
         {
             return null;
         }
+        public String DepositBalance(double amount)
+        {
+            return null;
+        }
+        public String WhitdrawBalance(double amount)
+        {
+            return null;
+        }        
     }
 }
