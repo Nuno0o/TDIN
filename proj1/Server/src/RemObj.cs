@@ -1,9 +1,22 @@
 ﻿using System;
 
-namespace Server.Remoting
+namespace Server
 {
     class RemObj : MarshalByRefObject
-    {
+    {        
+        public Boolean Login(string username, string password)
+        {
+            Console.WriteLine("LOGIN "+username+" "+password);
+            dynamic user = Database.GetUser(username);
+            if (user == null) return false;
+            return user.password == password;
+        }
+        public Boolean Register(string username, string password)
+        {
+            Console.WriteLine("REGISTER " + username + " " + password);
+            dynamic added = Database.AddUser(username, password);
+            return added == 1;
+        }
         public String GetBalance()
         {
             return null;

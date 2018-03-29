@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client
@@ -17,24 +10,28 @@ namespace Client
             InitializeComponent();
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void Login_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void login_button_Click(object sender, EventArgs e)
+        {
+            String username = username_input.Text;
+            String password = password_input.Text;
+            if (!(Boolean)Client.stub.Login(username, password)) return;
+            Client.login.Visible = false;
+            Client.menu.Visible = true;
+        }
+
+        private void register_button_Click(object sender, EventArgs e)
+        {
+            String username = username_input.Text;
+            String password = password_input.Text;
+            if (password.Length < 4) return;
+            if (!(Boolean)Client.stub.Register(username, password)) return;
+            Client.login.Visible = false;
+            Client.menu.Visible = true;
         }
     }
 }

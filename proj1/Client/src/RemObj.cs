@@ -1,54 +1,63 @@
 ﻿using System;
+using System.Collections.Generic;
 
-namespace Client.Remoting
+namespace Server
 {
     class RemObj : MarshalByRefObject
-    {
-        public String GetBalance()
+    {        
+        public Boolean Login(string username, string password)
+        {
+            return false;
+        }
+        public Boolean Register(string username, string password)
+        {
+            return false;
+        }
+        public Object GetBalance()
         {
             return null;
         }
-        public String GetDigicoins()
+        public Object GetDigicoins()
         {
             return null;
         }
-        public String GetBuyOrders()
+        public Object GetBuyOrders()
         {
             return null;
         }
-        public String GetSellOrders()
+        public Object GetSellOrders()
         {
             return null;
         }
-        public String GetBuyOrder(int id)
+        public Object GetBuyOrder(int id)
         {
             return null;
         }
-        public String GetSellOrder(int id)
+        public Object GetSellOrder(int id)
         {
             return null;
         }
-        public String AddBuyOrder(int amount, double price)
+        public Object AddBuyOrder(int amount, double price)
         {
             return null;
         }
-        public String AddSellOrder(int amount, double price)
+        public Object AddSellOrder(int amount, double price)
         {
             return null;
         }
-        public String RemoveBuyOrder(int id)
+        public Object RemoveBuyOrder(int id)
         {
             return null;
         }
-        public String RemoveSellOrder(int id)
+        public Object RemoveSellOrder(int id)
         {
             return null;
         }
-        public String DepositBalance(double amount)
+        public Object DepositBalance(double amount)
         {
             return null;
         }
-        public String WhitdrawBalance(double amount)
+        public Object WhitdrawBalance(double amount)
         {
             return null;
         }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 
-namespace Server.Database {
+namespace Server {
 
-    class SQLiteDB
+    class Database
     {
 
         private static SQLiteConnection conn;
@@ -54,29 +54,7 @@ namespace Server.Database {
                     Console.WriteLine(e.StackTrace);
                 }
             }            
-        }
-        public static int ClearDatabase() {
-            com.CommandText =
-                   @"delete from User;
-                    delete from Diginote;
-                    delete from BuyOrder;
-                    delete from SellOrder;";
-
-            int rows = -1;
-            try
-            {
-                trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
-                trans.Commit();
-            }
-            catch (SQLiteException e)
-            {
-                trans.Rollback();
-                Console.WriteLine(e.StackTrace);
-            }
-
-            return rows;
-        }
+        }        
         public static int AddUser(string username, string password, double balance = 0.0)
         {
             com.CommandText = "insert into User values (@user, @pass, @balance)";
@@ -138,13 +116,26 @@ namespace Server.Database {
                 Console.WriteLine(e.StackTrace);
             }
 
-            reader.Read();
-            Object user = new {
-                username = reader["username"],
-                password = reader["password"],
-                balance = reader["balance"]
-            };
-            reader.Close();
+            Object user;
+            try
+            {
+                reader.Read();
+                user = new
+                {
+                    username = reader["username"],
+                    password = reader["password"],
+                    balance = reader["balance"]
+                };
+            }
+            catch(InvalidOperationException e)
+            {
+                user = null;
+            }
+            finally
+            {
+                reader.Close();
+            }
+
 
             return user;
         }

@@ -1,22 +1,32 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Runtime.Remoting;
+using Server;
 
 namespace Client
 {
     static class Client
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+        public static RemObj stub;
+        public static Login login;
+        public static Menu menu;
+       
         [STAThread]
         static void Main()
         {
-            RemotingConfiguration.Configure("Client.exe.config", false);
+            stub = (RemObj)RemotingServices.Connect(
+                typeof(RemObj),
+                "tcp://localhost:9000/Server/RemObj"
+            );            
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Login());
+
+            login = new Login();
+            menu = new Menu();
+
+            Application.Run(login);
+            
         }
     }
 }
