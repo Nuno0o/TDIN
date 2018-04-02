@@ -5,27 +5,27 @@ namespace Server
 {
     class RemObj : MarshalByRefObject
     {        
-        public Boolean Login(string username, string password)
-        {
-            return false;
-        }
-        public Boolean Register(string username, string password)
-        {
-            return false;
-        }
-        public Object GetBalance()
+        public string Login(string username, string password)
         {
             return null;
         }
-        public Object GetDigicoins()
+        public string Register(string username, string password)
         {
             return null;
         }
-        public Object GetBuyOrders()
+        public string GetBalance(string username)
         {
             return null;
         }
-        public Object GetSellOrders()
+        public string GetDiginotes(string username)
+        {
+            return null;
+        }
+        public string GetBuyOrders(string username)
+        {
+            return null;
+        }
+        public string GetSellOrders(string username)
         {
             return null;
         }

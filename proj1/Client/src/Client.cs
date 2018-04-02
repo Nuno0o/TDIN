@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Server;
+using System;
 using System.Windows.Forms;
 using System.Runtime.Remoting;
-using Server;
+using System.Collections.Generic;
 
 namespace Client
 {
@@ -10,7 +11,14 @@ namespace Client
         public static RemObj stub;
         public static Login login;
         public static Menu menu;
-       
+
+        public static double balance;
+        public static int diginotes;
+        public static string username;
+
+        public static List<Object> buy_orders;
+        public static List<Object> sell_orders;
+
         [STAThread]
         static void Main()
         {
@@ -23,8 +31,6 @@ namespace Client
             Application.SetCompatibleTextRenderingDefault(false);
 
             login = new Login();
-            menu = new Menu();
-
             Application.Run(login);
             
         }

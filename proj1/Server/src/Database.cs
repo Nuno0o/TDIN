@@ -77,6 +77,41 @@ namespace Server {
 
             return rows;
         }
+        public static Object GetBalance(string username)
+        {
+
+            com.CommandText =
+                @"select balance from User
+                where username = @username";
+            com.Parameters.Add(new SQLiteParameter("@username", username));
+
+            try
+            {
+                reader = com.ExecuteReader();
+            }
+            catch (SQLiteException e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
+
+            Object balance;
+            try
+            {
+                reader.Read();
+                balance = new { balance = reader["balance"] };
+            }
+            catch (InvalidOperationException e)
+            {
+                balance = null;
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                reader.Close();
+            }
+
+            return balance;
+        }
         public static int SetBalance(string username, double balance = 0.0)
         {
                          
@@ -130,6 +165,7 @@ namespace Server {
             catch(InvalidOperationException e)
             {
                 user = null;
+                Console.WriteLine(e.StackTrace);
             }
             finally
             {
@@ -139,9 +175,9 @@ namespace Server {
 
             return user;
         }
-        public static List<Object> GetDiginotes(string username)
+        public static Object GetDiginotes(string username)
         {
-            com.CommandText = "SELECT id FROM Diginote WHERE owner = @user";
+            com.CommandText = "SELECT count(*) as diginotes FROM Diginote WHERE owner = @user";
             com.Parameters.Add(new SQLiteParameter("@user", username));
 
             try
@@ -153,16 +189,23 @@ namespace Server {
                 Console.WriteLine(e.StackTrace);
             }
 
-            List<Object> diginotes = new List<Object>();
-            while (reader.Read())
+            Object obj;
+            try
             {
-                diginotes.Add(new {
-                    id = reader["id"]
-                });
-            }           
-            reader.Close();
+                reader.Read();
+                obj = new { diginotes = reader["diginotes"] };
+            }
+            catch (InvalidOperationException e)
+            {
+                obj = null;
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                reader.Close();
+            }
 
-            return diginotes;
+            return obj;
         }
         public static int AddDiginotes(string username, int amount = 1)
         { 
@@ -349,6 +392,7 @@ namespace Server {
                     amount = reader["amount"],
                     price = reader["price"],
                     date = reader["date"],
+                    id = reader["id"],
                 });
             }
             reader.Close();
@@ -378,6 +422,7 @@ namespace Server {
                     amount = reader["amount"],
                     price = reader["price"],
                     date = reader["date"],
+                    id = reader["id"],
                 });
             }
             reader.Close();

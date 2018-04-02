@@ -28,30 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.digicoins_label = new System.Windows.Forms.Label();
+            this.diginotes_label = new System.Windows.Forms.Label();
             this.balance_label = new System.Windows.Forms.Label();
-            this.sellorders_grid = new System.Windows.Forms.DataGridView();
-            this.buyorders_grid = new System.Windows.Forms.DataGridView();
+            this.sell_orders_grid = new System.Windows.Forms.DataGridView();
+            this.buy_orders_grid = new System.Windows.Forms.DataGridView();
             this.add_button = new System.Windows.Forms.Button();
             this.remove_button = new System.Windows.Forms.Button();
             this.edit_button = new System.Windows.Forms.Button();
-            this.digicoins_display = new System.Windows.Forms.TextBox();
+            this.diginotes_display = new System.Windows.Forms.TextBox();
             this.balance_display = new System.Windows.Forms.TextBox();
             this.logout_button = new System.Windows.Forms.Button();
             this.funds_button = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.sellorders_grid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.buyorders_grid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sell_orders_grid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.buy_orders_grid)).BeginInit();
             this.SuspendLayout();
             // 
-            // digicoins_label
+            // diginotes_label
             // 
-            this.digicoins_label.AutoSize = true;
-            this.digicoins_label.Location = new System.Drawing.Point(12, 9);
-            this.digicoins_label.Name = "digicoins_label";
-            this.digicoins_label.Size = new System.Drawing.Size(50, 13);
-            this.digicoins_label.TabIndex = 0;
-            this.digicoins_label.Text = "Digicoins";
-            this.digicoins_label.Click += new System.EventHandler(this.label1_Click);
+            this.diginotes_label.AutoSize = true;
+            this.diginotes_label.Location = new System.Drawing.Point(12, 9);
+            this.diginotes_label.Name = "diginotes_label";
+            this.diginotes_label.Size = new System.Drawing.Size(51, 13);
+            this.diginotes_label.TabIndex = 0;
+            this.diginotes_label.Text = "Diginotes";
+            this.diginotes_label.Click += new System.EventHandler(this.label1_Click);
             // 
             // balance_label
             // 
@@ -63,21 +63,21 @@
             this.balance_label.Text = "Balance";
             this.balance_label.Click += new System.EventHandler(this.label2_Click);
             // 
-            // sellorders_grid
+            // sell_orders_grid
             // 
-            this.sellorders_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.sellorders_grid.Location = new System.Drawing.Point(12, 218);
-            this.sellorders_grid.Name = "sellorders_grid";
-            this.sellorders_grid.Size = new System.Drawing.Size(240, 150);
-            this.sellorders_grid.TabIndex = 2;
+            this.sell_orders_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.sell_orders_grid.Location = new System.Drawing.Point(12, 218);
+            this.sell_orders_grid.Name = "sell_orders_grid";
+            this.sell_orders_grid.Size = new System.Drawing.Size(240, 150);
+            this.sell_orders_grid.TabIndex = 2;
             // 
-            // buyorders_grid
+            // buy_orders_grid
             // 
-            this.buyorders_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.buyorders_grid.Location = new System.Drawing.Point(12, 62);
-            this.buyorders_grid.Name = "buyorders_grid";
-            this.buyorders_grid.Size = new System.Drawing.Size(240, 150);
-            this.buyorders_grid.TabIndex = 3;
+            this.buy_orders_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.buy_orders_grid.Location = new System.Drawing.Point(12, 62);
+            this.buy_orders_grid.Name = "buy_orders_grid";
+            this.buy_orders_grid.Size = new System.Drawing.Size(240, 150);
+            this.buy_orders_grid.TabIndex = 3;
             // 
             // add_button
             // 
@@ -106,13 +106,13 @@
             this.edit_button.Text = "Edit";
             this.edit_button.UseVisualStyleBackColor = true;
             // 
-            // digicoins_display
+            // diginotes_display
             // 
-            this.digicoins_display.Location = new System.Drawing.Point(64, 6);
-            this.digicoins_display.Name = "digicoins_display";
-            this.digicoins_display.ReadOnly = true;
-            this.digicoins_display.Size = new System.Drawing.Size(100, 20);
-            this.digicoins_display.TabIndex = 7;
+            this.diginotes_display.Location = new System.Drawing.Point(64, 6);
+            this.diginotes_display.Name = "diginotes_display";
+            this.diginotes_display.ReadOnly = true;
+            this.diginotes_display.Size = new System.Drawing.Size(100, 20);
+            this.diginotes_display.TabIndex = 7;
             // 
             // balance_display
             // 
@@ -148,18 +148,18 @@
             this.Controls.Add(this.funds_button);
             this.Controls.Add(this.logout_button);
             this.Controls.Add(this.balance_display);
-            this.Controls.Add(this.digicoins_display);
+            this.Controls.Add(this.diginotes_display);
             this.Controls.Add(this.edit_button);
             this.Controls.Add(this.remove_button);
             this.Controls.Add(this.add_button);
-            this.Controls.Add(this.buyorders_grid);
-            this.Controls.Add(this.sellorders_grid);
+            this.Controls.Add(this.buy_orders_grid);
+            this.Controls.Add(this.sell_orders_grid);
             this.Controls.Add(this.balance_label);
-            this.Controls.Add(this.digicoins_label);
+            this.Controls.Add(this.diginotes_label);
             this.Name = "Menu";
             this.Text = "Menu";
-            ((System.ComponentModel.ISupportInitialize)(this.sellorders_grid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.buyorders_grid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sell_orders_grid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.buy_orders_grid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -167,14 +167,14 @@
 
         #endregion
 
-        private System.Windows.Forms.Label digicoins_label;
+        private System.Windows.Forms.Label diginotes_label;
         private System.Windows.Forms.Label balance_label;
-        private System.Windows.Forms.DataGridView sellorders_grid;
-        private System.Windows.Forms.DataGridView buyorders_grid;
+        private System.Windows.Forms.DataGridView sell_orders_grid;
+        private System.Windows.Forms.DataGridView buy_orders_grid;
         private System.Windows.Forms.Button add_button;
         private System.Windows.Forms.Button remove_button;
         private System.Windows.Forms.Button edit_button;
-        private System.Windows.Forms.TextBox digicoins_display;
+        private System.Windows.Forms.TextBox diginotes_display;
         private System.Windows.Forms.TextBox balance_display;
         private System.Windows.Forms.Button logout_button;
         private System.Windows.Forms.Button funds_button;
