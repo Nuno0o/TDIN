@@ -20,9 +20,15 @@ namespace Client
         {
             string username = username_input.Text;
             string password = password_input.Text;
-            string json = Client.stub.Login(username, password);
-            dynamic obj = JsonConvert.DeserializeObject(json);
-            if (!obj) return;
+            try
+            {
+                Operations.login(username, password);
+            }catch (Exception ex)//login failed
+            {
+                this.label3.Text = "Login failed";
+                this.label3.ForeColor = System.Drawing.Color.Red;
+                return;
+            }
             Client.username = username;
             Client.login.Visible = false;
             Client.menu = new Menu();                      
@@ -33,10 +39,21 @@ namespace Client
         {
             string username = username_input.Text;
             string password = password_input.Text;
-            if (password.Length < 4) return;
-            string json = Client.stub.Register(username, password);
-            dynamic obj = JsonConvert.DeserializeObject(json);            
-            if (!obj) return;
+            if (password.Length < 4)
+            {
+                this.label3.Text = "Password needs more than 4 characters";
+                this.label3.ForeColor = System.Drawing.Color.Red;
+                return;
+            };
+            try
+            {
+                Operations.register(username, password);
+            }catch(Exception ex)
+            {
+                this.label3.Text = "Register failed";
+                this.label3.ForeColor = System.Drawing.Color.Red;
+                return;
+            }
             Client.login.Visible = false;
             Client.menu.Visible = true;
         }
