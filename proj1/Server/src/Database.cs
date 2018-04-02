@@ -112,7 +112,7 @@ namespace Server {
 
             return balance;
         }
-        public static int SetBalance(string username, double balance = 0.0)
+        public static object SetBalance(string username, double balance = 0.0)
         {
                          
             com.CommandText =
@@ -121,7 +121,6 @@ namespace Server {
             com.Parameters.Add(new SQLiteParameter("@username", username));
             com.Parameters.Add(new SQLiteParameter("@balance", balance.ToString()));
 
-            int rows = -1;
             try
             {
                 trans = conn.BeginTransaction();
@@ -132,9 +131,10 @@ namespace Server {
             {
                 trans.Rollback();
                 Console.WriteLine(e.StackTrace);
+                return null;
             }
 
-            return rows;
+            return 1;
         }
         public static Object GetUser(string username)
         {

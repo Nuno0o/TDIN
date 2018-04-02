@@ -123,6 +123,7 @@
             this.logout_button.TabIndex = 9;
             this.logout_button.Text = "Logout";
             this.logout_button.UseVisualStyleBackColor = true;
+            this.logout_button.Click += new System.EventHandler(this.logout_button_Click);
             // 
             // funds_button
             // 
@@ -132,6 +133,7 @@
             this.funds_button.TabIndex = 10;
             this.funds_button.Text = "Funds";
             this.funds_button.UseVisualStyleBackColor = true;
+            this.funds_button.Click += new System.EventHandler(this.funds_button_Click);
             // 
             // Menu
             // 

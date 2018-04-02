@@ -53,11 +53,11 @@ namespace Server
         {
             return null;
         }
-        public Object DepositBalance(double amount)
+        public string DepositBalance(string username, double amount)
         {
             return null;
         }
-        public Object WhitdrawBalance(double amount)
+        public string WithdrawBalance(string username, double amount)
         {
             return null;
         }

@@ -29,10 +29,10 @@ namespace Client
             orders_grid.ReadOnly = true;
             orders_grid.Columns["ID"].Visible = false;
 
-            UpdateBalance();
-            UpdateDiginotes();
-            UpdateBuyOrders();
-            UpdateSellOrders();           
+            UpdateBalance(true);
+            UpdateDiginotes(true);
+            UpdateBuyOrders(true);
+            UpdateSellOrders(true);           
         }
         private void Menu_Load(object sender, EventArgs e)
         {
@@ -59,23 +59,34 @@ namespace Client
         {
 
         }
-        private void UpdateBalance()
+        public void UpdateBalance(bool request = false)
         {
-            string balance_json = Client.stub.GetBalance(Client.username);
-            Client.balance = JsonConvert.DeserializeObject<dynamic>(balance_json).balance;
+            if (request)
+            {
+                string json = Client.stub.GetBalance(Client.username);
+                Client.balance = JsonConvert.DeserializeObject<dynamic>(json).balance;
+            }    
+                    
             balance_display.Text = Client.balance.ToString();          
         }
-        private void UpdateDiginotes()
+        private void UpdateDiginotes(bool request = false)
         {
-            string diginotes_json = Client.stub.GetDiginotes(Client.username);
-            Client.diginotes = JsonConvert.DeserializeObject<dynamic>(diginotes_json).diginotes;
+            if (request)
+            {
+                string json = Client.stub.GetDiginotes(Client.username);
+                Client.diginotes = JsonConvert.DeserializeObject<dynamic>(json).diginotes;
+            }
+                
             diginotes_display.Text = Client.diginotes.ToString();           
         }
-        private void UpdateBuyOrders()
+        private void UpdateBuyOrders(bool request = false)
         {
-            string buy_orders_json = Client.stub.GetBuyOrders(Client.username);
-            Client.buy_orders = JsonConvert.DeserializeObject<List<Object>>(buy_orders_json);
-
+            if (request)
+            {
+                string json = Client.stub.GetBuyOrders(Client.username);
+                Client.buy_orders = JsonConvert.DeserializeObject<List<Object>>(json);
+            }
+            
             foreach (dynamic buy_order in Client.buy_orders)
             {
                 orders_grid.Rows.Add(new string[]
@@ -88,10 +99,13 @@ namespace Client
                 });
             }          
         }
-        private void UpdateSellOrders()
+        private void UpdateSellOrders(bool request = false)
         {
-            string sell_orders_json = Client.stub.GetSellOrders(Client.username);
-            Client.sell_orders = JsonConvert.DeserializeObject<List<Object>>(sell_orders_json);
+            if (request)
+            {
+                string json = Client.stub.GetSellOrders(Client.username);
+                Client.sell_orders = JsonConvert.DeserializeObject<List<Object>>(json);
+            }              
 
             foreach (dynamic sell_order in Client.sell_orders)
             {
@@ -119,6 +133,22 @@ namespace Client
         private void add_button_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void logout_button_Click(object sender, EventArgs e)
+        {
+            Client.login.Visible = true;
+            Client.menu.Visible = false;
+            Client.menu = null;           
+            Client.buy_orders = null;
+            Client.sell_orders = null;
+            Client.balance = -1.0;
+            Client.diginotes = -1;
+        }
+
+        private void funds_button_Click(object sender, EventArgs e)
+        {
+            new Funds().Visible = true;
         }
     }
 }

@@ -20,9 +20,11 @@ namespace Client
         {
             string username = username_input.Text;
             string password = password_input.Text;
+            password_input.Text = null;
             string json = Client.stub.Login(username, password);
             dynamic obj = JsonConvert.DeserializeObject(json);
             if (!obj) return;
+            username_input.Text = null;
             Client.username = username;
             Client.login.Visible = false;
             Client.menu = new Menu();                      
