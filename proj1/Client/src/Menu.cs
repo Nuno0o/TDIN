@@ -16,32 +16,18 @@ namespace Client
         public Menu()
         {
             InitializeComponent();
-            buy_orders_grid.ColumnCount = 4;
-            buy_orders_grid.Columns[0].Name = "ID";
-            buy_orders_grid.Columns[1].Name = "Buying";
-            buy_orders_grid.Columns[2].Name = "Price";
-            buy_orders_grid.Columns[3].Name = "Date";
+            orders_grid.ColumnCount = 5;
+            orders_grid.Columns[0].Name = "ID";
+            orders_grid.Columns[1].Name = "Type";
+            orders_grid.Columns[2].Name = "Amount";
+            orders_grid.Columns[3].Name = "Price";
+            orders_grid.Columns[4].Name = "Date";           
 
-            sell_orders_grid.ColumnCount = 4;
-            sell_orders_grid.Columns[0].Name = "ID";
-            sell_orders_grid.Columns[1].Name = "Selling";
-            sell_orders_grid.Columns[2].Name = "Price";
-            sell_orders_grid.Columns[3].Name = "Date";
-
-            sell_orders_grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-            buy_orders_grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-
-            sell_orders_grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-            buy_orders_grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-
-            sell_orders_grid.RowHeadersVisible = false;
-            buy_orders_grid.RowHeadersVisible = false;
-
-            sell_orders_grid.ReadOnly = true;
-            buy_orders_grid.ReadOnly = true;
-
-            sell_orders_grid.Columns["ID"].Visible = false;
-            buy_orders_grid.Columns["ID"].Visible = false;
+            orders_grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            orders_grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            orders_grid.RowHeadersVisible = false;
+            orders_grid.ReadOnly = true;
+            orders_grid.Columns["ID"].Visible = false;
 
             UpdateBalance();
             UpdateDiginotes();
@@ -92,9 +78,10 @@ namespace Client
 
             foreach (dynamic buy_order in Client.buy_orders)
             {
-                buy_orders_grid.Rows.Add(new string[]
+                orders_grid.Rows.Add(new string[]
                 {
                     buy_order.id,
+                    "Buy",
                     buy_order.amount,
                     buy_order.price,
                     buy_order.date
@@ -108,14 +95,30 @@ namespace Client
 
             foreach (dynamic sell_order in Client.sell_orders)
             {
-                sell_orders_grid.Rows.Add(new string[]
+                orders_grid.Rows.Add(new string[]
                 {
                     sell_order.id,
+                    "Sell",
                     sell_order.amount,
                     sell_order.price,
                     sell_order.date
                 });
             }
+        }
+
+        private void edit_button_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void remove_button_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void add_button_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

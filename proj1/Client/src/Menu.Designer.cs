@@ -30,8 +30,7 @@
         {
             this.diginotes_label = new System.Windows.Forms.Label();
             this.balance_label = new System.Windows.Forms.Label();
-            this.sell_orders_grid = new System.Windows.Forms.DataGridView();
-            this.buy_orders_grid = new System.Windows.Forms.DataGridView();
+            this.orders_grid = new System.Windows.Forms.DataGridView();
             this.add_button = new System.Windows.Forms.Button();
             this.remove_button = new System.Windows.Forms.Button();
             this.edit_button = new System.Windows.Forms.Button();
@@ -39,8 +38,7 @@
             this.balance_display = new System.Windows.Forms.TextBox();
             this.logout_button = new System.Windows.Forms.Button();
             this.funds_button = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.sell_orders_grid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.buy_orders_grid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orders_grid)).BeginInit();
             this.SuspendLayout();
             // 
             // diginotes_label
@@ -63,55 +61,50 @@
             this.balance_label.Text = "Balance";
             this.balance_label.Click += new System.EventHandler(this.label2_Click);
             // 
-            // sell_orders_grid
+            // orders_grid
             // 
-            this.sell_orders_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.sell_orders_grid.Location = new System.Drawing.Point(12, 218);
-            this.sell_orders_grid.Name = "sell_orders_grid";
-            this.sell_orders_grid.Size = new System.Drawing.Size(240, 150);
-            this.sell_orders_grid.TabIndex = 2;
-            // 
-            // buy_orders_grid
-            // 
-            this.buy_orders_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.buy_orders_grid.Location = new System.Drawing.Point(12, 62);
-            this.buy_orders_grid.Name = "buy_orders_grid";
-            this.buy_orders_grid.Size = new System.Drawing.Size(240, 150);
-            this.buy_orders_grid.TabIndex = 3;
+            this.orders_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.orders_grid.Location = new System.Drawing.Point(12, 62);
+            this.orders_grid.Name = "orders_grid";
+            this.orders_grid.Size = new System.Drawing.Size(306, 306);
+            this.orders_grid.TabIndex = 3;
             // 
             // add_button
             // 
             this.add_button.Location = new System.Drawing.Point(12, 374);
             this.add_button.Name = "add_button";
-            this.add_button.Size = new System.Drawing.Size(75, 23);
+            this.add_button.Size = new System.Drawing.Size(98, 23);
             this.add_button.TabIndex = 4;
             this.add_button.Text = "Add";
             this.add_button.UseVisualStyleBackColor = true;
+            this.add_button.Click += new System.EventHandler(this.add_button_Click);
             // 
             // remove_button
             // 
-            this.remove_button.Location = new System.Drawing.Point(96, 374);
+            this.remove_button.Location = new System.Drawing.Point(116, 374);
             this.remove_button.Name = "remove_button";
-            this.remove_button.Size = new System.Drawing.Size(75, 23);
+            this.remove_button.Size = new System.Drawing.Size(98, 23);
             this.remove_button.TabIndex = 5;
             this.remove_button.Text = "Remove";
             this.remove_button.UseVisualStyleBackColor = true;
+            this.remove_button.Click += new System.EventHandler(this.remove_button_Click);
             // 
             // edit_button
             // 
-            this.edit_button.Location = new System.Drawing.Point(177, 374);
+            this.edit_button.Location = new System.Drawing.Point(220, 374);
             this.edit_button.Name = "edit_button";
-            this.edit_button.Size = new System.Drawing.Size(75, 23);
+            this.edit_button.Size = new System.Drawing.Size(98, 23);
             this.edit_button.TabIndex = 6;
             this.edit_button.Text = "Edit";
             this.edit_button.UseVisualStyleBackColor = true;
+            this.edit_button.Click += new System.EventHandler(this.edit_button_Click);
             // 
             // diginotes_display
             // 
             this.diginotes_display.Location = new System.Drawing.Point(64, 6);
             this.diginotes_display.Name = "diginotes_display";
             this.diginotes_display.ReadOnly = true;
-            this.diginotes_display.Size = new System.Drawing.Size(100, 20);
+            this.diginotes_display.Size = new System.Drawing.Size(150, 20);
             this.diginotes_display.TabIndex = 7;
             // 
             // balance_display
@@ -119,23 +112,23 @@
             this.balance_display.Location = new System.Drawing.Point(64, 35);
             this.balance_display.Name = "balance_display";
             this.balance_display.ReadOnly = true;
-            this.balance_display.Size = new System.Drawing.Size(100, 20);
+            this.balance_display.Size = new System.Drawing.Size(150, 20);
             this.balance_display.TabIndex = 8;
             // 
             // logout_button
             // 
-            this.logout_button.Location = new System.Drawing.Point(177, 4);
+            this.logout_button.Location = new System.Drawing.Point(220, 4);
             this.logout_button.Name = "logout_button";
-            this.logout_button.Size = new System.Drawing.Size(75, 23);
+            this.logout_button.Size = new System.Drawing.Size(98, 23);
             this.logout_button.TabIndex = 9;
             this.logout_button.Text = "Logout";
             this.logout_button.UseVisualStyleBackColor = true;
             // 
             // funds_button
             // 
-            this.funds_button.Location = new System.Drawing.Point(177, 33);
+            this.funds_button.Location = new System.Drawing.Point(220, 33);
             this.funds_button.Name = "funds_button";
-            this.funds_button.Size = new System.Drawing.Size(75, 23);
+            this.funds_button.Size = new System.Drawing.Size(98, 23);
             this.funds_button.TabIndex = 10;
             this.funds_button.Text = "Funds";
             this.funds_button.UseVisualStyleBackColor = true;
@@ -144,7 +137,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(264, 400);
+            this.ClientSize = new System.Drawing.Size(329, 400);
             this.Controls.Add(this.funds_button);
             this.Controls.Add(this.logout_button);
             this.Controls.Add(this.balance_display);
@@ -152,14 +145,12 @@
             this.Controls.Add(this.edit_button);
             this.Controls.Add(this.remove_button);
             this.Controls.Add(this.add_button);
-            this.Controls.Add(this.buy_orders_grid);
-            this.Controls.Add(this.sell_orders_grid);
+            this.Controls.Add(this.orders_grid);
             this.Controls.Add(this.balance_label);
             this.Controls.Add(this.diginotes_label);
             this.Name = "Menu";
             this.Text = "Menu";
-            ((System.ComponentModel.ISupportInitialize)(this.sell_orders_grid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.buy_orders_grid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.orders_grid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -169,8 +160,7 @@
 
         private System.Windows.Forms.Label diginotes_label;
         private System.Windows.Forms.Label balance_label;
-        private System.Windows.Forms.DataGridView sell_orders_grid;
-        private System.Windows.Forms.DataGridView buy_orders_grid;
+        private System.Windows.Forms.DataGridView orders_grid;
         private System.Windows.Forms.Button add_button;
         private System.Windows.Forms.Button remove_button;
         private System.Windows.Forms.Button edit_button;
