@@ -67,13 +67,28 @@ namespace Server
         {
             return null;
         }
-        public String DepositBalance(double amount)
+        public string DepositBalance(string username, double amount)
         {
-            return null;
+            Console.WriteLine("DEPOSIT " + username + " " + amount);
+            if (amount <= 0.0) return JsonConvert.SerializeObject(null);
+            dynamic obj = Database.GetUser(username);
+            if(obj == null) return JsonConvert.SerializeObject(null);
+            double balance = obj.balance + amount;
+            obj = Database.SetBalance(username,balance);
+            if (obj == null) return JsonConvert.SerializeObject(null);
+            return JsonConvert.SerializeObject(new { balance = balance });
         }
-        public String WhitdrawBalance(double amount)
+        public string WithdrawBalance(string username, double amount)
         {
-            return null;
+            Console.WriteLine("WITHDRAW " + username + " " + amount);
+            if (amount <= 0.0) return JsonConvert.SerializeObject(null);
+            dynamic obj = Database.GetUser(username);
+            if (obj == null) return JsonConvert.SerializeObject(null);
+            if (obj.balance < amount) return JsonConvert.SerializeObject(null);
+            double balance = obj.balance - amount;
+            obj = Database.SetBalance(username, balance);
+            if (obj == null) return JsonConvert.SerializeObject(null);
+            return JsonConvert.SerializeObject(new {balance = balance});
         }        
     }
 }

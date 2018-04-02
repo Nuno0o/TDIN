@@ -23,6 +23,8 @@ namespace Client
             try
             {
                 Operations.login(username, password);
+                username_input.Text = null;
+                password_input.Text = null;
             }catch (Exception ex)//login failed
             {
                 this.label3.Text = "Login failed";
