@@ -39,7 +39,7 @@ namespace Client
 
             balance = obj.balance;            
             Client.balance = balance;
-            Client.menu.UpdateBalance();                       
+            //Client.menu.UpdateBalance();                       
         }
     }
 }

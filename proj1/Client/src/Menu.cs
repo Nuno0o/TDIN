@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -13,6 +14,7 @@ namespace Client
 {
     public partial class Menu : Form
     {
+        Thread updater;
         public Menu()
         {
             InitializeComponent();
@@ -32,13 +34,25 @@ namespace Client
             orders_grid.ReadOnly = true;
             orders_grid.Columns["ID"].Visible = false;
 
-            UpdateBalance(true);
-            UpdateDiginotes(true);
-            UpdateBuyOrders(true);
-            UpdateSellOrders(true);
+            updater = new Thread(Poll_Info);
+            updater.IsBackground = true;
+            updater.Start();
+            
 
             this.FormClosing += Menu_FormClosing;
         }
+        private void Poll_Info()
+        {
+            while (true)
+            {
+                UpdateBalance(true);
+                UpdateDiginotes(true);
+                UpdateBuyOrders(true);
+                UpdateSellOrders(true);
+                System.Threading.Thread.Sleep(2000);
+            }
+        }
+
         private void Menu_Load(object sender, EventArgs e)
         {
             
@@ -72,7 +86,7 @@ namespace Client
                 Client.balance = JsonConvert.DeserializeObject<dynamic>(json).balance;
             }    
                     
-            balance_display.Text = Client.balance.ToString();          
+            balance_display.Invoke(new Action(()=>balance_display.Text = Client.balance.ToString()));          
         }
         private void UpdateDiginotes(bool request = false)
         {
@@ -82,7 +96,7 @@ namespace Client
                 Client.diginotes = JsonConvert.DeserializeObject<dynamic>(json).diginotes;
             }
                 
-            diginotes_display.Text = Client.diginotes.ToString();           
+            diginotes_display.Invoke(new Action(() => diginotes_display.Text = Client.diginotes.ToString()));           
         }
         private void UpdateBuyOrders(bool request = false)
         {
@@ -94,14 +108,14 @@ namespace Client
             
             foreach (dynamic buy_order in Client.buy_orders)
             {
-                orders_grid.Rows.Add(new string[]
+                orders_grid.Invoke(new Action(()=>orders_grid.Rows.Add(new string[]
                 {
                     buy_order.id,
                     "Buy",
                     buy_order.amount,
                     buy_order.price,
                     buy_order.date
-                });
+                })));
             }          
         }
         private void UpdateSellOrders(bool request = false)
@@ -114,14 +128,14 @@ namespace Client
 
             foreach (dynamic sell_order in Client.sell_orders)
             {
-                orders_grid.Rows.Add(new string[]
+                orders_grid.Invoke(new Action(() => orders_grid.Rows.Add(new string[]
                 {
                     sell_order.id,
                     "Sell",
                     sell_order.amount,
                     sell_order.price,
                     sell_order.date
-                });
+                })));
             }
         }
 
@@ -160,6 +174,7 @@ namespace Client
         private void Menu_FormClosing(object sender,EventArgs e)
         {
             logout_button_Click(sender, e);
+            updater.Abort();
         }
     }
 }

@@ -51,13 +51,19 @@ namespace Server
         {
             return null;
         }
-        public String AddBuyOrder(int amount, double price)
+        public String AddBuyOrder(string username,int amount, double price)
         {
-            return null;
+            Console.WriteLine("ADD BUY ORDER "+ username + " AMOUNT " + amount + " PRICE "+ price);
+            dynamic obj = Database.AddBuyOrder(username, amount, price);
+            if (obj == null) return JsonConvert.SerializeObject(null);
+            return JsonConvert.SerializeObject(obj);
         }
-        public String AddSellOrder(int amount, double price)
+        public String AddSellOrder(string username,int amount, double price)
         {
-            return null;
+            Console.WriteLine("ADD SELL ORDER " + username + " AMOUNT " + amount + " PRICE " + price);
+            dynamic obj = Database.AddSellOrder(username, amount, price);
+            if (obj == null) return JsonConvert.SerializeObject(null);
+            return JsonConvert.SerializeObject(obj);
         }
         public String RemoveBuyOrder(int id)
         {

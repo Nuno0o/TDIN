@@ -43,6 +43,10 @@ namespace Client
 
         #region add
 
+        public static void addBuyOrder()
+        {
+
+        }
 
         #endregion add
     }
