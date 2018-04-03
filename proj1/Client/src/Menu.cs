@@ -137,7 +137,8 @@ namespace Client
 
         private void add_button_Click(object sender, EventArgs e)
         {
-
+            Add a = new Add();
+            a.ShowDialog();
         }
 
         private void logout_button_Click(object sender, EventArgs e)
