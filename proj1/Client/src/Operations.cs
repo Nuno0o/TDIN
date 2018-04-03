@@ -9,6 +9,7 @@ namespace Client
 {
     static class Operations
     {
+        #region login
         public static void login(string username, string password)
         {
             try
@@ -37,5 +38,12 @@ namespace Client
             }
             return;
         }
+
+        #endregion login
+
+        #region add
+
+
+        #endregion add
     }
 }

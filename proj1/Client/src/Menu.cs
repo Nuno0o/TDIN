@@ -16,6 +16,9 @@ namespace Client
         public Menu()
         {
             InitializeComponent();
+
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+
             orders_grid.ColumnCount = 5;
             orders_grid.Columns[0].Name = "ID";
             orders_grid.Columns[1].Name = "Type";
@@ -32,7 +35,9 @@ namespace Client
             UpdateBalance(true);
             UpdateDiginotes(true);
             UpdateBuyOrders(true);
-            UpdateSellOrders(true);           
+            UpdateSellOrders(true);
+
+            this.FormClosing += Menu_FormClosing;
         }
         private void Menu_Load(object sender, EventArgs e)
         {
@@ -149,6 +154,11 @@ namespace Client
         private void funds_button_Click(object sender, EventArgs e)
         {
             new Funds().Visible = true;
+        }
+
+        private void Menu_FormClosing(object sender,EventArgs e)
+        {
+            logout_button_Click(sender, e);
         }
     }
 }

@@ -9,6 +9,8 @@ namespace Client
         public Login()
         {
             InitializeComponent();
+
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
         }
 
         private void Login_Load(object sender, EventArgs e)
@@ -56,8 +58,8 @@ namespace Client
                 this.label3.ForeColor = System.Drawing.Color.Red;
                 return;
             }
-            Client.login.Visible = false;
-            Client.menu.Visible = true;
+            this.label3.Text = "Register successful. You can now login";
+            this.label3.ForeColor = System.Drawing.Color.Green;
         }
     }
 }
