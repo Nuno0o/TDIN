@@ -293,7 +293,7 @@ namespace Server {
             try
             {
                 trans = conn.BeginTransaction();
-                com.ExecuteNonQuery();
+                rows = com.ExecuteNonQuery();
                 trans.Commit();
             }
             catch (SQLiteException e)
@@ -318,7 +318,7 @@ namespace Server {
             try
             {
                 trans = conn.BeginTransaction();
-                com.ExecuteNonQuery();
+                rows = com.ExecuteNonQuery();
                 trans.Commit();
             }
             catch (SQLiteException e)

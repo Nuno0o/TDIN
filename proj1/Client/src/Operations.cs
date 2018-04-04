@@ -145,6 +145,42 @@ namespace Client
             }
         }
 
+        public static void RemoveBuyOrder(int id)
+        {
+            int success = 0;
+            try
+            {
+                string json = Client.stub.RemoveBuyOrder(id);
+                success = JsonConvert.DeserializeObject<int>(json);
+                if (success != 1)
+                {
+                    throw new Exception("Failed to remove");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void RemoveSellOrder(int id)
+        {
+            int success = 0;
+            try
+            {
+                string json = Client.stub.RemoveSellOrder(id);
+                success = JsonConvert.DeserializeObject<int>(json);
+                if (success != 1)
+                {
+                    throw new Exception("Failed to remove");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion add
     }
 }

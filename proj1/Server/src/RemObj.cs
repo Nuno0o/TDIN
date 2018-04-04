@@ -67,11 +67,17 @@ namespace Server
         }
         public String RemoveBuyOrder(int id)
         {
-            return null;
+            Console.WriteLine("REMOVE BUY ORDER ID "+id);
+            dynamic obj = Database.RemoveBuyOrder(id);
+            if (obj == null) return JsonConvert.SerializeObject(null);
+            return JsonConvert.SerializeObject(obj);
         }
         public String RemoveSellOrder(int id)
         {
-            return null;
+            Console.WriteLine("REMOVE SELL ORDER ID " + id);
+            dynamic obj = Database.RemoveSellOrder(id);
+            if (obj == null) return JsonConvert.SerializeObject(null);
+            return JsonConvert.SerializeObject(obj);
         }
         public string DepositBalance(string username, double amount)
         {

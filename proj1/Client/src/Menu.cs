@@ -24,7 +24,7 @@ namespace Client
             orders_grid.ColumnCount = 5;
             orders_grid.Columns[0].Name = "ID";
             orders_grid.Columns[1].Name = "Type";
-            orders_grid.Columns[2].Name = "Amount";
+            orders_grid.Columns[2].Name = "Diginotes";
             orders_grid.Columns[3].Name = "Price";
             orders_grid.Columns[4].Name = "Date";           
 
@@ -78,7 +78,6 @@ namespace Client
         }
         public void UpdateInformation(bool request = false)
         {
-            //ClearOrdersGrid();
             UpdateBalance(request);
             UpdateDiginotes(request);
             UpdateBuyOrders(request);
@@ -153,13 +152,13 @@ namespace Client
             }
             foreach (DataGridViewRow row in orders_grid.Rows)
             {
-                if (!row.Cells[1].Equals("Buy"))
+                if (!row.Cells[1].Value.ToString().Equals("Buy"))
                     continue;
                 bool deleted = true;
                 foreach (dynamic buy_order in Client.buy_orders)
                 {
                     int id = buy_order.id;
-                    if ((id + "").Equals(row.Cells[0]))
+                    if ((id + "").Equals(row.Cells[0].Value.ToString()))
                     {
                         deleted = false;
                     }
@@ -206,13 +205,13 @@ namespace Client
             }
             foreach (DataGridViewRow row in orders_grid.Rows)
             {
-                if (!row.Cells[1].Equals("Sell"))
+                if (!row.Cells[1].Value.ToString().Equals("Sell"))
                     continue;
                 bool deleted = true;
                 foreach (dynamic sell_order in Client.sell_orders)
                 {
                     int id = sell_order.id;
-                    if ((id + "").Equals(row.Cells[0]))
+                    if ((id + "").Equals(row.Cells[0].Value.ToString()))
                     {
                         deleted = false;
                     }
@@ -230,12 +229,41 @@ namespace Client
 
         private void edit_button_Click(object sender, EventArgs e)
         {
-            Edit ed = new Edit();
+            DataGridViewRow selectedRow = orders_grid.CurrentCell.OwningRow;
+            if (selectedRow == null)
+                return;
+            string diginotes = selectedRow.Cells[2].Value.ToString();
+            string price = selectedRow.Cells[3].Value.ToString();
+            string id = selectedRow.Cells[0].Value.ToString();
+            string type = selectedRow.Cells[1].Value.ToString();
+            Edit ed = new Edit(id,type,diginotes,price);
             ed.ShowDialog();
+            UpdateInformation(true);
         }
 
         private void remove_button_Click(object sender, EventArgs e)
         {
+            DataGridViewRow selectedRow = orders_grid.CurrentCell.OwningRow;
+            if (selectedRow == null)
+                return;
+            string id = selectedRow.Cells[0].Value.ToString();
+            string type = selectedRow.Cells[1].Value.ToString();
+            try
+            {
+                if (type.Equals("Buy"))
+                {
+                    Operations.RemoveBuyOrder(int.Parse(id));
+                }
+                else
+                {
+                    Operations.RemoveSellOrder(int.Parse(id));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            UpdateInformation(true);
 
         }
 
@@ -266,6 +294,7 @@ namespace Client
         {
             logout_button_Click(sender, e);
             updater.Abort();
+            ClearOrdersGrid();
         }
     }
 }
