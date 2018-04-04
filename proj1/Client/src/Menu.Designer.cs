@@ -81,7 +81,7 @@
             // 
             // remove_button
             // 
-            this.remove_button.Location = new System.Drawing.Point(116, 374);
+            this.remove_button.Location = new System.Drawing.Point(219, 374);
             this.remove_button.Name = "remove_button";
             this.remove_button.Size = new System.Drawing.Size(98, 23);
             this.remove_button.TabIndex = 5;
@@ -91,7 +91,7 @@
             // 
             // edit_button
             // 
-            this.edit_button.Location = new System.Drawing.Point(220, 374);
+            this.edit_button.Location = new System.Drawing.Point(116, 374);
             this.edit_button.Name = "edit_button";
             this.edit_button.Size = new System.Drawing.Size(98, 23);
             this.edit_button.TabIndex = 6;
@@ -139,7 +139,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(329, 400);
+            this.ClientSize = new System.Drawing.Size(329, 407);
             this.Controls.Add(this.funds_button);
             this.Controls.Add(this.logout_button);
             this.Controls.Add(this.balance_display);

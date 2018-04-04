@@ -109,9 +109,40 @@ namespace Client
 
         #region add
 
-        public static void addBuyOrder()
+        public static void AddBuyOrder(string username, int amount, double price)
         {
+            int success = 0;
+            try
+            {
+                string json = Client.stub.AddBuyOrder(username, amount, price);
+                success = JsonConvert.DeserializeObject<int>(json);
+                if(success != 1)
+                {
+                    throw new Exception("Failed to add");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
+        public static void AddSellOrder(string username, int amount, double price)
+        {
+            int success = 0;
+            try
+            {
+                string json = Client.stub.AddSellOrder(username, amount, price);
+                success = JsonConvert.DeserializeObject<int>(json);
+                if (success != 1)
+                {
+                    throw new Exception("Failed to add");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         #endregion add

@@ -30,25 +30,23 @@ namespace Client
 
             orders_grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             orders_grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            orders_grid.AllowUserToAddRows = false;
             orders_grid.RowHeadersVisible = false;
             orders_grid.ReadOnly = true;
-            orders_grid.Columns["ID"].Visible = false;
+            //orders_grid.Columns["ID"].Visible = false;
 
             updater = new Thread(Poll_Info);
             updater.IsBackground = true;
             updater.Start();
             
 
-            this.FormClosing += Menu_FormClosing;
+            this.FormClosing += CloseActions;
         }
         private void Poll_Info()
         {
             while (true)
             {
-                UpdateBalance(true);
-                UpdateDiginotes(true);
-                UpdateBuyOrders(true);
-                UpdateSellOrders(true);
+                UpdateInformation(true);
                 System.Threading.Thread.Sleep(Consts.POLLINGRATE);
             }
         }
@@ -77,6 +75,14 @@ namespace Client
         private void label4_Click(object sender, EventArgs e)
         {
 
+        }
+        public void UpdateInformation(bool request = false)
+        {
+            //ClearOrdersGrid();
+            UpdateBalance(request);
+            UpdateDiginotes(request);
+            UpdateBuyOrders(request);
+            UpdateSellOrders(request);
         }
         public void UpdateBalance(bool request = false)
         {
@@ -125,15 +131,44 @@ namespace Client
             
             foreach (dynamic buy_order in Client.buy_orders)
             {
-                orders_grid.Invoke(new Action(()=>orders_grid.Rows.Add(new string[]
+                bool inGrid = false;
+                int id = buy_order.id;
+                foreach (DataGridViewRow row in orders_grid.Rows)
                 {
-                    buy_order.id,
-                    "Buy",
-                    buy_order.amount,
-                    buy_order.price,
-                    buy_order.date
-                })));
-            }          
+                    if (row.Cells[1].Value.ToString().Equals("Buy") && row.Cells[0].Value.ToString().Equals(id + ""))
+                    {
+                        inGrid = true;
+                    }
+                }
+                if(inGrid == false)
+                    orders_grid.Invoke(new Action(()=>orders_grid.Rows.Add(new string[]
+                    {
+                        buy_order.id,
+                        "Buy",
+                        buy_order.amount,
+                        buy_order.price,
+                        buy_order.date
+                    })));
+
+            }
+            foreach (DataGridViewRow row in orders_grid.Rows)
+            {
+                if (!row.Cells[1].Equals("Buy"))
+                    continue;
+                bool deleted = true;
+                foreach (dynamic buy_order in Client.buy_orders)
+                {
+                    int id = buy_order.id;
+                    if ((id + "").Equals(row.Cells[0]))
+                    {
+                        deleted = false;
+                    }
+                }
+                if(deleted == true)
+                {
+                    orders_grid.Invoke(new Action(() => orders_grid.Rows.Remove(row)));
+                }
+            }
         }
         private void UpdateSellOrders(bool request = false)
         {
@@ -147,24 +182,56 @@ namespace Client
                 {
 
                 }
-            }              
-
+            }
             foreach (dynamic sell_order in Client.sell_orders)
             {
-                orders_grid.Invoke(new Action(() => orders_grid.Rows.Add(new string[]
+                bool inGrid = false;
+                int id = sell_order.id;
+                foreach (DataGridViewRow row in orders_grid.Rows)
                 {
-                    sell_order.id,
-                    "Sell",
-                    sell_order.amount,
-                    sell_order.price,
-                    sell_order.date
-                })));
+                    if (row.Cells[1].Value.ToString().Equals("Sell") && row.Cells[0].Value.ToString().Equals(id + ""))
+                    {
+                        inGrid = true;
+                    }
+                }
+                if(inGrid == false)
+                    orders_grid.Invoke(new Action(() => orders_grid.Rows.Add(new string[]
+                    {
+                        sell_order.id,
+                        "Sell",
+                        sell_order.amount,
+                        sell_order.price,
+                        sell_order.date
+                    })));
             }
+            foreach (DataGridViewRow row in orders_grid.Rows)
+            {
+                if (!row.Cells[1].Equals("Sell"))
+                    continue;
+                bool deleted = true;
+                foreach (dynamic sell_order in Client.sell_orders)
+                {
+                    int id = sell_order.id;
+                    if ((id + "").Equals(row.Cells[0]))
+                    {
+                        deleted = false;
+                    }
+                }
+                if (deleted == true)
+                {
+                    orders_grid.Invoke(new Action(() => orders_grid.Rows.Remove(row)));
+                }
+            }
+        }
+        private void ClearOrdersGrid()
+        {
+            orders_grid.Invoke(new Action(() => orders_grid.Rows.Clear()));
         }
 
         private void edit_button_Click(object sender, EventArgs e)
         {
-
+            Edit ed = new Edit();
+            ed.ShowDialog();
         }
 
         private void remove_button_Click(object sender, EventArgs e)
@@ -191,10 +258,11 @@ namespace Client
 
         private void funds_button_Click(object sender, EventArgs e)
         {
-            new Funds().Visible = true;
+            Funds f = new Funds();
+            f.ShowDialog();
         }
 
-        private void Menu_FormClosing(object sender,EventArgs e)
+        private void CloseActions(object sender,EventArgs e)
         {
             logout_button_Click(sender, e);
             updater.Abort();

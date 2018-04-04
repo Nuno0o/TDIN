@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Client
 {
-    public partial class Add : Form
+    public partial class Edit : Form
     {
-        public Add()
+        public Edit()
         {
             InitializeComponent();
         }
@@ -21,22 +21,14 @@ namespace Client
         {
             int amount = int.Parse(this.textBox2.Text);
             double price = double.Parse(this.textBox1.Text);
-            try
-            {
-                if (this.radioButton1.Checked)
-                {
-                    Operations.AddBuyOrder(Client.username, amount, price);
-                }
-                if (this.radioButton2.Checked)
-                {
-                    Operations.AddSellOrder(Client.username, amount, price);
-                }
-            }catch(Exception ex)
-            {
-
-            }
+            
             
             this.Close();
+        }
+
+        private void Edit_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
