@@ -70,10 +70,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Funds.cs">
+    <Compile Include="src\Consts.cs" />
+    <Compile Include="src\Funds.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Funds.Designer.cs">
+    <Compile Include="src\Funds.Designer.cs">
       <DependentUpon>Funds.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Add.cs">
@@ -98,7 +99,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Operations.cs" />
     <Compile Include="src\RemObj.cs" />
-    <EmbeddedResource Include="Funds.resx">
+    <EmbeddedResource Include="src\Funds.resx">
       <DependentUpon>Funds.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="src\Add.resx">

@@ -49,7 +49,7 @@ namespace Client
                 UpdateDiginotes(true);
                 UpdateBuyOrders(true);
                 UpdateSellOrders(true);
-                System.Threading.Thread.Sleep(2000);
+                System.Threading.Thread.Sleep(Consts.POLLINGRATE);
             }
         }
 
@@ -82,8 +82,13 @@ namespace Client
         {
             if (request)
             {
-                string json = Client.stub.GetBalance(Client.username);
-                Client.balance = JsonConvert.DeserializeObject<dynamic>(json).balance;
+                try
+                {
+                    Client.balance = Operations.GetBalance(Client.username);
+                }catch(Exception ex)
+                {
+
+                }
             }    
                     
             balance_display.Invoke(new Action(()=>balance_display.Text = Client.balance.ToString()));          
@@ -92,8 +97,14 @@ namespace Client
         {
             if (request)
             {
-                string json = Client.stub.GetDiginotes(Client.username);
-                Client.diginotes = JsonConvert.DeserializeObject<dynamic>(json).diginotes;
+                try
+                {
+                    Client.diginotes = Operations.GetDiginotes(Client.username);
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
                 
             diginotes_display.Invoke(new Action(() => diginotes_display.Text = Client.diginotes.ToString()));           
@@ -102,8 +113,14 @@ namespace Client
         {
             if (request)
             {
-                string json = Client.stub.GetBuyOrders(Client.username);
-                Client.buy_orders = JsonConvert.DeserializeObject<List<Object>>(json);
+                try
+                {
+                    Client.buy_orders = Operations.GetBuyOrders(Client.username);
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
             
             foreach (dynamic buy_order in Client.buy_orders)
@@ -122,8 +139,14 @@ namespace Client
         {
             if (request)
             {
-                string json = Client.stub.GetSellOrders(Client.username);
-                Client.sell_orders = JsonConvert.DeserializeObject<List<Object>>(json);
+                try
+                {
+                    Client.sell_orders = Operations.GetSellOrders(Client.username);
+                }
+                catch (Exception ex)
+                {
+
+                }
             }              
 
             foreach (dynamic sell_order in Client.sell_orders)
