@@ -45,15 +45,23 @@ namespace Server
         }
         public String GetBuyOrder(int id)
         {
+            /* Still haven't needed this ...*/
             return null;
         }
         public String GetSellOrder(int id)
         {
+            /* Still haven't needed this ...*/
             return null;
         }
         public string AddBuyOrder(string username, int amount, double price)
         {   
             Console.WriteLine("ADD_BUY_ORDER "+ username + " " + amount + " "+ price);
+
+            // TODO Check the queues to fullfill buy order
+
+            // TODO Add the buy order to queue if it can't be fullfilled
+
+            /* Order is added to the database because it isn't fullfilled */
             if (amount <= 0 || price <= 0.0) return JsonConvert.SerializeObject(null);
             dynamic user = Database.GetUser(username);
             if (user == null) return JsonConvert.SerializeObject(user);
@@ -67,6 +75,12 @@ namespace Server
         }
         public string AddSellOrder(string username, int amount, double price)
         {
+            Console.WriteLine("ADD_SELL_ORDER " + username + " " + amount + " " + price);
+            // TODO Check the queues to fullfill sell order
+
+            // TODO Add the sell order to queue if it can't be fullfilled
+
+            /* Order is added to the database because it isn't fullfilled */
             Console.WriteLine("ADD_SELL_ORDER " + username + " " + amount + " " + price);
             if (amount <= 0 || price <= 0.0) return JsonConvert.SerializeObject(null);
             dynamic user = Database.GetUser(username);
@@ -82,12 +96,18 @@ namespace Server
         public String RemoveBuyOrder(int id)
         {
             Console.WriteLine("REMOVE_BUY_ORDER " + " " + id);
+
+            // TODO Remove the buy order from the queue
+
             dynamic res = Database.RemoveBuyOrder(id);
             return JsonConvert.SerializeObject(res);
         }
         public String RemoveSellOrder(int id)
         {
             Console.WriteLine("REMOVE_SELL_ORDER " + " " + id);
+
+            // TODO Remove the sell order from the queue
+
             dynamic res = Database.RemoveSellOrder(id);
             return JsonConvert.SerializeObject(res);
         }
@@ -117,6 +137,9 @@ namespace Server
         public string EditBuyOrder(int id, int amount, double price)
         {
             Console.WriteLine("EDIT_BUY_ORDER " + id + " " + amount + " " + price);
+
+            // TODO Edit the sell order on the queue
+
             if (amount <= 0 || price <= 0.0) return JsonConvert.SerializeObject(null);
             dynamic order = Database.GetBuyOrder(id);
             if (order == null) return JsonConvert.SerializeObject(null);
@@ -134,6 +157,9 @@ namespace Server
         public string EditSellOrder(int id, int amount, double price)
         {
             Console.WriteLine("EDIT_SELL_ORDER " + id + " " + amount + " " + price);
+
+            // TODO Edit the sell order on the queue
+
             if (amount <= 0 || price <= 0.0) return JsonConvert.SerializeObject(null);
             dynamic order = Database.GetSellOrder(id);
             if (order == null) return JsonConvert.SerializeObject(null);

@@ -7,11 +7,16 @@ using System.Security.Cryptography;
 
 namespace Server {
 
+  
+    // TODO Declare static buy/sell order priority queue
     class Server
     {
         static void Main(string[] args)
         {
             Database.Init();
+
+            // TODO Initialize buy/sell queues
+            // TODO Fill them with orders from the database
 
             TcpChannel chan = new TcpChannel(9000);
             ChannelServices.RegisterChannel(chan, false);
