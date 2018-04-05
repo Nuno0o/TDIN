@@ -29,27 +29,35 @@ namespace Server
         {
             return null;
         }
-        public Object GetBuyOrder(int id)
+        public string GetBuyOrder(int id)
         {
             return null;
         }
-        public Object GetSellOrder(int id)
+        public string GetSellOrder(int id)
         {
             return null;
         }
-        public Object AddBuyOrder(int amount, double price)
+        public string AddBuyOrder(string username, int amount, double price)
         {
             return null;
         }
-        public Object AddSellOrder(int amount, double price)
+        public string AddSellOrder(string username, int amount, double price)
         {
             return null;
         }
-        public Object RemoveBuyOrder(int id)
+        public string RemoveBuyOrder(int id)
         {
             return null;
         }
-        public Object RemoveSellOrder(int id)
+        public string RemoveSellOrder(int id)
+        {
+            return null;
+        }
+        public string EditBuyOrder(int id, int amount, double price)
+        {
+            return null;
+        }
+        public string EditSellOrder(int id, int amount, double price)
         {
             return null;
         }

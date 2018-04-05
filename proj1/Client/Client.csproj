@@ -70,10 +70,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Funds.cs">
+    <Compile Include="src\Edit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Funds.Designer.cs">
+    <Compile Include="src\Edit.designer.cs">
+      <DependentUpon>Edit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\Funds.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\Funds.Designer.cs">
       <DependentUpon>Funds.cs</DependentUpon>
     </Compile>
     <Compile Include="src\Add.cs">
@@ -97,8 +103,11 @@
     <Compile Include="src\Client.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\Operations.cs" />
-    <Compile Include="src\RemObj.cs" />
-    <EmbeddedResource Include="Funds.resx">
+    <Compile Include="src\ServerMethods.cs" />
+    <EmbeddedResource Include="src\Edit.resx">
+      <DependentUpon>Edit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\Funds.resx">
       <DependentUpon>Funds.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="src\Add.resx">

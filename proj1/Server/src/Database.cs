@@ -55,29 +55,30 @@ namespace Server {
                 }
             }            
         }        
-        public static int AddUser(string username, string password, double balance = 0.0)
+        public static dynamic AddUser(string username, string password, double balance = 0.0)
         {
             com.CommandText = "insert into User values (@user, @pass, @balance)";
             com.Parameters.Add(new SQLiteParameter("@user", username));
             com.Parameters.Add(new SQLiteParameter("@pass", password));
             com.Parameters.Add(new SQLiteParameter("@balance", balance.ToString()));
 
-            int rows = -1;
+            dynamic res = new { rows = -1 };
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                res.rows = com.ExecuteNonQuery();
                 trans.Commit();
             }
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                res = null;
                 Console.WriteLine(e.StackTrace);
             }
 
-            return rows;
+            return res;
         }
-        public static Object GetBalance(string username)
+        public static dynamic GetBalance(string username)
         {
 
             com.CommandText =
@@ -85,24 +86,16 @@ namespace Server {
                 where username = @username";
             com.Parameters.Add(new SQLiteParameter("@username", username));
 
+            dynamic res;          
             try
             {
                 reader = com.ExecuteReader();
-            }
-            catch (SQLiteException e)
-            {
-                Console.WriteLine(e.StackTrace);
-            }
-
-            Object balance;
-            try
-            {
                 reader.Read();
-                balance = new { balance = reader["balance"] };
+                res = new { balance = reader["balance"] };
             }
             catch (InvalidOperationException e)
             {
-                balance = null;
+                res = null;
                 Console.WriteLine(e.StackTrace);
             }
             finally
@@ -110,9 +103,9 @@ namespace Server {
                 reader.Close();
             }
 
-            return balance;
+            return res;
         }
-        public static object SetBalance(string username, double balance = 0.0)
+        public static dynamic SetBalance(string username, double balance = 0.0)
         {
                          
             com.CommandText =
@@ -121,22 +114,23 @@ namespace Server {
             com.Parameters.Add(new SQLiteParameter("@username", username));
             com.Parameters.Add(new SQLiteParameter("@balance", balance.ToString()));
 
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                res = null;
                 Console.WriteLine(e.StackTrace);
-                return null;
             }
 
-            return 1;
+            return res;
         }
-        public static Object GetUser(string username)
+        public static dynamic GetUser(string username)
         {
             
             com.CommandText = "SELECT * FROM User WHERE username = @user";
@@ -151,7 +145,7 @@ namespace Server {
                 Console.WriteLine(e.StackTrace);
             }
 
-            Object user;
+            dynamic user;
             try
             {
                 reader.Read();
@@ -175,29 +169,21 @@ namespace Server {
 
             return user;
         }
-        public static Object GetDiginotes(string username)
+        public static dynamic GetDiginotes(string username)
         {
             com.CommandText = "SELECT count(*) as diginotes FROM Diginote WHERE owner = @user";
             com.Parameters.Add(new SQLiteParameter("@user", username));
 
+            dynamic res;
             try
             {
                 reader = com.ExecuteReader();
-            }
-            catch (SQLiteException e)
-            {
-                Console.WriteLine(e.StackTrace);
-            }
-
-            Object obj;
-            try
-            {
                 reader.Read();
-                obj = new { diginotes = reader["diginotes"] };
+                res = new { diginotes = reader["diginotes"] };
             }
             catch (InvalidOperationException e)
             {
-                obj = null;
+                res = null;
                 Console.WriteLine(e.StackTrace);
             }
             finally
@@ -205,9 +191,9 @@ namespace Server {
                 reader.Close();
             }
 
-            return obj;
+            return res;
         }
-        public static int AddDiginotes(string username, int amount = 1)
+        public static dynamic AddDiginotes(string username, int amount = 1)
         { 
             com.CommandText = "";
             for (int i = 0; i < amount; i++)
@@ -216,20 +202,21 @@ namespace Server {
             }
             com.Parameters.Add(new SQLiteParameter("@user", username));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                res = null;
                 Console.WriteLine(e.StackTrace);
             }
 
-            return rows;
+            return res;
         }
         public static int RemoveDiginotes(string user, int amount = 1)
         {    
@@ -279,7 +266,7 @@ namespace Server {
 
             return rows;
         }
-        public static int AddBuyOrder(string user, int amount = 1, double price = 1.0)
+        public static dynamic AddBuyOrder(string user, int amount = 1, double price = 1.0)
         {
             com.CommandText =
                 @"insert into BuyOrder(id,user,amount,price,date)
@@ -289,22 +276,23 @@ namespace Server {
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
             com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                res = null;
                 Console.WriteLine(e.StackTrace);
             }
 
-            return rows;
+            return res;
         }
-        public static int AddSellOrder(string user, int amount = 1, double price = 1.0)
+        public static dynamic AddSellOrder(string user, int amount = 1, double price = 1.0)
         {
             com.CommandText =
                 @"insert into SellOrder(id,user,amount,price,date)
@@ -314,122 +302,188 @@ namespace Server {
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
             com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                res = null;
                 Console.WriteLine(e.StackTrace);
             }
 
-            return rows;
+            return res;
         }
-        public static int RemoveBuyOrder(int id)
+        public static dynamic RemoveBuyOrder(int id)
         {
             com.CommandText = @"delete from BuyOrder where id = @id";
             com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
 
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                res = null;
                 Console.WriteLine(e.StackTrace);
             }
 
-            return rows;
+            return res;
         }
-        public static int RemoveSellOrder(int id)
+        public static dynamic RemoveSellOrder(int id)
         {
             com.CommandText = @"delete from SellOrder where id = @id";
             com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                res = null;
                 Console.WriteLine(e.StackTrace);
             }
 
-            return rows;
+            return res;
         }
-        public static List<Object> GetBuyOrders(String user)
+        public static List<dynamic> GetBuyOrders(String user)
         {
-            List<Object> orders = new List<Object>();
+            List<dynamic> orders = new List<dynamic>();
             com.CommandText = @"select * from BuyOrder where user = @user";
             com.Parameters.Add(new SQLiteParameter("@user", user));
 
             try
             {
                 reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    orders.Add(new
+                    {
+                        user = reader["user"],
+                        amount = reader["amount"],
+                        price = reader["price"],
+                        date = reader["date"],
+                        id = reader["id"],
+                    });
+                }
+                reader.Close();
             }
             catch (SQLiteException e)
             {
                 Console.WriteLine(e.StackTrace);
-            }
-
-            while (reader.Read())
-            {
-                orders.Add(new {
-                    user = reader["user"],
-                    amount = reader["amount"],
-                    price = reader["price"],
-                    date = reader["date"],
-                    id = reader["id"],
-                });
-            }
-            reader.Close();
+                orders = null;
+            }            
 
             return orders;
         }
-        public static List<Object> GetSellOrders(String user)
+        public static List<dynamic> GetSellOrders(String user)
         {
-            List<Object> orders = new List<Object>();
+            List<dynamic> orders = new List<dynamic>();
             com.CommandText = @"select * from SellOrder where user = @user";
             com.Parameters.Add(new SQLiteParameter("@user", user));
 
             try
             {
                 reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    orders.Add(new
+                    {
+                        user = reader["user"],
+                        amount = reader["amount"],
+                        price = reader["price"],
+                        date = reader["date"],
+                        id = reader["id"],
+                    });
+                }
+                reader.Close();
             }
             catch (SQLiteException e)
             {
                 Console.WriteLine(e.StackTrace);
-            }
-
-            while (reader.Read())
-            {
-                orders.Add(new
-                {
-                    user = reader["user"],
-                    amount = reader["amount"],
-                    price = reader["price"],
-                    date = reader["date"],
-                    id = reader["id"],
-                });
-            }
-            reader.Close();
+                orders = null;
+            }            
 
             return orders;
-        }       
-        public static int EditBuyOrder(int id, int amount, double price)
+        }
+        public static dynamic GetBuyOrder(int id)
+        {
+            com.CommandText =
+                @"select * from BuyOrder                
+                where id = @id";
+            com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
+            dynamic res;
+            try
+            {
+                reader = com.ExecuteReader();
+                reader.Read();
+                res = new {
+                    id = reader["id"],
+                    amount = reader["amount"],
+                    price = reader["price"],
+                    user = reader["user"]
+                };
+            }
+            catch (SQLiteException e)
+            {
+                res = null;
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                reader.Close();
+            }
+
+            return res;
+
+        }
+        public static dynamic GetSellOrder(int id)
+        {
+            com.CommandText =
+                @"select * from SellOrder                
+                where id = @id";
+            com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
+            dynamic res;
+            try
+            {
+                reader = com.ExecuteReader();
+                reader.Read();
+                res = new
+                {
+                    id = reader["id"],
+                    amount = reader["amount"],
+                    price = reader["price"],
+                    user = reader["user"]
+                };
+            }
+            catch (SQLiteException e)
+            {
+                res = null;
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                reader.Close();
+            }
+
+            return res;
+        }
+        public static dynamic EditBuyOrder(int id, int amount, double price)
         {           
             com.CommandText =
                 @"update BuyOrder
@@ -440,22 +494,23 @@ namespace Server {
             com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
             com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                res = null;
                 Console.WriteLine(e.StackTrace);
             }
 
-            return rows;
+            return res;
         }
-        public static int EditSellOrder(int id, int amount, double price)
+        public static dynamic EditSellOrder(int id, int amount, double price)
         {
             com.CommandText =
                 @"update SellOrder
@@ -466,20 +521,21 @@ namespace Server {
             com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
             com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
             catch (SQLiteException e)
             {
                 trans.Rollback();
+                res = null;
                 Console.WriteLine(e.StackTrace);
             }
 
-            return rows;
+            return res;
         }       
     }
 }

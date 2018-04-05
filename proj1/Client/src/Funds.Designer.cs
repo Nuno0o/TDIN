@@ -88,14 +88,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(160, 87);
+            this.ClientSize = new System.Drawing.Size(162, 88);
             this.Controls.Add(this.funds_button);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.amount_input);
             this.Controls.Add(this.withdraw_radio);
             this.Controls.Add(this.deposit_radio);
             this.Name = "Funds";
-            this.Text = "Funds";
+            this.Text = "Transfer Funds";
             this.ResumeLayout(false);
             this.PerformLayout();
 

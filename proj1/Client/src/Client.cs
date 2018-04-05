@@ -3,6 +3,7 @@ using System;
 using System.Windows.Forms;
 using System.Runtime.Remoting;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Client
 {
@@ -11,6 +12,8 @@ namespace Client
         public static RemObj stub;
         public static Login login;
         public static Menu menu;
+
+        public static Mutex mut;
 
         public static double balance;
         public static int diginotes;
@@ -25,11 +28,12 @@ namespace Client
             stub = (RemObj)RemotingServices.Connect(
                 typeof(RemObj),
                 "tcp://localhost:9000/Server/RemObj"
-            );            
+            );
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            mut = new Mutex();
             login = new Login();
             Application.Run(login);
             

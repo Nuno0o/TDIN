@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
+using System;
 using System.Windows.Forms;
 
 namespace Client
@@ -17,10 +11,31 @@ namespace Client
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void confirm_button_Click(object sender, EventArgs e)
         {
-            //logic
-            this.Close();
-        }
+            double price = Convert.ToDouble(price_input.Text);
+            if (price <= 0.0) return;
+
+            int amount = Convert.ToInt32(diginotes_input.Text);
+            if (amount <= 0) return;
+
+            double balance = Client.balance;
+            int diginotes = Client.diginotes;
+
+            string json = null;
+
+            if (buy_radio.Checked && price <= balance)
+                json = Client.stub.AddBuyOrder(Client.username,amount,price);
+            else if (sell_radio.Checked && amount <= diginotes)
+                json = Client.stub.AddSellOrder(Client.username,amount,price);
+            else return;
+
+            dynamic obj = JsonConvert.DeserializeObject(json);
+            if (obj == null) return;
+
+            Visible = false;           
+
+            Close();
+        }       
     }
 }

@@ -20,8 +20,9 @@ namespace Client
 
         private void login_button_Click(object sender, EventArgs e)
         {
-            string username = username_input.Text;
+            string username = username_input.Text;           
             string password = password_input.Text;
+
             try
             {
                 Operations.login(username, password);

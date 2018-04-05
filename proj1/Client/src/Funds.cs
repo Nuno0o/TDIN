@@ -32,14 +32,12 @@ namespace Client
                 json = Client.stub.WithdrawBalance(Client.username, amount);
             else return;
 
-            Visible = false;
-
             dynamic obj = JsonConvert.DeserializeObject(json);
             if (obj == null) return;
 
-            balance = obj.balance;            
-            Client.balance = balance;
-            //Client.menu.UpdateBalance();                       
+            Visible = false;            
+
+            Close();                     
         }
     }
 }
