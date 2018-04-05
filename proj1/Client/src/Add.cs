@@ -25,9 +25,9 @@ namespace Client
             string json = null;
 
             if (buy_radio.Checked && price <= balance)
-                json = Client.stub.AddBuyOrder(Client.username,amount,price);
+                json = Client.stubs.AddBuyOrder(Client.username,amount,price);
             else if (sell_radio.Checked && amount <= diginotes)
-                json = Client.stub.AddSellOrder(Client.username,amount,price);
+                json = Client.stubs.AddSellOrder(Client.username,amount,price);
             else return;
 
             dynamic obj = JsonConvert.DeserializeObject(json);

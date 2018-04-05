@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace Server
 {
-    class RemObj : MarshalByRefObject
+    class Services : MarshalByRefObject
     {        
-        public string Login(string username, string password)
+        public string Login(string username, string hash)
         {
             return null;
         }
-        public string Register(string username, string password)
+        public string Register(string username, string hash, string salt)
         {
             return null;
         }
@@ -66,6 +66,10 @@ namespace Server
             return null;
         }
         public string WithdrawBalance(string username, double amount)
+        {
+            return null;
+        }
+        public string GetSalt(string username)
         {
             return null;
         }

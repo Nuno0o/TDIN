@@ -37,9 +37,9 @@ namespace Client
             string json = null;
 
             if (type == "Buy" && price <= balance + this.price)
-                json = Client.stub.EditBuyOrder(id,amount,price);
+                json = Client.stubs.EditBuyOrder(id,amount,price);
             else if (type == "Sell" && amount <= diginotes + this.amount)
-                json = Client.stub.EditSellOrder(id,amount,price);
+                json = Client.stubs.EditSellOrder(id,amount,price);
             else return;
 
             dynamic obj = JsonConvert.DeserializeObject(json);

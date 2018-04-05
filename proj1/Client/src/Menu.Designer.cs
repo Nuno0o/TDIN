@@ -49,7 +49,6 @@
             this.diginotes_label.Size = new System.Drawing.Size(51, 13);
             this.diginotes_label.TabIndex = 0;
             this.diginotes_label.Text = "Diginotes";
-            this.diginotes_label.Click += new System.EventHandler(this.label1_Click);
             // 
             // balance_label
             // 
@@ -59,7 +58,6 @@
             this.balance_label.Size = new System.Drawing.Size(46, 13);
             this.balance_label.TabIndex = 1;
             this.balance_label.Text = "Balance";
-            this.balance_label.Click += new System.EventHandler(this.label2_Click);
             // 
             // orders_grid
             // 

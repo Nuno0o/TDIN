@@ -2,6 +2,8 @@
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Remoting.Channels;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace Server {
 
@@ -15,14 +17,14 @@ namespace Server {
             ChannelServices.RegisterChannel(chan, false);
             RemotingConfiguration.ApplicationName = "Server";
             RemotingConfiguration.RegisterWellKnownServiceType(
-                typeof(RemObj),
-                "RemObj",
+                typeof(Services),
+                "Services",
                 WellKnownObjectMode.Singleton
             );            
 
             Console.WriteLine("Press ENTER to exit ...");
             Console.ReadLine();
            
-        }
+        }       
     }
 }

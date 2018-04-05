@@ -55,18 +55,19 @@ namespace Server {
                 }
             }            
         }        
-        public static dynamic AddUser(string username, string password, double balance = 0.0)
+        public static dynamic AddUser(string username, string hash, string salt, double balance = 0.0)
         {
-            com.CommandText = "insert into User values (@user, @pass, @balance)";
+            com.CommandText = "insert into User values (@user, @hash, @salt, @balance)";
             com.Parameters.Add(new SQLiteParameter("@user", username));
-            com.Parameters.Add(new SQLiteParameter("@pass", password));
+            com.Parameters.Add(new SQLiteParameter("@hash", hash));
+            com.Parameters.Add(new SQLiteParameter("@salt", salt));
             com.Parameters.Add(new SQLiteParameter("@balance", balance.ToString()));
 
-            dynamic res = new { rows = -1 };
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                res.rows = com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
             catch (SQLiteException e)
@@ -152,8 +153,9 @@ namespace Server {
                 user = new
                 {
                     username = reader["username"],
-                    password = reader["password"],
-                    balance = reader["balance"]
+                    hash = reader["hash"],
+                    balance = reader["balance"],
+                    salt = reader["salt"]
                 };
             }
             catch(InvalidOperationException e)
@@ -165,7 +167,6 @@ namespace Server {
             {
                 reader.Close();
             }
-
 
             return user;
         }

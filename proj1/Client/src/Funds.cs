@@ -27,9 +27,9 @@ namespace Client
             string json = null;
 
             if (deposit_radio.Checked)
-                json = Client.stub.DepositBalance(Client.username,amount);
+                json = Client.stubs.DepositBalance(Client.username,amount);
             else if (withdraw_radio.Checked && amount <= balance)
-                json = Client.stub.WithdrawBalance(Client.username, amount);
+                json = Client.stubs.WithdrawBalance(Client.username, amount);
             else return;
 
             dynamic obj = JsonConvert.DeserializeObject(json);

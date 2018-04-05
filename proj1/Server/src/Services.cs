@@ -4,19 +4,19 @@ using System.Collections.Generic;
 
 namespace Server
 {
-    class RemObj : MarshalByRefObject
+    class Services : MarshalByRefObject
     {        
-        public string Login(string username, string password)
+        public string Login(string username, string hash)
         {
-            Console.WriteLine("LOGIN "+username+" "+password);
+            Console.WriteLine("LOGIN "+username+" "+ hash);
             dynamic obj = Database.GetUser(username);
-            if (obj == null) return JsonConvert.SerializeObject(null);
-            return JsonConvert.SerializeObject(obj.password == password);
+            if (obj == null) return JsonConvert.SerializeObject(null);            
+            return JsonConvert.SerializeObject(obj.hash == hash);
         }
-        public string Register(string username, string password)
+        public string Register(string username, string hash, string salt)
         {
-            Console.WriteLine("REGISTER " + username + " " + password);
-            dynamic obj = Database.AddUser(username, password);
+            Console.WriteLine("REGISTER " + username + " " + hash + " " + salt);
+            dynamic obj = Database.AddUser(username, hash, salt);
             return JsonConvert.SerializeObject(obj != null);
         }
         public string GetBalance(string username)
@@ -98,9 +98,9 @@ namespace Server
             dynamic obj = Database.GetUser(username);
             if(obj == null) return JsonConvert.SerializeObject(null);
             double balance = obj.balance + amount;
-            obj = Database.SetBalance(username,balance);
+            obj = Database.SetBalance(username, balance);
             if (obj == null) return JsonConvert.SerializeObject(null);
-            return JsonConvert.SerializeObject(new { balance = obj.balance });
+            return JsonConvert.SerializeObject(new { balance = balance });
         }
         public string WithdrawBalance(string username, double amount)
         {
@@ -112,7 +112,7 @@ namespace Server
             double balance = obj.balance - amount;
             obj = Database.SetBalance(username, balance);
             if (obj == null) return JsonConvert.SerializeObject(null);
-            return JsonConvert.SerializeObject(new {balance = obj.balance});
+            return JsonConvert.SerializeObject(new {balance = balance});
         }
         public string EditBuyOrder(int id, int amount, double price)
         {
@@ -149,5 +149,12 @@ namespace Server
             if (res == null) return JsonConvert.SerializeObject(null);
             return JsonConvert.SerializeObject(new { diginotes = diginotes });
         }
+        public string GetSalt(string username)
+        {
+            Console.WriteLine("GET_SALT " + username);
+            dynamic user = Database.GetUser(username);
+            if (user == null) return JsonConvert.SerializeObject(null);
+            return JsonConvert.SerializeObject(new { salt = user.salt });
+        }       
     }
 }

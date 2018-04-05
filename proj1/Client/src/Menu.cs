@@ -1,13 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Client
@@ -19,8 +13,6 @@ namespace Client
         {
             InitializeComponent();
 
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-
             orders_grid.ColumnCount = 5;
             orders_grid.Columns[0].Name = "ID";
             orders_grid.Columns[1].Name = "Type";
@@ -29,11 +21,11 @@ namespace Client
             orders_grid.Columns[4].Name = "Date";           
 
             orders_grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            orders_grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             orders_grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
             orders_grid.RowHeadersVisible = false;
             orders_grid.ReadOnly = true;
             orders_grid.Columns["ID"].Visible = false;
-            orders_grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             orders_grid.MultiSelect = false;
 
             updater = new Thread(Poll_Info);
@@ -41,7 +33,7 @@ namespace Client
             updater.Start();
             
 
-            this.FormClosing += Menu_FormClosing;
+            FormClosing += Menu_FormClosing;
         }
         private void Poll_Info()
         {
@@ -49,13 +41,13 @@ namespace Client
             {
                 /* get updated information */
                 string json = null;
-                json = Client.stub.GetBalance(Client.username);
+                json = Client.stubs.GetBalance(Client.username);
                 double balance = JsonConvert.DeserializeObject<dynamic>(json).balance;
-                json = Client.stub.GetDiginotes(Client.username);
+                json = Client.stubs.GetDiginotes(Client.username);
                 int diginotes = JsonConvert.DeserializeObject<dynamic>(json).diginotes;
-                json = Client.stub.GetBuyOrders(Client.username);
+                json = Client.stubs.GetBuyOrders(Client.username);
                 List<dynamic> buy_orders = JsonConvert.DeserializeObject<List<dynamic>>(json);
-                json = Client.stub.GetSellOrders(Client.username);
+                json = Client.stubs.GetSellOrders(Client.username);
                 List<dynamic> sell_orders = JsonConvert.DeserializeObject<List<dynamic>>(json);
 
                 /* subtract buy orders' price from balance */
@@ -112,96 +104,10 @@ namespace Client
                         }
                 }));
                
-                /* wait 5 seconds */
-                System.Threading.Thread.Sleep(2000);
+                /* wait 2 seconds */
+                Thread.Sleep(2000);
             }
-        }
-
-        private void Menu_Load(object sender, EventArgs e)
-        {
-            
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-        public void UpdateBalance(bool request = false)
-        {
-            if (request)
-            {
-                string json = Client.stub.GetBalance(Client.username);
-                Client.balance = JsonConvert.DeserializeObject<dynamic>(json).balance;
-            }    
-                    
-            balance_display.Invoke(new Action(()=>balance_display.Text = Client.balance.ToString()));          
-        }
-        private void UpdateDiginotes(bool request = false)
-        {
-            if (request)
-            {
-                string json = Client.stub.GetDiginotes(Client.username);
-                Client.diginotes = JsonConvert.DeserializeObject<dynamic>(json).diginotes;
-            }
-                
-            diginotes_display.Invoke(new Action(() => diginotes_display.Text = Client.diginotes.ToString()));           
-        }
-        private void UpdateBuyOrders(bool request = false)
-        {
-            if (request)
-            {
-                string json = Client.stub.GetBuyOrders(Client.username);
-                Client.buy_orders = JsonConvert.DeserializeObject<List<Object>>(json);
-            }
-            
-            foreach (dynamic buy_order in Client.buy_orders)
-            {
-                orders_grid.Invoke(new Action(()=>orders_grid.Rows.Add(new string[]
-                {
-                    buy_order.id,
-                    "Buy",
-                    buy_order.amount,
-                    buy_order.price,
-                    buy_order.date
-                })));
-            }          
-        }
-        private void UpdateSellOrders(bool request = false)
-        {
-            if (request)
-            {
-                string json = Client.stub.GetSellOrders(Client.username);
-                Client.sell_orders = JsonConvert.DeserializeObject<List<Object>>(json);
-            }              
-
-            foreach (dynamic sell_order in Client.sell_orders)
-            {
-                orders_grid.Invoke(new Action(() => orders_grid.Rows.Add(new string[]
-                {
-                    sell_order.id,
-                    "Sell",
-                    sell_order.amount,
-                    sell_order.price,
-                    sell_order.date
-                })));
-            }
-        }
+        }      
 
         private void edit_button_Click(object sender, EventArgs e)
         {
@@ -226,20 +132,18 @@ namespace Client
             string json = null;
             if ((string)row.Cells[1].Value == "Buy")
             {
-                json = Client.stub.RemoveBuyOrder(id);
+                json = Client.stubs.RemoveBuyOrder(id);
                 if (JsonConvert.DeserializeObject(json) == null) return;
                 object order = Client.buy_orders.Find(x => ((dynamic)x).id == id);
                 Client.buy_orders.Remove(order);
             }
             else if ((string)row.Cells[1].Value == "Sell")
             {
-                json = Client.stub.RemoveSellOrder(id);
+                json = Client.stubs.RemoveSellOrder(id);
                 if (JsonConvert.DeserializeObject(json) == null) return;
                 object order = Client.sell_orders.Find(x => ((dynamic)x).id == id);
                 Client.sell_orders.Remove(order);
             }
-            //Invoke(new Action(() => orders_grid.Rows.Remove(row)));
-
         }
 
         private void add_button_Click(object sender, EventArgs e)
@@ -249,14 +153,13 @@ namespace Client
 
         private void logout_button_Click(object sender, EventArgs e)
         {
-            updater.Abort();
-            Client.login.Visible = true;
-            Client.menu.Visible = false;
-            Client.menu = null;           
+            updater.Abort();                     
             Client.buy_orders = null;
             Client.sell_orders = null;
             Client.balance = -1.0;
             Client.diginotes = -1;
+            Visible = false;
+            Client.login.Visible = true;
         }
 
         private void funds_button_Click(object sender, EventArgs e)

@@ -1,7 +1,8 @@
 DROP TABLE IF EXISTS User;
 CREATE TABLE User (
     username TEXT PRIMARY KEY NOT NULL,
-    password TEXT NOT NULL,
+    hash TEXT NOT NULL,
+    salt TEXT NOT NULL,
     balance REAL NOT NULL
 );
 
