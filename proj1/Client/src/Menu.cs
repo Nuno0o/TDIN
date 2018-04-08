@@ -43,13 +43,16 @@ namespace Client
                 string json = null;
                 json = Client.stubs.GetBalance(Client.username);
                 double balance = JsonConvert.DeserializeObject<dynamic>(json).balance;
+                double realbalance = balance;
                 json = Client.stubs.GetDiginotes(Client.username);
                 int diginotes = JsonConvert.DeserializeObject<dynamic>(json).diginotes;
+                int realdiginotes = diginotes;
                 json = Client.stubs.GetBuyOrders(Client.username);
                 List<dynamic> buy_orders = JsonConvert.DeserializeObject<List<dynamic>>(json);
                 json = Client.stubs.GetSellOrders(Client.username);
                 List<dynamic> sell_orders = JsonConvert.DeserializeObject<List<dynamic>>(json);
 
+                
                 /* subtract buy orders' price from balance */
                 foreach (dynamic buy_order in buy_orders)
                     balance -= (double)buy_order.price;
@@ -61,7 +64,9 @@ namespace Client
                 /* protected region for assigning updated values */
                 Client.mut.WaitOne();
                 Client.balance = balance;
+                Client.realbalance = realbalance;
                 Client.diginotes = diginotes;
+                Client.realdiginotes = realdiginotes;
                 Client.buy_orders = buy_orders;
                 Client.sell_orders = sell_orders;
                 Client.mut.ReleaseMutex();
@@ -70,8 +75,8 @@ namespace Client
                 /* updating interface */
                 Invoke(new Action(() =>
                 {
-                    balance_display.Text = Client.balance.ToString();
-                    diginotes_display.Text = Client.diginotes.ToString();
+                    balance_display.Text = Client.realbalance.ToString() + " (" + Client.balance.ToString() + " avail.)";
+                    diginotes_display.Text = Client.realdiginotes.ToString() + " (" + Client.diginotes.ToString() + " avail.)";
                     string painted = null;
                     if (orders_grid.SelectedRows.Count != 0)
                         painted = orders_grid.SelectedRows[0].ToString();
@@ -172,6 +177,7 @@ namespace Client
         private void Menu_FormClosing(object sender,EventArgs e)
         {
             logout_button_Click(sender, e);
+            updater.Abort();
         }
     }
 }

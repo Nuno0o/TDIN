@@ -242,7 +242,7 @@ namespace Server {
 
             return rows;
         }
-        public static int TransferDiginotes(string from, string to, int amount = 0, int price = 0)
+        public static int TransferDiginotes(string from, string to, int amount = 0, double price = 0)
         {
             try
             {
@@ -573,13 +573,13 @@ namespace Server {
                 reader.Read();
                 res = new
                 {
-                    id = reader["id"],
-                    amount = reader["amount"],
-                    price = reader["price"],
+                    id = System.Convert.ToInt32(reader["id"]),
+                    amount = System.Convert.ToInt32(reader["amount"]),
+                    price = System.Convert.ToDouble(reader["price"]),
                     user = reader["user"]
                 };
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 res = null;
                 Console.WriteLine(e.StackTrace);
@@ -595,9 +595,9 @@ namespace Server {
         public static dynamic GetBestBuyOrder(string user, int amount, double price)
         {
             com.CommandText =
-                @"select *, amount/price as value 
+                @"select *
                   from BuyOrder 
-                  where amount <= @amount and price >= @price and user <> @user order by value desc, date limit 1";
+                  where price >= @price and user <> @user order by price desc, date limit 1";
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
             com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
             com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
@@ -608,13 +608,13 @@ namespace Server {
                 reader.Read();
                 res = new
                 {
-                    id = reader["id"],
-                    amount = reader["amount"],
-                    price = reader["price"],
+                    id = System.Convert.ToInt32(reader["id"]),
+                    amount = System.Convert.ToInt32(reader["amount"]),
+                    price = System.Convert.ToDouble(reader["price"]),
                     user = reader["user"]
                 };
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 res = null;
                 Console.WriteLine(e.StackTrace);

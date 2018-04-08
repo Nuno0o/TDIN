@@ -16,9 +16,14 @@ namespace Client
         public static Menu menu;
 
         public static Mutex mut;
-
+        //Balance with buy orders included
         public static double balance;
+        //Balance without buy orders included
+        public static double realbalance;
+        //Diginotes with sell orders included
         public static int diginotes;
+        //Diginotes without sell orders included
+        public static int realdiginotes;
         public static string username;
 
         public static List<Object> buy_orders;
