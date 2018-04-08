@@ -43,6 +43,7 @@ namespace Client
                 string json = null;
                 json = Client.stubs.GetQuotes(10);
                 List<dynamic> quotes = JsonConvert.DeserializeObject<List<dynamic>>(json);
+                System.Console.WriteLine(quotes[0]);
                 json = Client.stubs.GetBalance(Client.username);
                 double balance = JsonConvert.DeserializeObject<dynamic>(json).balance;
                 json = Client.stubs.GetDiginotes(Client.username);
@@ -50,14 +51,17 @@ namespace Client
                 int realdiginotes = diginotes;
                 json = Client.stubs.GetBuyOrders(Client.username);
                 List<dynamic> buy_orders = JsonConvert.DeserializeObject<List<dynamic>>(json);
+                System.Console.WriteLine(json);
                 json = Client.stubs.GetSellOrders(Client.username);
                 List<dynamic> sell_orders = JsonConvert.DeserializeObject<List<dynamic>>(json);
+                System.Console.WriteLine(json);
 
                 /* subtract sell orders' amount from diginotes */
                 foreach (dynamic sell_order in sell_orders)
                     diginotes -= (int)sell_order.amount;
 
                 /* protected region for assigning updated values */
+
                 Client.mut.WaitOne();
                 Client.quotes = quotes;
                 Client.balance = balance;
@@ -71,7 +75,7 @@ namespace Client
                 /* updating interface */
                 Invoke(new Action(() =>
                 {
-                    Text = "Current quote : " + Client.quotes[0].GetType().GetProperty("value").ToString();
+                    Text = "Current quote : " + Client.GetCurrentQuote();
                     balance_display.Text = Client.balance.ToString();
                     diginotes_display.Text = Client.realdiginotes.ToString() + " (" + Client.diginotes.ToString() + " avail.)";
                     string painted = null;
@@ -157,13 +161,9 @@ namespace Client
 
         private void logout_button_Click(object sender, EventArgs e)
         {
-            updater.Abort();                     
-            Client.buy_orders = null;
-            Client.sell_orders = null;
-            Client.balance = -1.0;
-            Client.diginotes = -1;
+            updater.Abort();
             Client.login.Visible = true;
-            this.Close();
+            Dispose();
         }
 
         private void funds_button_Click(object sender, EventArgs e)

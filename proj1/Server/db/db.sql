@@ -3,7 +3,7 @@ CREATE TABLE User (
     username TEXT PRIMARY KEY NOT NULL,
     hash TEXT NOT NULL,
     salt TEXT NOT NULL,
-    balance REAL NOT NULL CHECK(balance > 0)
+    balance REAL NOT NULL CHECK(balance >= 0)
 );
 
 DROP TABLE IF EXISTS Diginote;

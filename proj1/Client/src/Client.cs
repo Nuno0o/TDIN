@@ -75,5 +75,15 @@ namespace Client
 
             return salt;
         }
+
+        public static double GetCurrentQuote()
+        {
+            List<double> qts = new List<double>();
+            foreach (dynamic quote in Client.quotes)
+            {
+                qts.Add((double)quote.value);
+            }
+            return qts[0];
+        }
     }
 }

@@ -51,7 +51,6 @@ namespace Server {
                 catch (SQLiteException e)
                 {
                     trans.Rollback();
-                    
                 }
             }            
         }        
