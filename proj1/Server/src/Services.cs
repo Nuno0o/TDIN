@@ -95,7 +95,7 @@ namespace Server
             int remaining = DoSellOrder(username, amount, price);
             if (remaining > 0)
             {
-                dynamic res = Database.AddSellOrder(username, amount, price);
+                dynamic res = Database.AddSellOrder(username, remaining, price);
                 if (res == null) return JsonConvert.SerializeObject(null);
             }
             return JsonConvert.SerializeObject(new { diginotes = diginotes });
