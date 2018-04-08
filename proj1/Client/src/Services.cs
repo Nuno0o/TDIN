@@ -21,6 +21,10 @@ namespace Server
         {
             return null;
         }
+        public string GetQuote()
+        {
+            return null;
+        }
         public string GetBuyOrders(string username)
         {
             return null;

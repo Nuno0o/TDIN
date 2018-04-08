@@ -34,6 +34,11 @@ namespace Server
             if (obj == null) return JsonConvert.SerializeObject(null);
             return JsonConvert.SerializeObject(obj);
         }
+        public string GetQuote()
+        {
+            string ret = "";
+            return ret;
+        }
         public string GetBuyOrders(string username)
         {
             Console.WriteLine("GET_BUY_ORDERS " + username);
