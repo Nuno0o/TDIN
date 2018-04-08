@@ -39,5 +39,4 @@ CREATE TABLE Quote (
   date DATE NOT NULL
 );
 
-                @"update Diginote set owner = @to where id in
-                (select id from Diginote where owner = @from limit @amount)";
+INSERT INTO Quote(value,date) VALUES(1.0,datetime());

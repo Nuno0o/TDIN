@@ -16,10 +16,8 @@ namespace Client
         public static Menu menu;
 
         public static Mutex mut;
-        //Balance with buy orders included
+        //Balance
         public static double balance;
-        //Balance without buy orders included
-        public static double realbalance;
         //Diginotes with sell orders included
         public static int diginotes;
         //Diginotes without sell orders included
@@ -28,6 +26,7 @@ namespace Client
 
         public static List<Object> buy_orders;
         public static List<Object> sell_orders;
+        public static List<Object> quotes;
 
         [STAThread]
         static void Main()

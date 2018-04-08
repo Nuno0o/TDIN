@@ -23,7 +23,7 @@ namespace Client
 
         private void confirm_button_Click(object sender, EventArgs e)
         {
-            double price = Convert.ToDouble(price_input.Text);
+            /*double price = Convert.ToDouble(price_input.Text);
             if (price <= 0.0) return;
 
             int amount = Convert.ToInt32(diginotes_input.Text);
@@ -45,7 +45,7 @@ namespace Client
             dynamic obj = JsonConvert.DeserializeObject(json);
             if (obj == null) return;
 
-            Visible = false;
+            Visible = false;*/
 
             Close();
         }

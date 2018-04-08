@@ -21,7 +21,7 @@ namespace Server
         {
             return null;
         }
-        public string GetQuote(int n)
+        public string GetQuotes(int n)
         {
             return null;
         }
@@ -45,11 +45,11 @@ namespace Server
         {
             return null;
         }
-        public string AddBuyOrder(string username, int amount, double price)
+        public string AddBuyOrder(string username, int amount)
         {
             return null;
         }
-        public string AddSellOrder(string username, int amount, double price)
+        public string AddSellOrder(string username, int amount)
         {
             return null;
         }

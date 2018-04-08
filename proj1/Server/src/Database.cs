@@ -39,12 +39,12 @@ namespace Server {
             /* if new db was created */
             if (overwrite)
             {
-                /* reads sql script */
-                com.CommandText = File.ReadAllText(SQL_PATH);
 
                 /* executes sql script */
                 try {
                     trans = conn.BeginTransaction();
+                    /* reads sql script */
+                    com.CommandText = File.ReadAllText(SQL_PATH);
                     com.ExecuteNonQuery();
                     trans.Commit();
                 }

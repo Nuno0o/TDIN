@@ -13,9 +13,6 @@ namespace Client
 
         private void confirm_button_Click(object sender, EventArgs e)
         {
-            double price = Convert.ToDouble(price_input.Text);
-            if (price <= 0.0) return;
-
             int amount = Convert.ToInt32(diginotes_input.Text);
             if (amount <= 0) return;
 
@@ -24,10 +21,10 @@ namespace Client
 
             string json = null;
 
-            if (buy_radio.Checked && price <= balance)
-                json = Client.stubs.AddBuyOrder(Client.username,amount,price);
+            if (buy_radio.Checked)
+                json = Client.stubs.AddBuyOrder(Client.username,amount);
             else if (sell_radio.Checked && amount <= diginotes)
-                json = Client.stubs.AddSellOrder(Client.username,amount,price);
+                json = Client.stubs.AddSellOrder(Client.username,amount);
             else return;
 
             dynamic obj = JsonConvert.DeserializeObject(json);

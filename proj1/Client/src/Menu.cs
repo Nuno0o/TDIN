@@ -17,8 +17,8 @@ namespace Client
             orders_grid.Columns[0].Name = "ID";
             orders_grid.Columns[1].Name = "Type";
             orders_grid.Columns[2].Name = "Amount";
-            orders_grid.Columns[3].Name = "Price";
-            orders_grid.Columns[4].Name = "Date";           
+            orders_grid.Columns[3].Name = "Date";
+            orders_grid.Columns[4].Name = "Active";
 
             orders_grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             orders_grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -41,9 +41,10 @@ namespace Client
             {
                 /* get updated information */
                 string json = null;
+                json = Client.stubs.GetQuotes(10);
+                List<dynamic> quotes = JsonConvert.DeserializeObject<List<dynamic>>(json);
                 json = Client.stubs.GetBalance(Client.username);
                 double balance = JsonConvert.DeserializeObject<dynamic>(json).balance;
-                double realbalance = balance;
                 json = Client.stubs.GetDiginotes(Client.username);
                 int diginotes = JsonConvert.DeserializeObject<dynamic>(json).diginotes;
                 int realdiginotes = diginotes;
@@ -52,19 +53,14 @@ namespace Client
                 json = Client.stubs.GetSellOrders(Client.username);
                 List<dynamic> sell_orders = JsonConvert.DeserializeObject<List<dynamic>>(json);
 
-                
-                /* subtract buy orders' price from balance */
-                foreach (dynamic buy_order in buy_orders)
-                    balance -= (double)buy_order.price;
-
                 /* subtract sell orders' amount from diginotes */
                 foreach (dynamic sell_order in sell_orders)
                     diginotes -= (int)sell_order.amount;
 
                 /* protected region for assigning updated values */
                 Client.mut.WaitOne();
+                Client.quotes = quotes;
                 Client.balance = balance;
-                Client.realbalance = realbalance;
                 Client.diginotes = diginotes;
                 Client.realdiginotes = realdiginotes;
                 Client.buy_orders = buy_orders;
@@ -75,7 +71,8 @@ namespace Client
                 /* updating interface */
                 Invoke(new Action(() =>
                 {
-                    balance_display.Text = Client.realbalance.ToString() + " (" + Client.balance.ToString() + " avail.)";
+                    Text = "Current quote : " + Client.quotes[0].GetType().GetProperty("value").ToString();
+                    balance_display.Text = Client.balance.ToString();
                     diginotes_display.Text = Client.realdiginotes.ToString() + " (" + Client.diginotes.ToString() + " avail.)";
                     string painted = null;
                     if (orders_grid.SelectedRows.Count != 0)
@@ -87,8 +84,8 @@ namespace Client
                             buy_order.id,
                             "Buy",
                             buy_order.amount,
-                            buy_order.price,
-                            buy_order.date
+                            buy_order.date,
+                            buy_order.active
                         });                        
                     }
                     foreach (dynamic sell_order in Client.sell_orders)
@@ -97,8 +94,8 @@ namespace Client
                             sell_order.id,
                             "Sell",
                             sell_order.amount,
-                            sell_order.price,
-                            sell_order.date
+                            sell_order.date,
+                            sell_order.active
                         });
                     }
                     foreach (DataGridViewRow row in orders_grid.Rows)
@@ -116,7 +113,7 @@ namespace Client
 
         private void edit_button_Click(object sender, EventArgs e)
         {
-            if (orders_grid.SelectedRows.Count != 1) return;
+            /*if (orders_grid.SelectedRows.Count != 1) return;
             var row = orders_grid.SelectedRows[0];
             if (row.Cells[0].Value == null) return;
             int id = Convert.ToInt32(row.Cells[0].Value);
@@ -124,7 +121,7 @@ namespace Client
             int amount = Convert.ToInt32(row.Cells[2].Value);
             double price = Convert.ToDouble(row.Cells[3].Value);
             Edit ed = new Edit(id, type, amount, price);
-            ed.ShowDialog();
+            ed.ShowDialog();*/
         }
 
         private void remove_button_Click(object sender, EventArgs e)
@@ -165,8 +162,8 @@ namespace Client
             Client.sell_orders = null;
             Client.balance = -1.0;
             Client.diginotes = -1;
-            Visible = false;
             Client.login.Visible = true;
+            this.Close();
         }
 
         private void funds_button_Click(object sender, EventArgs e)
@@ -177,7 +174,6 @@ namespace Client
         private void Menu_FormClosing(object sender,EventArgs e)
         {
             logout_button_Click(sender, e);
-            updater.Abort();
         }
     }
 }
