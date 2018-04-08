@@ -34,10 +34,15 @@ namespace Server
             if (obj == null) return JsonConvert.SerializeObject(null);
             return JsonConvert.SerializeObject(obj);
         }
-        public string GetQuote()
+        public string GetQuotes(int n)
         {
-            string ret = "";
-            return ret;
+            return JsonConvert.SerializeObject(Database.GetQuotes(n));
+        }
+        public string SetQuote(string username, double value)
+        {
+            Console.WriteLine("SET_QUOTE " + username + value);
+            if (value < 0) return null;
+            return JsonConvert.SerializeObject(Database.SetQuote(value, username));
         }
         public string GetBuyOrders(string username)
         {
@@ -59,66 +64,66 @@ namespace Server
             /* Still haven't needed this ...*/
             return null;
         }
-        public string AddBuyOrder(string username, int amount, double price)
+        public string AddBuyOrder(string username, int amount)
         {   
-            Console.WriteLine("ADD_BUY_ORDER "+ username + " " + amount + " "+ price);
+            Console.WriteLine("ADD_BUY_ORDER "+ username + " " + amount);
 
-            if (amount <= 0 || price <= 0.0) return JsonConvert.SerializeObject(null);
+            if (amount <= 0) return JsonConvert.SerializeObject(null);
 
             dynamic user = Database.GetUser(username);
+            double quote = Database.GetQuotes(1)[0].value;
+
             if (user == null) return JsonConvert.SerializeObject(user);
-            double balance = user.balance - price*amount;
+            double balance = user.balance - quote*amount;
             List<object> buy_orders = Database.GetBuyOrders(username);
-            foreach (dynamic buy_order in buy_orders) balance -= buy_order.price * buy_order.amount;
+            foreach (dynamic buy_order in buy_orders) balance -= quote * buy_order.amount;
             if (balance < 0.0) return JsonConvert.SerializeObject(null);
 
-            int remaining = DoBuyOrder(username, amount, price);
+            int remaining = DoBuyOrder(username, amount, quote);
             /* Order is added to the database if it isn't fullfilled */
             if(remaining > 0)
             {
-                dynamic res = Database.AddBuyOrder(username, remaining, price);
+                dynamic res = Database.AddBuyOrder(username, remaining);
                 if (res == null) return JsonConvert.SerializeObject(null);
             }
-            return JsonConvert.SerializeObject(new { balance = balance });
+            return JsonConvert.SerializeObject(new { remaining = remaining });
         }
-        public string AddSellOrder(string username, int amount, double price)
+        public string AddSellOrder(string username, int amount)
         {
-            Console.WriteLine("ADD_SELL_ORDER " + username + " " + amount + " " + price);
-            // TODO Check the queues to fullfill sell order
+            Console.WriteLine("ADD_SELL_ORDER " + username + " " + amount);
 
-            // TODO Add the sell order to queue if it can't be fullfilled
+            if (amount <= 0) return JsonConvert.SerializeObject(null);
 
-            /* Order is added to the database because it isn't fullfilled */
-            Console.WriteLine("ADD_SELL_ORDER " + username + " " + amount + " " + price);
-            if (amount <= 0 || price <= 0.0) return JsonConvert.SerializeObject(null);
             dynamic user = Database.GetUser(username);
+            double quote = Database.GetQuotes(1)[0].value;
+
             if (user == null) return JsonConvert.SerializeObject(null);
             List<dynamic> sell_orders = Database.GetSellOrders(username);
             int diginotes = (int)Database.GetDiginotes(username).diginotes - amount;
             foreach (dynamic sell_order in sell_orders) diginotes -= amount;
             if (amount < 0) return JsonConvert.SerializeObject(null);
 
-            int remaining = DoSellOrder(username, amount, price);
+            int remaining = DoSellOrder(username, amount, quote);
             if (remaining > 0)
             {
-                dynamic res = Database.AddSellOrder(username, remaining, price);
+                dynamic res = Database.AddSellOrder(username, remaining);
                 if (res == null) return JsonConvert.SerializeObject(null);
             }
-            return JsonConvert.SerializeObject(new { diginotes = diginotes });
+            return JsonConvert.SerializeObject(new { remaining = remaining });
         }
-        private int DoBuyOrder(string username, int amount, double price)
+        private int DoBuyOrder(string username, int amount, double quote)
         {
             //Remaining diginotes to buy, starts at amount in buy order
             int remainder = amount;
             //Tries to find a sell order that satisfies the buy order, either partially or fully
             dynamic order;
-            while (((order = Database.GetBestSellOrder(username, remainder, price)) != null) && remainder > 0)
+            while (((order = Database.GetBestSellOrder(username, remainder)) != null) && remainder > 0)
             {
                 //Max amount of diginotes to be transfered, 
                 //Equal to the minimum between order amount and amount in sell order
                 int maxamount = System.Math.Min(remainder, order.amount);
                 //Transfer diginotes from seller to buyer at seller's price(lower or equal than buyers price always)
-                dynamic res = Database.TransferDiginotes(order.user, username, maxamount, order.price);
+                dynamic res = Database.TransferDiginotes(order.user, username, maxamount, quote);
                 //If an error ocurred stop execution
                 if (res != 1) return remainder;
                 //If the sell order was fully satisfied, remove it from the db
@@ -129,7 +134,7 @@ namespace Server
                 //If the sell order was only partially satisfied, reduce the amount it's selling
                 else
                 {
-                    Database.EditSellOrder(order.id, order.amount - amount, order.price);
+                    Database.EditSellOrder(order.id, order.amount - amount);
                 }
                 //Remaining diginotes to buy reduced by the amount sold in this iteration
                 remainder -= maxamount;
@@ -137,20 +142,19 @@ namespace Server
             //Returns number of diginotes that couldn't be satisfied
             return remainder;
         }
-        private int DoSellOrder(string username, int amount, double price)
+        private int DoSellOrder(string username, int amount, double quote)
         {
             //Remaining diginotes to sell, starts at amount in sell order
             int remainder = amount;
             //Tries to find a buy order that satisfies the sell order, either partially or fully
             dynamic order;
-            while (((order = Database.GetBestBuyOrder(username, remainder, price)) != null) && remainder > 0)
+            while (((order = Database.GetBestBuyOrder(username, remainder)) != null) && remainder > 0)
             {
-                System.Console.WriteLine("GOT HERE BOY");
                 //Max amount of diginotes to be transfered, 
                 //Equal to the minimum between order amount and amount in sell order
                 int maxamount = System.Math.Min(remainder, order.amount);
                 //Transfer diginotes from seller to buyer at buyer's price(lower or equal than seller price always)
-                dynamic res = Database.TransferDiginotes(order.user, username, maxamount, order.price);
+                dynamic res = Database.TransferDiginotes(order.user, username, maxamount, quote);
                 //If an error ocurred stop execution
                 if (res != 1) return remainder;
                 //If the buy order was fully satisfied, remove it from the db
@@ -161,69 +165,13 @@ namespace Server
                 //If the buy order was only partially satisfied, reduce the amount it's selling
                 else
                 {
-                    Database.EditBuyOrder(order.id, order.amount - amount, order.price);
+                    Database.EditBuyOrder(order.id, order.amount - amount);
                 }
                 //Remaining diginotes to buy reduced by the amount sold in this iteration
                 remainder -= maxamount;
             }
             //Returns number of diginotes that couldn't be satisfied
             return remainder;
-        }
-        public string EditBuyOrder(int id, int amount, double price)
-        {
-            Console.WriteLine("EDIT_BUY_ORDER " + id + " " + amount + " " + price);
-
-            if (amount <= 0 || price <= 0.0) return JsonConvert.SerializeObject(null);
-            dynamic order = Database.GetBuyOrder(id);
-            if (order == null) return JsonConvert.SerializeObject(null);
-            string username = order.user;
-            dynamic user = Database.GetUser(username);
-            if (user == null) return JsonConvert.SerializeObject(user);
-            double balance = user.balance - price + order.price;
-            List<object> buy_orders = Database.GetBuyOrders(username);
-            foreach (dynamic buy_order in buy_orders) balance -= buy_order.price;
-            if (balance < 0.0) return JsonConvert.SerializeObject(null);
-
-            int remaining = DoBuyOrder(username, amount, price);
-            if(remaining > 0)
-            {
-                dynamic res = Database.EditBuyOrder(id, remaining, price);
-                if (res == null) return JsonConvert.SerializeObject(null);
-            }else if(remaining == 0)
-            {
-                dynamic res = Database.RemoveBuyOrder(id);
-                if (res == null) return JsonConvert.SerializeObject(null);
-            }
-            return JsonConvert.SerializeObject(new { balance = balance });
-        }
-        public string EditSellOrder(int id, int amount, double price)
-        {
-            Console.WriteLine("EDIT_SELL_ORDER " + id + " " + amount + " " + price);
-
-            if (amount <= 0 || price <= 0.0) return JsonConvert.SerializeObject(null);
-            dynamic order = Database.GetSellOrder(id);
-            if (order == null) return JsonConvert.SerializeObject(null);
-            string username = order.user;
-            dynamic user = Database.GetUser(username);
-            if (user == null) return JsonConvert.SerializeObject(user);
-            int diginotes = (int)Database.GetDiginotes(username).diginotes;
-            diginotes += order.amount - amount;
-            List<dynamic> sell_orders = Database.GetSellOrders(username);
-            foreach (dynamic sell_order in sell_orders) diginotes -= sell_order.amount;
-            if (amount < 0) return JsonConvert.SerializeObject(null);
-
-            int remaining = DoSellOrder(username, amount, price);
-
-            if(remaining > 0)
-            {
-                dynamic res = Database.EditSellOrder(id, amount, price);
-                if (res == null) return JsonConvert.SerializeObject(null);
-            }else if(remaining == 0)
-            {
-                dynamic res = Database.RemoveSellOrder(id);
-                if (res == null) return JsonConvert.SerializeObject(null);
-            }
-            return JsonConvert.SerializeObject(new { diginotes = diginotes });
         }
         public String RemoveBuyOrder(int id)
         {

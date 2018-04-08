@@ -21,7 +21,11 @@ namespace Server
         {
             return null;
         }
-        public string GetQuote()
+        public string GetQuote(int n)
+        {
+            return null;
+        }
+        public string SetQuote(string username, double value)
         {
             return null;
         }
@@ -54,14 +58,6 @@ namespace Server
             return null;
         }
         public string RemoveSellOrder(int id)
-        {
-            return null;
-        }
-        public string EditBuyOrder(int id, int amount, double price)
-        {
-            return null;
-        }
-        public string EditSellOrder(int id, int amount, double price)
         {
             return null;
         }

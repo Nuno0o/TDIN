@@ -543,7 +543,7 @@ namespace Server {
 
             return res;
         }
-        public static dynamic EditSellOrder(int id, int amount, double price, int active = 1)
+        public static dynamic EditSellOrder(int id, int amount, int active = 1)
         {
             com.CommandText =
                 @"update SellOrder
@@ -604,14 +604,13 @@ namespace Server {
             return res;
         }
 
-        public static dynamic GetBestBuyOrder(string user, int amount, double price)
+        public static dynamic GetBestBuyOrder(string user, int amount)
         {
             com.CommandText =
                 @"select *
                   from BuyOrder 
                   where user <> @user and active = 1 order by date asc limit 1";
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
             com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
             dynamic res;
             try

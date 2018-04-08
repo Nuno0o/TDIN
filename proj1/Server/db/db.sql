@@ -3,7 +3,7 @@ CREATE TABLE User (
     username TEXT PRIMARY KEY NOT NULL,
     hash TEXT NOT NULL,
     salt TEXT NOT NULL,
-    balance REAL NOT NULL
+    balance REAL NOT NULL CHECK(balance > 0)
 );
 
 DROP TABLE IF EXISTS Diginote;
@@ -38,3 +38,6 @@ CREATE TABLE Quote (
   value REAL NOT NULL,
   date DATE NOT NULL
 );
+
+                @"update Diginote set owner = @to where id in
+                (select id from Diginote where owner = @from limit @amount)";
