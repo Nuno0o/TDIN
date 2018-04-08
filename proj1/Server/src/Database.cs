@@ -242,30 +242,48 @@ namespace Server {
 
             return rows;
         }
-        public static int TransferDiginotes(string from, string to, int amount = 1)
+        public static int TransferDiginotes(string from, string to, int amount = 0, int price = 0)
         {
-            com.CommandText =
-                @"update Diginote set owner = @to where id in
-                (select id from Diginote where owner = @from limit @amount)";
-
-            com.Parameters.Add(new SQLiteParameter("@from", from));
-            com.Parameters.Add(new SQLiteParameter("@to", to));
-            com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-
-            int rows = -1;
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                //Transfer diginotes
+                com.CommandText =
+                @"update Diginote set owner = @to where id in
+                (select id from Diginote where owner = @from limit @amount)";
+
+                com.Parameters.Add(new SQLiteParameter("@from", from));
+                com.Parameters.Add(new SQLiteParameter("@to", to));
+                com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
+
+                com.ExecuteNonQuery();
+                //Remove balance from buyer
+                com.CommandText =
+                @"update User set balance = balance - @total where username = @user";
+
+                com.Parameters.Add(new SQLiteParameter("@total", price*amount));
+                com.Parameters.Add(new SQLiteParameter("@user", to));
+
+                com.ExecuteNonQuery();
+                //Add balance to seller
+                com.CommandText =
+                @"update User set balance = balance + @total where username = @user";
+
+                com.Parameters.Add(new SQLiteParameter("@total", price*amount));
+                com.Parameters.Add(new SQLiteParameter("@user", from));
+
+                com.ExecuteNonQuery();
+
                 trans.Commit();
             }
             catch (SQLiteException e)
             {
                 trans.Rollback();
                 Console.WriteLine(e.StackTrace);
+                return 0;
             }
 
-            return rows;
+            return 1;
         }
         public static dynamic AddBuyOrder(string user, int amount = 1, double price = 1.0)
         {
@@ -537,6 +555,76 @@ namespace Server {
             }
 
             return res;
-        }       
+        }  
+        
+        public static dynamic GetBestSellOrder(string user,int amount, double price)
+        {
+            com.CommandText =
+                @"select * 
+                  from SellOrder 
+                  where price <= @price and user <> @user order by price desc, date limit 1";
+            com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
+            dynamic res;
+            try
+            {
+                reader = com.ExecuteReader();
+                reader.Read();
+                res = new
+                {
+                    id = reader["id"],
+                    amount = reader["amount"],
+                    price = reader["price"],
+                    user = reader["user"]
+                };
+            }
+            catch (SQLiteException e)
+            {
+                res = null;
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                reader.Close();
+            }
+
+            return res;
+        }
+
+        public static dynamic GetBestBuyOrder(string user, int amount, double price)
+        {
+            com.CommandText =
+                @"select *, amount/price as value 
+                  from BuyOrder 
+                  where amount <= @amount and price >= @price and user <> @user order by value desc, date limit 1";
+            com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
+            dynamic res;
+            try
+            {
+                reader = com.ExecuteReader();
+                reader.Read();
+                res = new
+                {
+                    id = reader["id"],
+                    amount = reader["amount"],
+                    price = reader["price"],
+                    user = reader["user"]
+                };
+            }
+            catch (SQLiteException e)
+            {
+                res = null;
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                reader.Close();
+            }
+
+            return res;
+        }
     }
 }

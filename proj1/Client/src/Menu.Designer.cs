@@ -79,7 +79,7 @@
             // 
             // remove_button
             // 
-            this.remove_button.Location = new System.Drawing.Point(116, 374);
+            this.remove_button.Location = new System.Drawing.Point(220, 374);
             this.remove_button.Name = "remove_button";
             this.remove_button.Size = new System.Drawing.Size(98, 23);
             this.remove_button.TabIndex = 5;
@@ -89,7 +89,7 @@
             // 
             // edit_button
             // 
-            this.edit_button.Location = new System.Drawing.Point(220, 374);
+            this.edit_button.Location = new System.Drawing.Point(116, 374);
             this.edit_button.Name = "edit_button";
             this.edit_button.Size = new System.Drawing.Size(98, 23);
             this.edit_button.TabIndex = 6;

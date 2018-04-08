@@ -118,7 +118,8 @@ namespace Client
             string type = Convert.ToString(row.Cells[1].Value);
             int amount = Convert.ToInt32(row.Cells[2].Value);
             double price = Convert.ToDouble(row.Cells[3].Value);
-            new Edit(id,type,amount,price).Visible = true;
+            Edit ed = new Edit(id, type, amount, price);
+            ed.ShowDialog();
         }
 
         private void remove_button_Click(object sender, EventArgs e)
@@ -148,7 +149,8 @@ namespace Client
 
         private void add_button_Click(object sender, EventArgs e)
         {
-            new Add().Visible = true;
+            Add a = new Add();
+            a.ShowDialog();
         }
 
         private void logout_button_Click(object sender, EventArgs e)
