@@ -17,9 +17,9 @@ DROP TABLE IF EXISTS BuyOrder;
 CREATE TABLE BuyOrder (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user TEXT NOT NULL,
-	price REAL NOT NULL,
-	amount INTEGER NOT NULL,
-	date TEXT NOT NULL,
+	  amount INTEGER NOT NULL,
+	  date TEXT NOT NULL,
+	  active INTEGER DEFAULT 1,
     FOREIGN KEY (user) REFERENCES User(username)
 );
 
@@ -27,8 +27,14 @@ DROP TABLE IF EXISTS SellOrder;
 CREATE TABLE SellOrder (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user TEXT NOT NULL,
-	price REAL NOT NULL,
-	amount INTEGER NOT NULL,
-	date TEXT NOT NULL,
+	  amount INTEGER NOT NULL,
+	  date TEXT NOT NULL,
+	  active INTEGER DEFAULT 1,
     FOREIGN KEY (user) REFERENCES User(username)
+);
+
+DROP TABLE IF EXISTS Quote;
+CREATE TABLE Quote (
+  value REAL NOT NULL,
+  date DATE NOT NULL
 );

@@ -131,6 +131,85 @@ namespace Server {
 
             return res;
         }
+        public static dynamic GetQuotes(int n)
+        {
+            com.CommandText = "SELECT * FROM Quote ORDER BY date DESC LIMIT @n";
+
+            com.Parameters.Add(new SQLiteParameter("@n", n));
+
+            List<dynamic> quotes = new List<dynamic>();
+            try
+            {
+                reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    quotes.Add(new
+                        {
+                            value = System.Convert.ToDouble(reader["value"]),
+                            date = reader["date"]
+                        }
+                    );
+                }
+            }
+            catch (Exception e)
+            {
+                quotes = null;
+            }
+            finally
+            {
+                reader.Close();
+            }
+
+            return quotes;
+        }
+        public static dynamic SetQuote(double value,string user = "")
+        {
+            double currentQuote = 0;
+            try
+            {
+                dynamic qts = Database.GetQuotes(1);
+                if (qts == null)
+                    return null;
+                currentQuote = qts[0].value;
+            }catch(Exception ex)
+            {
+                return null;
+            }
+            dynamic res;
+            try
+            {
+
+                trans = conn.BeginTransaction();
+
+                com.CommandText =
+                @"INSERT INTO Quote(value,date) VALUES(@value,datetime())";
+                com.Parameters.Add(new SQLiteParameter("@value", value.ToString()));
+
+                res = new { rows = com.ExecuteNonQuery() };
+                
+                if(value < currentQuote)
+                {
+                    com.CommandText =
+                    @"UPDATE SellOrder SET active = 0 WHERE user <> @user";
+                    com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
+                }else if(value > currentQuote)
+                {
+                    com.CommandText =
+                    @"UPDATE BuyOrder SET active = 0 WHERE user <> @user";
+                    com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
+                }
+
+                trans.Commit();
+            }
+            catch (SQLiteException e)
+            {
+                trans.Rollback();
+                res = null;
+
+            }
+
+            return res;
+        }
         public static dynamic GetUser(string username)
         {
             
@@ -284,15 +363,14 @@ namespace Server {
 
             return 1;
         }
-        public static dynamic AddBuyOrder(string user, int amount = 1, double price = 1.0)
+        public static dynamic AddBuyOrder(string user, int amount = 1)
         {
             com.CommandText =
-                @"insert into BuyOrder(id,user,amount,price,date)
-                values(NULL,@user,@amount,@price,datetime())";
+                @"insert into BuyOrder(id,user,amount,date)
+                values(NULL,@user,@amount,datetime())";
 
             com.Parameters.Add(new SQLiteParameter("@user", user));
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
 
             dynamic res;
             try
@@ -310,15 +388,14 @@ namespace Server {
 
             return res;
         }
-        public static dynamic AddSellOrder(string user, int amount = 1, double price = 1.0)
+        public static dynamic AddSellOrder(string user, int amount = 1)
         {
             com.CommandText =
-                @"insert into SellOrder(id,user,amount,price,date)
-                values(NULL,@user,@amount,@price,datetime())";
+                @"insert into SellOrder(id,user,amount,date)
+                values(NULL,@user,@amount,datetime())";
 
             com.Parameters.Add(new SQLiteParameter("@user", user));
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
 
             dynamic res;
             try
@@ -394,8 +471,8 @@ namespace Server {
                     {
                         user = reader["user"],
                         amount = reader["amount"],
-                        price = reader["price"],
                         date = reader["date"],
+                        active = reader["active"],
                         id = reader["id"],
                     });
                 }
@@ -424,8 +501,8 @@ namespace Server {
                     {
                         user = reader["user"],
                         amount = reader["amount"],
-                        price = reader["price"],
                         date = reader["date"],
+                        active = reader["active"],
                         id = reader["id"],
                     });
                 }
@@ -439,78 +516,16 @@ namespace Server {
 
             return orders;
         }
-        public static dynamic GetBuyOrder(int id)
-        {
-            com.CommandText =
-                @"select * from BuyOrder                
-                where id = @id";
-            com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
-            dynamic res;
-            try
-            {
-                reader = com.ExecuteReader();
-                reader.Read();
-                res = new {
-                    id = reader["id"],
-                    amount = reader["amount"],
-                    price = reader["price"],
-                    user = reader["user"]
-                };
-            }
-            catch (SQLiteException e)
-            {
-                res = null;
-                
-            }
-            finally
-            {
-                reader.Close();
-            }
-
-            return res;
-
-        }
-        public static dynamic GetSellOrder(int id)
-        {
-            com.CommandText =
-                @"select * from SellOrder                
-                where id = @id";
-            com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
-            dynamic res;
-            try
-            {
-                reader = com.ExecuteReader();
-                reader.Read();
-                res = new
-                {
-                    id = reader["id"],
-                    amount = reader["amount"],
-                    price = reader["price"],
-                    user = reader["user"]
-                };
-            }
-            catch (SQLiteException e)
-            {
-                res = null;
-                
-            }
-            finally
-            {
-                reader.Close();
-            }
-
-            return res;
-        }
-        public static dynamic EditBuyOrder(int id, int amount, double price)
+        public static dynamic EditBuyOrder(int id, int amount, int active = 1)
         {           
             com.CommandText =
                 @"update BuyOrder
-                set amount = @amount, price = @price
+                set amount = @amount, active = @active
                 where id = @id";
 
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
             com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@active", active.ToString()));
 
             dynamic res;
             try
@@ -528,16 +543,16 @@ namespace Server {
 
             return res;
         }
-        public static dynamic EditSellOrder(int id, int amount, double price)
+        public static dynamic EditSellOrder(int id, int amount, double price, int active = 1)
         {
             com.CommandText =
                 @"update SellOrder
-                set amount = @amount, price = @price
+                set amount = @amount, active = @active
                 where id = @id";
 
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
             com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@active", active.ToString()));
 
             dynamic res;
             try
@@ -556,14 +571,13 @@ namespace Server {
             return res;
         }  
         
-        public static dynamic GetBestSellOrder(string user,int amount, double price)
+        public static dynamic GetBestSellOrder(string user,int amount)
         {
             com.CommandText =
                 @"select * 
                   from SellOrder 
-                  where price <= @price and user <> @user order by price desc, date limit 1";
+                  where user <> @user and active = 1 order by date asc limit 1";
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
             com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
             dynamic res;
             try
@@ -574,7 +588,6 @@ namespace Server {
                 {
                     id = System.Convert.ToInt32(reader["id"]),
                     amount = System.Convert.ToInt32(reader["amount"]),
-                    price = System.Convert.ToDouble(reader["price"]),
                     user = reader["user"]
                 };
             }
@@ -596,7 +609,7 @@ namespace Server {
             com.CommandText =
                 @"select *
                   from BuyOrder 
-                  where price >= @price and user <> @user order by price desc, date limit 1";
+                  where user <> @user and active = 1 order by date asc limit 1";
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
             com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
             com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
@@ -609,7 +622,6 @@ namespace Server {
                 {
                     id = System.Convert.ToInt32(reader["id"]),
                     amount = System.Convert.ToInt32(reader["amount"]),
-                    price = System.Convert.ToDouble(reader["price"]),
                     user = reader["user"]
                 };
             }
