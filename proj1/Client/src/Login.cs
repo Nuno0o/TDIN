@@ -19,6 +19,8 @@ namespace Client
 
             if (username.Length < 4 || username.Length > 16) return;
             if (password.Length < 4 || password.Length > 16) return;
+            try
+            { 
 
             string json = Client.stubs.GetSalt(username);
             dynamic res = JsonConvert.DeserializeObject(json);
@@ -26,12 +28,28 @@ namespace Client
 
             string salt = res.salt;
             string hash = Client.Hash(password + salt);
+            
+                json = Client.stubs.Login(username, hash);
+                res = JsonConvert.DeserializeObject(json);
+                if (res == null)
+                {
+                    this.label3.Text = "User doesn't exist";
+                    this.label3.ForeColor = System.Drawing.Color.Red;
+                    return;
+                }
+                if (!res)
+                {
+                    this.label3.Text = "Wrong password";
+                    this.label3.ForeColor = System.Drawing.Color.Red;
+                    return;
+                }
+            }catch(Exception ex)
+            {
+                this.label3.Text = "Login failed";
+                this.label3.ForeColor = System.Drawing.Color.Red;
+                return;
+            }
 
-            json = Client.stubs.Login(username, hash);
-            res = JsonConvert.DeserializeObject(json);
-
-            if (res == null) return;
-            if (!res) return;
 
             Client.username = username;
             Client.menu = new Menu();

@@ -51,7 +51,7 @@ namespace Server {
                 catch (SQLiteException e)
                 {
                     trans.Rollback();
-                    Console.WriteLine(e.StackTrace);
+                    
                 }
             }            
         }        
@@ -74,7 +74,7 @@ namespace Server {
             {
                 trans.Rollback();
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
 
             return res;
@@ -97,7 +97,7 @@ namespace Server {
             catch (InvalidOperationException e)
             {
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
             finally
             {
@@ -126,7 +126,7 @@ namespace Server {
             {
                 trans.Rollback();
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
 
             return res;
@@ -143,7 +143,7 @@ namespace Server {
             }
             catch (SQLiteException e)
             {
-                Console.WriteLine(e.StackTrace);
+                
             }
 
             dynamic user;
@@ -161,7 +161,6 @@ namespace Server {
             catch(InvalidOperationException e)
             {
                 user = null;
-                Console.WriteLine(e.StackTrace);
             }
             finally
             {
@@ -185,7 +184,7 @@ namespace Server {
             catch (InvalidOperationException e)
             {
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
             finally
             {
@@ -214,7 +213,7 @@ namespace Server {
             {
                 trans.Rollback();
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
 
             return res;
@@ -237,7 +236,7 @@ namespace Server {
             catch (SQLiteException e)
             {
                 trans.Rollback();
-                Console.WriteLine(e.StackTrace);
+                
             }
 
             return rows;
@@ -279,7 +278,7 @@ namespace Server {
             catch (SQLiteException e)
             {
                 trans.Rollback();
-                Console.WriteLine(e.StackTrace);
+                
                 return 0;
             }
 
@@ -306,7 +305,7 @@ namespace Server {
             {
                 trans.Rollback();
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
 
             return res;
@@ -332,7 +331,7 @@ namespace Server {
             {
                 trans.Rollback();
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
 
             return res;
@@ -354,7 +353,7 @@ namespace Server {
             {
                 trans.Rollback();
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
 
             return res;
@@ -375,7 +374,7 @@ namespace Server {
             {
                 trans.Rollback();
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
 
             return res;
@@ -404,7 +403,7 @@ namespace Server {
             }
             catch (SQLiteException e)
             {
-                Console.WriteLine(e.StackTrace);
+                
                 orders = null;
             }            
 
@@ -434,7 +433,7 @@ namespace Server {
             }
             catch (SQLiteException e)
             {
-                Console.WriteLine(e.StackTrace);
+                
                 orders = null;
             }            
 
@@ -461,7 +460,7 @@ namespace Server {
             catch (SQLiteException e)
             {
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
             finally
             {
@@ -493,7 +492,7 @@ namespace Server {
             catch (SQLiteException e)
             {
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
             finally
             {
@@ -524,7 +523,7 @@ namespace Server {
             {
                 trans.Rollback();
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
 
             return res;
@@ -551,7 +550,7 @@ namespace Server {
             {
                 trans.Rollback();
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
 
             return res;
@@ -582,7 +581,7 @@ namespace Server {
             catch (Exception e)
             {
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
             finally
             {
@@ -617,7 +616,7 @@ namespace Server {
             catch (Exception e)
             {
                 res = null;
-                Console.WriteLine(e.StackTrace);
+                
             }
             finally
             {
