@@ -40,7 +40,7 @@ namespace Server
         }
         public string SetQuote(string username, double value)
         {
-            Console.WriteLine("SET_QUOTE " + username + value);
+            Console.WriteLine("SET_QUOTE " + username + " " + value);
             if (value < 0) return null;
             return JsonConvert.SerializeObject(Database.SetQuote(value, username));
         }
@@ -74,10 +74,6 @@ namespace Server
             double quote = Database.GetQuotes(1)[0].value;
 
             if (user == null) return JsonConvert.SerializeObject(user);
-            double balance = user.balance - quote*amount;
-            List<object> buy_orders = Database.GetBuyOrders(username);
-            foreach (dynamic buy_order in buy_orders) balance -= quote * buy_order.amount;
-            if (balance < 0.0) return JsonConvert.SerializeObject(null);
 
             int remaining = DoBuyOrder(username, amount, quote);
             /* Order is added to the database if it isn't fullfilled */
@@ -154,7 +150,7 @@ namespace Server
                 //Equal to the minimum between order amount and amount in sell order
                 int maxamount = System.Math.Min(remainder, order.amount);
                 //Transfer diginotes from seller to buyer at buyer's price(lower or equal than seller price always)
-                dynamic res = Database.TransferDiginotes(order.user, username, maxamount, quote);
+                dynamic res = Database.TransferDiginotes(username, order.user, maxamount, quote);
                 //If an error ocurred stop execution
                 if (res != 1) return remainder;
                 //If the buy order was fully satisfied, remove it from the db

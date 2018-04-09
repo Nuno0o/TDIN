@@ -60,7 +60,7 @@ namespace Server {
             com.Parameters.Add(new SQLiteParameter("@user", username));
             com.Parameters.Add(new SQLiteParameter("@hash", hash));
             com.Parameters.Add(new SQLiteParameter("@salt", salt));
-            com.Parameters.Add(new SQLiteParameter("@balance", balance.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@balance", balance));
 
             dynamic res;
             try
@@ -112,7 +112,7 @@ namespace Server {
                 @"update User set balance = @balance
                 where username = @username";
             com.Parameters.Add(new SQLiteParameter("@username", username));
-            com.Parameters.Add(new SQLiteParameter("@balance", balance.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@balance", balance));
 
             dynamic res;
             try
@@ -144,7 +144,7 @@ namespace Server {
                 {
                     quotes.Add(new
                         {
-                            value = System.Convert.ToDouble(reader["value"]),
+                            value = reader["value"],
                             date = reader["date"]
                         }
                     );
@@ -182,8 +182,7 @@ namespace Server {
 
                 com.CommandText =
                 @"INSERT INTO Quote(value,date) VALUES(@value,datetime())";
-                com.Parameters.Add(new SQLiteParameter("@value", value.ToString()));
-
+                com.Parameters.Add(new SQLiteParameter("@value", value));
                 res = new { rows = com.ExecuteNonQuery() };
                 
                 if(value < currentQuote)

@@ -25,6 +25,7 @@ namespace Client
             orders_grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             orders_grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             orders_grid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            orders_grid.AllowUserToAddRows = false;
             orders_grid.RowHeadersVisible = false;
             orders_grid.ReadOnly = true;
             orders_grid.Columns["ID"].Visible = false;
@@ -89,7 +90,7 @@ namespace Client
                             buy_order.amount,
                             buy_order.date,
                             buy_order.active
-                        });                        
+                        });
                     }
                     foreach (dynamic sell_order in Client.sell_orders)
                     {
@@ -113,19 +114,6 @@ namespace Client
                 Thread.Sleep(2000);
             }
         }      
-
-        private void edit_button_Click(object sender, EventArgs e)
-        {
-            /*if (orders_grid.SelectedRows.Count != 1) return;
-            var row = orders_grid.SelectedRows[0];
-            if (row.Cells[0].Value == null) return;
-            int id = Convert.ToInt32(row.Cells[0].Value);
-            string type = Convert.ToString(row.Cells[1].Value);
-            int amount = Convert.ToInt32(row.Cells[2].Value);
-            double price = Convert.ToDouble(row.Cells[3].Value);
-            Edit ed = new Edit(id, type, amount, price);
-            ed.ShowDialog();*/
-        }
 
         private void remove_button_Click(object sender, EventArgs e)
         {
@@ -177,7 +165,7 @@ namespace Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            EditQuote ed = new EditQuote();
+            EditQuote ed = new EditQuote("");
             ed.ShowDialog();
         }
 

@@ -22,15 +22,35 @@ namespace Client
             int diginotes = Client.diginotes;
 
             string json = null;
+            try
+            {
+                if (buy_radio.Checked)
+                    json = Client.stubs.AddBuyOrder(Client.username, amount);
+                else if (sell_radio.Checked && amount <= diginotes)
+                    json = Client.stubs.AddSellOrder(Client.username, amount);
+                else return;
 
-            if (buy_radio.Checked)
-                json = Client.stubs.AddBuyOrder(Client.username,amount);
-            else if (sell_radio.Checked && amount <= diginotes)
-                json = Client.stubs.AddSellOrder(Client.username,amount);
-            else return;
+                dynamic obj = JsonConvert.DeserializeObject(json);
+                if (obj == null) return;
 
-            dynamic obj = JsonConvert.DeserializeObject(json);
-            if (obj == null) return;
+                int remaining = ((dynamic)obj).remaining;
+
+                if(remaining == 0)
+                {
+                    return;
+                }else if (remaining > 0)
+                {
+                    EditQuote ed = new EditQuote("Your order couldn't be fully satisfied,"+ Environment.NewLine + " you can change quote value");
+                    ed.ShowDialog();
+                }
+
+            }
+            catch(Exception ex)
+            {
+                return;
+            }
+
+
 
             Visible = false;           
 

@@ -22,20 +22,29 @@ namespace Client
 
         private void funds_button_Click(object sender, EventArgs e)
         {
-            double amount = Convert.ToDouble(amount_input.Text);
-            if (amount <= 0.0) return;
+            try
+            {
 
-            double balance = Client.balance;
-            string json = null;
 
-            if (deposit_radio.Checked)
-                json = Client.stubs.DepositBalance(Client.username,amount);
-            else if (withdraw_radio.Checked && amount <= balance)
-                json = Client.stubs.WithdrawBalance(Client.username, amount);
-            else return;
+                double amount = Convert.ToDouble(amount_input.Text, System.Globalization.CultureInfo.InvariantCulture);
+                if (amount <= 0.0) return;
 
-            dynamic obj = JsonConvert.DeserializeObject(json);
-            if (obj == null) return;
+                double balance = Client.balance;
+                string json = null;
+
+                if (deposit_radio.Checked)
+                    json = Client.stubs.DepositBalance(Client.username, amount);
+                else if (withdraw_radio.Checked && amount <= balance)
+                    json = Client.stubs.WithdrawBalance(Client.username, amount);
+                else return;
+
+                dynamic obj = JsonConvert.DeserializeObject(json);
+                if (obj == null) return;
+            }
+            catch(Exception ex)
+            {
+                return;
+            }
 
             Visible = false;            
 

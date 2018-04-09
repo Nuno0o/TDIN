@@ -24,13 +24,17 @@ namespace Client
             try
             { 
 
-            string json = Client.stubs.GetSalt(username);
-            dynamic res = JsonConvert.DeserializeObject(json);
-            if (res == null) return;
+                string json = Client.stubs.GetSalt(username);
+                dynamic res = JsonConvert.DeserializeObject(json);
+                if (res == null)
+                {
+                    this.label3.Text = "User doesn't exist";
+                    this.label3.ForeColor = System.Drawing.Color.Red;
+                    return;
+                }
 
-            string salt = res.salt;
-            string hash = Client.Hash(password + salt);
-            
+                string salt = res.salt;
+                string hash = Client.Hash(password + salt);
                 json = Client.stubs.Login(username, hash);
                 res = JsonConvert.DeserializeObject(json);
                 if (res == null)
@@ -71,12 +75,32 @@ namespace Client
 
             string salt = Client.Salt();
             string hash = Client.Hash(password + salt);
-
-            string json = Client.stubs.Register(username, hash, salt);
+            string json;
+            try
+            {
+                json = Client.stubs.Register(username, hash, salt);
+            }
+            catch(Exception ex)
+            {
+                this.label3.Text = "Register failed";
+                this.label3.ForeColor = System.Drawing.Color.Red;
+                return;
+            }
             dynamic res = JsonConvert.DeserializeObject(json);
 
-            if (res == null) return;
-            if (!res) return;
+            if (res == null)
+            {
+                this.label3.Text = "Register failed";
+                this.label3.ForeColor = System.Drawing.Color.Red;
+                return;
+            }
+            if (!res)
+            {
+                this.label3.Text = "Account already exists";
+                this.label3.ForeColor = System.Drawing.Color.Red;
+                return;
+            }
+
 
             Client.username = username;
             Client.menu = new Menu();

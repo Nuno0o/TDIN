@@ -39,6 +39,7 @@
             this.funds_button = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.orders_grid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -65,7 +66,7 @@
             this.orders_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.orders_grid.Location = new System.Drawing.Point(12, 62);
             this.orders_grid.Name = "orders_grid";
-            this.orders_grid.Size = new System.Drawing.Size(306, 306);
+            this.orders_grid.Size = new System.Drawing.Size(305, 306);
             this.orders_grid.TabIndex = 3;
             // 
             // add_button
@@ -93,7 +94,7 @@
             this.diginotes_display.Location = new System.Drawing.Point(64, 6);
             this.diginotes_display.Name = "diginotes_display";
             this.diginotes_display.ReadOnly = true;
-            this.diginotes_display.Size = new System.Drawing.Size(150, 20);
+            this.diginotes_display.Size = new System.Drawing.Size(82, 20);
             this.diginotes_display.TabIndex = 7;
             // 
             // balance_display
@@ -130,7 +131,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(145, 23);
             this.button1.TabIndex = 11;
-            this.button1.Text = "Edit Quote";
+            this.button1.Text = "Change Quote";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -144,11 +145,21 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(152, 4);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(62, 23);
+            this.button3.TabIndex = 13;
+            this.button3.Text = "Serials";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(329, 437);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.funds_button);
@@ -181,5 +192,6 @@
         private System.Windows.Forms.Button funds_button;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
     }
 }
