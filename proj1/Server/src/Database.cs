@@ -191,11 +191,14 @@ namespace Server {
                     com.CommandText =
                     @"UPDATE SellOrder SET active = 0 WHERE user <> @user";
                     com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
-                }else if(value > currentQuote)
+                    com.ExecuteNonQuery();
+                }
+                else if(value > currentQuote)
                 {
                     com.CommandText =
                     @"UPDATE BuyOrder SET active = 0 WHERE user <> @user";
                     com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
+                    com.ExecuteNonQuery();
                 }
 
                 trans.Commit();

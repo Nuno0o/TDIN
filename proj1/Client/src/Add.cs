@@ -9,6 +9,8 @@ namespace Client
         public Add()
         {
             InitializeComponent();
+
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
 
         private void confirm_button_Click(object sender, EventArgs e)

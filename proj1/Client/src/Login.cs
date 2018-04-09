@@ -11,6 +11,8 @@ namespace Client
         public Login()
         {
             InitializeComponent();
+
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
         private void login_button_Click(object sender, EventArgs e)
         {
@@ -56,6 +58,8 @@ namespace Client
             Client.login.Visible = false;
             Client.menu.Visible = true;
             password_input.Text = "";
+            this.label3.Text = "Login or register";
+            this.label3.ForeColor = System.Drawing.Color.Black;
         }
         private void register_button_Click(object sender, EventArgs e)
         {

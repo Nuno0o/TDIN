@@ -33,11 +33,12 @@
             this.orders_grid = new System.Windows.Forms.DataGridView();
             this.add_button = new System.Windows.Forms.Button();
             this.remove_button = new System.Windows.Forms.Button();
-            this.edit_button = new System.Windows.Forms.Button();
             this.diginotes_display = new System.Windows.Forms.TextBox();
             this.balance_display = new System.Windows.Forms.TextBox();
             this.logout_button = new System.Windows.Forms.Button();
             this.funds_button = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.orders_grid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -71,7 +72,7 @@
             // 
             this.add_button.Location = new System.Drawing.Point(12, 374);
             this.add_button.Name = "add_button";
-            this.add_button.Size = new System.Drawing.Size(98, 23);
+            this.add_button.Size = new System.Drawing.Size(154, 23);
             this.add_button.TabIndex = 4;
             this.add_button.Text = "Add";
             this.add_button.UseVisualStyleBackColor = true;
@@ -79,23 +80,13 @@
             // 
             // remove_button
             // 
-            this.remove_button.Location = new System.Drawing.Point(220, 374);
+            this.remove_button.Location = new System.Drawing.Point(172, 374);
             this.remove_button.Name = "remove_button";
-            this.remove_button.Size = new System.Drawing.Size(98, 23);
+            this.remove_button.Size = new System.Drawing.Size(146, 23);
             this.remove_button.TabIndex = 5;
             this.remove_button.Text = "Remove";
             this.remove_button.UseVisualStyleBackColor = true;
             this.remove_button.Click += new System.EventHandler(this.remove_button_Click);
-            // 
-            // edit_button
-            // 
-            this.edit_button.Location = new System.Drawing.Point(116, 374);
-            this.edit_button.Name = "edit_button";
-            this.edit_button.Size = new System.Drawing.Size(98, 23);
-            this.edit_button.TabIndex = 6;
-            this.edit_button.Text = "Edit";
-            this.edit_button.UseVisualStyleBackColor = true;
-            this.edit_button.Click += new System.EventHandler(this.edit_button_Click);
             // 
             // diginotes_display
             // 
@@ -133,16 +124,37 @@
             this.funds_button.UseVisualStyleBackColor = true;
             this.funds_button.Click += new System.EventHandler(this.funds_button_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(172, 402);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(145, 23);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "Edit Quote";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(12, 402);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(154, 23);
+            this.button2.TabIndex = 12;
+            this.button2.Text = "Activate";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(329, 400);
+            this.ClientSize = new System.Drawing.Size(329, 437);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.funds_button);
             this.Controls.Add(this.logout_button);
             this.Controls.Add(this.balance_display);
             this.Controls.Add(this.diginotes_display);
-            this.Controls.Add(this.edit_button);
             this.Controls.Add(this.remove_button);
             this.Controls.Add(this.add_button);
             this.Controls.Add(this.orders_grid);
@@ -163,10 +175,11 @@
         private System.Windows.Forms.DataGridView orders_grid;
         private System.Windows.Forms.Button add_button;
         private System.Windows.Forms.Button remove_button;
-        private System.Windows.Forms.Button edit_button;
         private System.Windows.Forms.TextBox diginotes_display;
         private System.Windows.Forms.TextBox balance_display;
         private System.Windows.Forms.Button logout_button;
         private System.Windows.Forms.Button funds_button;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }

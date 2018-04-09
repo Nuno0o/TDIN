@@ -16,6 +16,8 @@ namespace Client
         public Funds()
         {
             InitializeComponent();
+
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
 
         private void funds_button_Click(object sender, EventArgs e)

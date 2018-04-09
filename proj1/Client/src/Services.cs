@@ -53,6 +53,14 @@ namespace Server
         {
             return null;
         }
+        public string ActivateBuyOrder(string username,int id, int amount)
+        {
+            return null;
+        }
+        public string ActivateSellOrder(string username,int id, int amount)
+        {
+            return null;
+        }
         public string RemoveBuyOrder(int id)
         {
             return null;

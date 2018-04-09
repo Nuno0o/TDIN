@@ -173,6 +173,41 @@ namespace Server
             //Returns number of diginotes that couldn't be satisfied
             return remainder;
         }
+        public string ActivateBuyOrder(string username,int id, int amount)
+        {
+            double quote = Database.GetQuotes(1)[0].value;
+
+            int remaining = DoBuyOrder(username, amount, quote);
+            /* Order is kept in the database if it isn't fullfilled */
+            if (remaining > 0)
+            {
+                dynamic res = Database.EditBuyOrder(id, remaining,1);
+                if (res == null) return JsonConvert.SerializeObject(null);
+            }else if(remaining == 0)
+            {
+                dynamic res = Database.RemoveBuyOrder(id);
+                if (res == null) return JsonConvert.SerializeObject(null);
+            }
+            return JsonConvert.SerializeObject(new { remaining = remaining });
+        }
+        public string ActivateSellOrder(string username,int id, int amount)
+        {
+            double quote = Database.GetQuotes(1)[0].value;
+
+            int remaining = DoSellOrder(username, amount, quote);
+            /* Order is kept in the database if it isn't fullfilled */
+            if (remaining > 0)
+            {
+                dynamic res = Database.EditSellOrder(id, remaining, 1);
+                if (res == null) return JsonConvert.SerializeObject(null);
+            }
+            else if (remaining == 0)
+            {
+                dynamic res = Database.RemoveSellOrder(id);
+                if (res == null) return JsonConvert.SerializeObject(null);
+            }
+            return JsonConvert.SerializeObject(new { remaining = remaining });
+        }
         public String RemoveBuyOrder(int id)
         {
             Console.WriteLine("REMOVE_BUY_ORDER " + " " + id);

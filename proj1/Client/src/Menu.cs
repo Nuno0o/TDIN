@@ -13,6 +13,8 @@ namespace Client
         {
             InitializeComponent();
 
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+
             orders_grid.ColumnCount = 5;
             orders_grid.Columns[0].Name = "ID";
             orders_grid.Columns[1].Name = "Type";
@@ -43,7 +45,6 @@ namespace Client
                 string json = null;
                 json = Client.stubs.GetQuotes(10);
                 List<dynamic> quotes = JsonConvert.DeserializeObject<List<dynamic>>(json);
-                System.Console.WriteLine(quotes[0]);
                 json = Client.stubs.GetBalance(Client.username);
                 double balance = JsonConvert.DeserializeObject<dynamic>(json).balance;
                 json = Client.stubs.GetDiginotes(Client.username);
@@ -51,10 +52,8 @@ namespace Client
                 int realdiginotes = diginotes;
                 json = Client.stubs.GetBuyOrders(Client.username);
                 List<dynamic> buy_orders = JsonConvert.DeserializeObject<List<dynamic>>(json);
-                System.Console.WriteLine(json);
                 json = Client.stubs.GetSellOrders(Client.username);
                 List<dynamic> sell_orders = JsonConvert.DeserializeObject<List<dynamic>>(json);
-                System.Console.WriteLine(json);
 
                 /* subtract sell orders' amount from diginotes */
                 foreach (dynamic sell_order in sell_orders)
@@ -174,6 +173,29 @@ namespace Client
         private void Menu_FormClosing(object sender,EventArgs e)
         {
             logout_button_Click(sender, e);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            EditQuote ed = new EditQuote();
+            ed.ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (orders_grid.SelectedRows.Count != 1) return;
+            var row = orders_grid.SelectedRows[0];
+            if (row.Cells[0].Value == null) return;
+            int id = Convert.ToInt32(row.Cells[0].Value);
+            string type = Convert.ToString(row.Cells[1].Value);
+            int amount = Convert.ToInt32(row.Cells[2].Value);
+            int active = Convert.ToInt32(row.Cells[4].Value);
+            if(type.Equals("Buy") && active == 0){
+                Client.stubs.ActivateBuyOrder(Client.username,id,amount);
+            }else if(type.Equals("Sell") && active == 0)
+            {
+                Client.stubs.ActivateSellOrder(Client.username, id, amount);
+            }
         }
     }
 }
