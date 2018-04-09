@@ -48,9 +48,10 @@ namespace Server {
                     com.ExecuteNonQuery();
                     trans.Commit();
                 }
-                catch (SQLiteException e)
+                catch (Exception e)
                 {
                     trans.Rollback();
+                    Console.WriteLine(e.ToString());
                 }
             }            
         }        
@@ -69,11 +70,11 @@ namespace Server {
                 res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
                 res = null;
-                
+                Console.WriteLine(e.ToString());
             }
 
             return res;
@@ -93,14 +94,14 @@ namespace Server {
                 reader.Read();
                 res = new { balance = reader["balance"] };
             }
-            catch (InvalidOperationException e)
+            catch (Exception e)
             {
                 res = null;
-                
+                Console.WriteLine(e.ToString());
             }
             finally
             {
-                reader.Close();
+                if(reader != null) reader.Close();
             }
 
             return res;
@@ -121,20 +122,19 @@ namespace Server {
                 res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
                 res = null;
-                
+                Console.WriteLine(e.ToString());
             }
 
             return res;
         }
-        public static dynamic GetQuotes(int n)
+        public static List<dynamic> GetQuotes(int limit = 1)
         {
-            com.CommandText = "SELECT * FROM Quote ORDER BY date DESC LIMIT @n";
-
-            com.Parameters.Add(new SQLiteParameter("@n", n));
+            com.CommandText = "SELECT * FROM Quote ORDER BY date DESC LIMIT @limit";
+            com.Parameters.Add(new SQLiteParameter("@limit", limit));
 
             List<dynamic> quotes = new List<dynamic>();
             try
@@ -153,60 +153,43 @@ namespace Server {
             catch (Exception e)
             {
                 quotes = null;
+                Console.WriteLine(e.ToString());
             }
             finally
             {
-                reader.Close();
+                if(reader != null) reader.Close();
             }
 
             return quotes;
         }
-        public static dynamic SetQuote(double value,string user = "")
+        public static dynamic SetQuote(double value, string user)
         {
-            double currentQuote = 0;
-            try
-            {
-                dynamic qts = Database.GetQuotes(1);
-                if (qts == null)
-                    return null;
-                currentQuote = qts[0].value;
-            }catch(Exception ex)
-            {
-                return null;
-            }
+            
+            dynamic quotes = Database.GetQuotes();
+            if (quotes == null) return null;
+            double quote = quotes[0].value;
+
+            com.CommandText = @"INSERT INTO Quote(value,date) VALUES(@value,datetime());";
+            if (value < quote)
+                com.CommandText += @"UPDATE SellOrder SET active = 0 WHERE user <> @user;";
+            else if (value > quote)
+                com.CommandText += @"UPDATE BuyOrder SET active = 0 WHERE user <> @user;";           
+
+            com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@value", value));
+
             dynamic res;
             try
             {
-
-                trans = conn.BeginTransaction();
-
-                com.CommandText =
-                @"INSERT INTO Quote(value,date) VALUES(@value,datetime())";
-                com.Parameters.Add(new SQLiteParameter("@value", value));
+                trans = conn.BeginTransaction();                
                 res = new { rows = com.ExecuteNonQuery() };
-                
-                if(value < currentQuote)
-                {
-                    com.CommandText =
-                    @"UPDATE SellOrder SET active = 0 WHERE user <> @user";
-                    com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
-                    com.ExecuteNonQuery();
-                }
-                else if(value > currentQuote)
-                {
-                    com.CommandText =
-                    @"UPDATE BuyOrder SET active = 0 WHERE user <> @user";
-                    com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
-                    com.ExecuteNonQuery();
-                }
-
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
                 res = null;
-
+                Console.WriteLine(e.ToString());
             }
 
             return res;
@@ -216,19 +199,11 @@ namespace Server {
             
             com.CommandText = "SELECT * FROM User WHERE username = @user";
             com.Parameters.Add(new SQLiteParameter("@user", username));
-            
-            try
-            {
-                reader = com.ExecuteReader();
-            }
-            catch (SQLiteException e)
-            {
-                
-            }
 
             dynamic user;
             try
             {
+                reader = com.ExecuteReader();
                 reader.Read();
                 user = new
                 {
@@ -238,13 +213,14 @@ namespace Server {
                     salt = reader["salt"]
                 };
             }
-            catch(InvalidOperationException e)
+            catch(Exception e)
             {
                 user = null;
+                //Console.WriteLine(e.ToString());
             }
             finally
             {
-                reader.Close();
+                if(reader != null) reader.Close();
             }
 
             return user;
@@ -264,11 +240,11 @@ namespace Server {
             catch (InvalidOperationException e)
             {
                 res = null;
-                
+                Console.WriteLine(e.ToString());
             }
             finally
             {
-                reader.Close();
+                if(reader != null) reader.Close();
             }
 
             return res;
@@ -289,16 +265,16 @@ namespace Server {
                 res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
                 res = null;
-                
+                Console.WriteLine(e.ToString());
             }
 
             return res;
         }
-        public static int RemoveDiginotes(string user, int amount = 1)
+        public static dynamic RemoveDiginotes(string user, int amount = 1)
         {    
             com.CommandText =
                 @"delete from Diginote where id in
@@ -306,63 +282,52 @@ namespace Server {
             com.Parameters.Add(new SQLiteParameter("@user", user));
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();                
+                res = new { rows = com.ExecuteNonQuery() };                
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
-                
+                res = null;
+                Console.WriteLine(e.ToString());
             }
 
-            return rows;
+            return res;
         }
-        public static int TransferDiginotes(string from, string to, int amount = 0, double price = 0)
+        public static dynamic TransferDiginotes(string seller, string buyer, int amount, double quote)
         {
+            com.CommandText =
+               @"update Diginote set owner = @buyer where id in
+                (select id from Diginote where owner = @seller limit @amount);
+                update User set balance = balance - @total where username = @buyer;
+                update User set balance = balance + @total where username = @seller;
+                insert into _Transaction values (NULL,@buyer,@seller,@quote,@amount,datetime());";
+
+            com.Parameters.Add(new SQLiteParameter("@buyer", buyer));
+            com.Parameters.Add(new SQLiteParameter("@seller", seller));
+            com.Parameters.Add(new SQLiteParameter("@quote", quote.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@amount", amount));           
+            com.Parameters.Add(new SQLiteParameter("@total", (quote * amount).ToString()));
+
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                //Transfer diginotes
-                com.CommandText =
-                @"update Diginote set owner = @to where id in
-                (select id from Diginote where owner = @from limit @amount)";
-
-                com.Parameters.Add(new SQLiteParameter("@from", from));
-                com.Parameters.Add(new SQLiteParameter("@to", to));
-                com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-
-                com.ExecuteNonQuery();
-                //Remove balance from buyer
-                com.CommandText =
-                @"update User set balance = balance - @total where username = @user";
-
-                com.Parameters.Add(new SQLiteParameter("@total", price*amount));
-                com.Parameters.Add(new SQLiteParameter("@user", to));
-
-                com.ExecuteNonQuery();
-                //Add balance to seller
-                com.CommandText =
-                @"update User set balance = balance + @total where username = @user";
-
-                com.Parameters.Add(new SQLiteParameter("@total", price*amount));
-                com.Parameters.Add(new SQLiteParameter("@user", from));
-
-                com.ExecuteNonQuery();
-
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
-                
-                return 0;
+                res = null;
+                Console.WriteLine(e.ToString());
             }
 
-            return 1;
+            return res;
         }
         public static dynamic AddBuyOrder(string user, int amount = 1)
         {
@@ -380,11 +345,11 @@ namespace Server {
                 res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
                 res = null;
-                
+                Console.WriteLine(e.ToString());
             }
 
             return res;
@@ -405,11 +370,11 @@ namespace Server {
                 res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
                 res = null;
-                
+                Console.WriteLine(e.ToString());
             }
 
             return res;
@@ -422,16 +387,15 @@ namespace Server {
             dynamic res;
             try
             {
-
                 trans = conn.BeginTransaction();
                 res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
                 res = null;
-                
+                Console.WriteLine(e.ToString());
             }
 
             return res;
@@ -448,11 +412,11 @@ namespace Server {
                 res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
                 res = null;
-                
+                Console.WriteLine(e.ToString());
             }
 
             return res;
@@ -477,13 +441,16 @@ namespace Server {
                         id = reader["id"],
                     });
                 }
-                reader.Close();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
-                
                 orders = null;
-            }            
+                Console.WriteLine(e.ToString());
+            }
+            finally
+            {
+                if(reader != null) reader.Close();
+            }
 
             return orders;
         }
@@ -507,12 +474,12 @@ namespace Server {
                         id = reader["id"],
                     });
                 }
-                reader.Close();
+                if(reader != null) reader.Close();
             }
-            catch (SQLiteException e)
-            {
-                
+            catch (Exception e)
+            {                
                 orders = null;
+                Console.WriteLine(e.ToString());
             }            
 
             return orders;
@@ -535,11 +502,11 @@ namespace Server {
                 res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
                 res = null;
-                
+                Console.WriteLine(e.ToString());
             }
 
             return res;
@@ -562,11 +529,11 @@ namespace Server {
                 res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
                 res = null;
-                
+                Console.WriteLine(e.ToString());
             }
 
             return res;
@@ -575,11 +542,12 @@ namespace Server {
         public static dynamic GetBestSellOrder(string user,int amount)
         {
             com.CommandText =
-                @"select * 
-                  from SellOrder 
-                  where user <> @user and active = 1 order by date asc limit 1";
+                @"select * from SellOrder 
+                where user <> @user and active = 1
+                order by date asc limit 1";
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
             com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
+
             dynamic res;
             try
             {
@@ -595,11 +563,11 @@ namespace Server {
             catch (Exception e)
             {
                 res = null;
-                
+                Console.WriteLine(e.ToString());
             }
             finally
             {
-                reader.Close();
+                if(reader != null) reader.Close();
             }
 
             return res;
@@ -608,11 +576,11 @@ namespace Server {
         public static dynamic GetBestBuyOrder(string user, int amount)
         {
             com.CommandText =
-                @"select *
-                  from BuyOrder 
-                  where user <> @user and active = 1 order by date asc limit 1";
+                @"select * from BuyOrder where user <> @user
+                and active = 1 order by date asc limit 1";
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-            com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@user", user));
+
             dynamic res;
             try
             {
@@ -628,14 +596,14 @@ namespace Server {
             catch (Exception e)
             {
                 res = null;
-                
+                Console.WriteLine(e.ToString());
             }
             finally
             {
-                reader.Close();
+                if(reader != null) reader.Close();
             }
 
             return res;
-        }
+        }       
     }
 }

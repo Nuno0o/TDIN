@@ -101,7 +101,6 @@ namespace Client
                 return;
             }
 
-
             Client.username = username;
             Client.menu = new Menu();
             Client.login.Visible = false;

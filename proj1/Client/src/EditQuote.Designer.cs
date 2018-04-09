@@ -59,7 +59,6 @@
             this.label2.Size = new System.Drawing.Size(114, 13);
             this.label2.TabIndex = 3;
             this.label2.Text = "Enter new quote value";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label1
             // 
@@ -69,7 +68,6 @@
             this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "sdas";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // EditQuote
             // 
@@ -82,7 +80,6 @@
             this.Controls.Add(this.textBox1);
             this.Name = "EditQuote";
             this.Text = "EditQuote";
-            this.Load += new System.EventHandler(this.EditQuote_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

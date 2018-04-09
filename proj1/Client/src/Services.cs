@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Server
 {
@@ -21,7 +20,7 @@ namespace Server
         {
             return null;
         }
-        public string GetQuotes(int n)
+        public string GetQuotes(int limit = 1)
         {
             return null;
         }

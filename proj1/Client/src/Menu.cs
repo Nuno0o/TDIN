@@ -44,7 +44,7 @@ namespace Client
             {
                 /* get updated information */
                 string json = null;
-                json = Client.stubs.GetQuotes(10);
+                json = Client.stubs.GetQuotes();
                 List<dynamic> quotes = JsonConvert.DeserializeObject<List<dynamic>>(json);
                 json = Client.stubs.GetBalance(Client.username);
                 double balance = JsonConvert.DeserializeObject<dynamic>(json).balance;
@@ -61,7 +61,6 @@ namespace Client
                     diginotes -= (int)sell_order.amount;
 
                 /* protected region for assigning updated values */
-
                 Client.mut.WaitOne();
                 Client.quotes = quotes;
                 Client.balance = balance;

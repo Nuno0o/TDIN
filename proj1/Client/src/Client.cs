@@ -24,9 +24,9 @@ namespace Client
         public static int realdiginotes;
         public static string username;
 
-        public static List<Object> buy_orders;
-        public static List<Object> sell_orders;
-        public static List<Object> quotes;
+        public static List<dynamic> buy_orders;
+        public static List<dynamic> sell_orders;
+        public static List<dynamic> quotes;
 
         [STAThread]
         static void Main()
@@ -78,12 +78,8 @@ namespace Client
 
         public static double GetCurrentQuote()
         {
-            List<double> qts = new List<double>();
-            foreach (dynamic quote in Client.quotes)
-            {
-                qts.Add((double)quote.value);
-            }
-            return qts[0];
+            if (Client.quotes.Count == 0) return 1.0;
+            return Client.quotes[0].value;
         }
     }
 }

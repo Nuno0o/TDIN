@@ -36,7 +36,19 @@ CREATE TABLE SellOrder (
 DROP TABLE IF EXISTS Quote;
 CREATE TABLE Quote (
   value REAL NOT NULL,
-  date DATE NOT NULL
+  date TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS _Transaction;
+CREATE TABLE _Transaction (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	buyer TEXT NOT NULL,
+	seller TEXT NOT NULL,
+	quote REAL NOT NULL,
+	amount REAL NOT NULL,
+	date TEXT NOT NULL,
+	FOREIGN KEY (buyer) REFERENCES User(username),
+	FOREIGN KEY (seller) REFERENCES User(username)
 );
 
 INSERT INTO Quote(value,date) VALUES(1.0,datetime());
