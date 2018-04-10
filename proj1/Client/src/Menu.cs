@@ -108,7 +108,73 @@ namespace Client
                             break;
                         }
                 }));
-               
+                long current_time = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                /* Add inactive orders to the timer dictionary */
+                foreach (dynamic buy_order in Client.buy_orders)
+                {
+                    int id = Convert.ToInt32(buy_order.id);
+                    if(buy_order.active == 0 && !Client.b_activateTimers.ContainsKey(id))
+                    {
+                        Client.b_activateTimers.Add(id, current_time);
+                    }
+                }
+                foreach(dynamic sell_order in Client.sell_orders)
+                {
+                    int id = Convert.ToInt32(sell_order.id);
+                    if (sell_order.active == 0 && !Client.s_activateTimers.ContainsKey(id))
+                    {
+                        Client.b_activateTimers.Add(id, current_time);
+                    }
+                }
+                /* When 60 seconds have passed, re-activate order */
+
+                /* orders to remove, since they cant be removed while enumerating */
+                List<int> buytoremove = new List<int>();
+                List<int> selltoremove = new List<int>();
+                foreach (KeyValuePair<int,long> timer in Client.b_activateTimers)
+                {
+                    dynamic order = Client.BuyOrderById(timer.Key);
+                    int id = Convert.ToInt32(order.id);
+                    int amount = Convert.ToInt32(order.amount);
+                    if (current_time - timer.Value > Client.DIFFERENCE && order.active == 0)
+                    {
+                        try
+                        {
+                            buytoremove.Add(timer.Key);
+                            Client.stubs.ActivateBuyOrder(Client.username, id, amount);
+                        }
+                        catch(Exception ex)
+                        {
+
+                        }
+                    }
+                }
+                foreach (KeyValuePair<int, long> timer in Client.s_activateTimers)
+                {
+                    dynamic order = Client.SellOrderById(timer.Key);
+                    int id = Convert.ToInt32(order.id);
+                    int amount = Convert.ToInt32(order.amount);
+                    if (current_time - timer.Value > Client.DIFFERENCE && order.active == 0)
+                    {
+                        try
+                        {
+                            selltoremove.Add(timer.Key);
+                            Client.stubs.ActivateSellOrder(Client.username, id, amount);
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+                    }
+                }
+                foreach(int elem in buytoremove)
+                {
+                    Client.b_activateTimers.Remove(elem);
+                }
+                foreach (int elem in selltoremove)
+                {
+                    Client.s_activateTimers.Remove(elem);
+                }
                 /* wait 2 seconds */
                 Thread.Sleep(2000);
             }

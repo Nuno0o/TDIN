@@ -23,10 +23,14 @@ namespace Client
         //Diginotes without sell orders included
         public static int realdiginotes;
         public static string username;
-
+        //Current orders and quote
         public static List<dynamic> buy_orders;
         public static List<dynamic> sell_orders;
         public static List<dynamic> quotes;
+        //Used to keep track of the time any order went inactive, and after DIFFERENCE the order will go active again, and the order removed from the dictionary
+        public const long DIFFERENCE = 60000;
+        public static Dictionary<int, long> b_activateTimers = new Dictionary<int, long>();
+        public static Dictionary<int, long> s_activateTimers = new Dictionary<int, long>();
 
         [STAThread]
         static void Main()
@@ -80,6 +84,30 @@ namespace Client
         {
             if (Client.quotes.Count == 0) return 1.0;
             return Client.quotes[0].value;
+        }
+
+        public static dynamic BuyOrderById(int id)
+        {
+            foreach(dynamic buy_order in buy_orders)
+            {
+                if(buy_order.id == id)
+                {
+                    return buy_order;
+                }
+            }
+            return null;
+        }
+
+        public static dynamic SellOrderById(int id)
+        {
+            foreach (dynamic sell_order in sell_orders)
+            {
+                if (sell_order.id == id)
+                {
+                    return sell_order;
+                }
+            }
+            return null;
         }
     }
 }

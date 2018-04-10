@@ -10,7 +10,7 @@ namespace Server {
     {
         static void Main(string[] args)
         {
-            Database.Init(true);         
+            Database.Init();         
 
             TcpChannel chan = new TcpChannel(9000);
             ChannelServices.RegisterChannel(chan, false);

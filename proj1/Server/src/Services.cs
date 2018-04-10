@@ -17,6 +17,7 @@ namespace Server
         {
             Console.WriteLine("REGISTER " + username + " " + hash + " " + salt);
             dynamic obj = Database.AddUser(username, hash, salt);
+            if(obj == null) return JsonConvert.SerializeObject(obj != null);
             Database.AddDiginotes(username, 20);
             return JsonConvert.SerializeObject(obj != null);
         }
