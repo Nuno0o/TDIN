@@ -166,9 +166,13 @@ namespace Client
                     {
                         buytoremove.Add(timer.Key);
                         Client.services.ActivateBuyOrder(Client.token, id, amount);
+
                     }
                     catch (Exception ex)
                     {
+
+                        selltoremove.Add(timer.Key);
+                        Client.services.ActivateSellOrder(Client.token, id, amount);
                     }
                 }                
             }

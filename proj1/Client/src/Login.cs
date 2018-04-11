@@ -34,7 +34,9 @@ namespace Client
             res = JsonConvert.DeserializeObject(json);
             if (res == null)
             {
+
                 label3.Text = "Login failed!";
+
                 label3.ForeColor = System.Drawing.Color.Red;
                 return;
             }         
@@ -62,11 +64,13 @@ namespace Client
             string salt = Client.Salt();
             string hash = Client.Hash(password + salt);
 
+
             string json = Client.services.Register(username, hash, salt);           
             dynamic res = JsonConvert.DeserializeObject(json);
             if (res == null)
             {
                 label3.Text = "Registration failed!";
+
                 label3.ForeColor = System.Drawing.Color.Red;
                 return;
             }
