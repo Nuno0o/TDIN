@@ -39,10 +39,7 @@ namespace Client
 
                 int remaining = ((dynamic)obj).remaining;
 
-                if(remaining == 0)
-                {
-                    return;
-                }else if (remaining > 0)
+                if (remaining > 0)
                 {
                     EditQuote ed = new EditQuote("Your order couldn't be fully satisfied,"+ Environment.NewLine + " you can change quote value");
                     ed.ShowDialog();
@@ -51,14 +48,11 @@ namespace Client
             }
             catch(Exception ex)
             {
+                Dispose();
                 return;
-            }
+            }          
 
-
-
-            Visible = false;           
-
-            Close();
+            Dispose();
         }       
     }
 }
