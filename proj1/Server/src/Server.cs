@@ -16,7 +16,7 @@ namespace Server {
         public static IDictionary props;
         static void Main(string[] args)
         {
-            Database.Init(true);
+            Database.Init();
             clients = new Hashtable();
 
             provider = new BinaryServerFormatterSinkProvider();

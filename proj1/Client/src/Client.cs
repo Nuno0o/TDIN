@@ -37,21 +37,29 @@ namespace Client
         [STAThread]
         static void Main()
         {
-            services = (Services)RemotingServices.Connect(
+            try
+            {
+                services = (Services)RemotingServices.Connect(
                 typeof(Services),
                 "tcp://localhost:9000/Server/Services"
-            );
+                );
 
-            sponsor = new ClientSponsor();
-            sponsor.RenewalTime = TimeSpan.FromMinutes(5);
-            sponsor.Register(services);
+                sponsor = new ClientSponsor();
+                sponsor.RenewalTime = TimeSpan.FromMinutes(5);
+                sponsor.Register(services);
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
-            mut = new Mutex();
-            login = new Login();
-            Application.Run(login);
+                mut = new Mutex();
+                login = new Login();
+                Application.Run(login);
+            }
+            catch(Exception ex)
+            {
+
+            }
+            
             
         }
         public static string Hash(string input)
