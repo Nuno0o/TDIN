@@ -19,7 +19,9 @@ namespace Client
 
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
-
+        /*
+         * Add or remove funds from the account
+         */
         private void funds_button_Click(object sender, EventArgs e)
         {
             try

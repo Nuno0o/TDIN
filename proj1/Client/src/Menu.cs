@@ -8,6 +8,7 @@ namespace Client
 {
     public partial class Menu : Form
     {
+        Poll_Information poll;
         Thread updater;
         public Menu()
         {
@@ -31,6 +32,10 @@ namespace Client
             orders_grid.Columns["ID"].Visible = false;
             orders_grid.MultiSelect = false;
 
+            poll += update_client;
+            poll += update_interface;
+            poll += update_timers;
+
             updater = new Thread(Poll_Info);
             updater.IsBackground = true;
             updater.Start();
@@ -38,9 +43,19 @@ namespace Client
 
             FormClosing += Menu_FormClosing;
         }
+        delegate void Poll_Information();
         private void Poll_Info()
         {
             while (true)
+            {
+                poll();
+                /* wait 2 seconds */
+                Thread.Sleep(2000);
+            }
+        }
+        private void update_client()
+        {
+            try
             {
                 /* get updated information */
                 string json = null;
@@ -59,7 +74,6 @@ namespace Client
                 /* subtract sell orders' amount from diginotes */
                 foreach (dynamic sell_order in sell_orders)
                     diginotes -= (int)sell_order.amount;
-
                 /* protected region for assigning updated values */
                 Client.mut.WaitOne();
                 Client.quotes = quotes;
@@ -70,115 +84,122 @@ namespace Client
                 Client.sell_orders = sell_orders;
                 Client.mut.ReleaseMutex();
                 /* end of protected region */
+            }
+            catch (Exception ex)
+            {
 
-                /* updating interface */
-                Invoke(new Action(() =>
+            }
+           
+        }
+        private void update_interface()
+        {
+            Invoke(new Action(() =>
+            {
+                Text = "Current quote : " + Client.GetCurrentQuote();
+                balance_display.Text = Client.balance.ToString();
+                diginotes_display.Text = Client.realdiginotes.ToString() + " (" + Client.diginotes.ToString() + " avail.)";
+                string painted = null;
+                if (orders_grid.SelectedRows.Count != 0)
+                    painted = orders_grid.SelectedRows[0].ToString();
+                orders_grid.Rows.Clear();
+                foreach (dynamic buy_order in Client.buy_orders)
                 {
-                    Text = "Current quote : " + Client.GetCurrentQuote();
-                    balance_display.Text = Client.balance.ToString();
-                    diginotes_display.Text = Client.realdiginotes.ToString() + " (" + Client.diginotes.ToString() + " avail.)";
-                    string painted = null;
-                    if (orders_grid.SelectedRows.Count != 0)
-                        painted = orders_grid.SelectedRows[0].ToString();
-                    orders_grid.Rows.Clear();                    
-                    foreach (dynamic buy_order in Client.buy_orders)
-                    {
-                        orders_grid.Rows.Add(new[] {
+                    orders_grid.Rows.Add(new[] {
                             buy_order.id,
                             "Buy",
                             buy_order.amount,
                             buy_order.date,
                             buy_order.active
                         });
-                    }
-                    foreach (dynamic sell_order in Client.sell_orders)
-                    {
-                        orders_grid.Rows.Add(new[] {
+                }
+                foreach (dynamic sell_order in Client.sell_orders)
+                {
+                    orders_grid.Rows.Add(new[] {
                             sell_order.id,
                             "Sell",
                             sell_order.amount,
                             sell_order.date,
                             sell_order.active
                         });
-                    }
-                    foreach (DataGridViewRow row in orders_grid.Rows)
-                        if (row.ToString() == painted)
-                        {
-                            row.Selected = true;
-                            break;
-                        }
-                }));
-                long current_time = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                /* Add inactive orders to the timer dictionary */
-                foreach (dynamic buy_order in Client.buy_orders)
-                {
-                    int id = Convert.ToInt32(buy_order.id);
-                    if(buy_order.active == 0 && !Client.b_activateTimers.ContainsKey(id))
+                }
+                foreach (DataGridViewRow row in orders_grid.Rows)
+                    if (row.ToString() == painted)
                     {
-                        Client.b_activateTimers.Add(id, current_time);
+                        row.Selected = true;
+                        break;
                     }
-                }
-                foreach(dynamic sell_order in Client.sell_orders)
+            }));
+        }
+        private void update_timers()
+        {
+            long current_time = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            /* Add inactive orders to the timer dictionary */
+            foreach (dynamic buy_order in Client.buy_orders)
+            {
+                int id = Convert.ToInt32(buy_order.id);
+                if (buy_order.active == 0 && !Client.b_activateTimers.ContainsKey(id))
                 {
-                    int id = Convert.ToInt32(sell_order.id);
-                    if (sell_order.active == 0 && !Client.s_activateTimers.ContainsKey(id))
-                    {
-                        Client.b_activateTimers.Add(id, current_time);
-                    }
+                    Client.b_activateTimers.Add(id, current_time);
                 }
-                /* When 60 seconds have passed, re-activate order */
-
-                /* orders to remove, since they cant be removed while enumerating */
-                List<int> buytoremove = new List<int>();
-                List<int> selltoremove = new List<int>();
-                foreach (KeyValuePair<int,long> timer in Client.b_activateTimers)
-                {
-                    dynamic order = Client.BuyOrderById(timer.Key);
-                    int id = Convert.ToInt32(order.id);
-                    int amount = Convert.ToInt32(order.amount);
-                    if (current_time - timer.Value > Client.DIFFERENCE && order.active == 0)
-                    {
-                        try
-                        {
-                            buytoremove.Add(timer.Key);
-                            Client.stubs.ActivateBuyOrder(Client.username, id, amount);
-                        }
-                        catch(Exception ex)
-                        {
-
-                        }
-                    }
-                }
-                foreach (KeyValuePair<int, long> timer in Client.s_activateTimers)
-                {
-                    dynamic order = Client.SellOrderById(timer.Key);
-                    int id = Convert.ToInt32(order.id);
-                    int amount = Convert.ToInt32(order.amount);
-                    if (current_time - timer.Value > Client.DIFFERENCE && order.active == 0)
-                    {
-                        try
-                        {
-                            selltoremove.Add(timer.Key);
-                            Client.stubs.ActivateSellOrder(Client.username, id, amount);
-                        }
-                        catch (Exception ex)
-                        {
-
-                        }
-                    }
-                }
-                foreach(int elem in buytoremove)
-                {
-                    Client.b_activateTimers.Remove(elem);
-                }
-                foreach (int elem in selltoremove)
-                {
-                    Client.s_activateTimers.Remove(elem);
-                }
-                /* wait 2 seconds */
-                Thread.Sleep(2000);
             }
-        }      
+            foreach (dynamic sell_order in Client.sell_orders)
+            {
+                int id = Convert.ToInt32(sell_order.id);
+                if (sell_order.active == 0 && !Client.s_activateTimers.ContainsKey(id))
+                {
+                    Client.b_activateTimers.Add(id, current_time);
+                }
+            }
+            /* When 60 seconds have passed, re-activate order */
+
+            /* orders to remove, since they cant be removed while enumerating */
+            List<int> buytoremove = new List<int>();
+            List<int> selltoremove = new List<int>();
+            foreach (KeyValuePair<int, long> timer in Client.b_activateTimers)
+            {
+                dynamic order = Client.BuyOrderById(timer.Key);
+                int id = Convert.ToInt32(order.id);
+                int amount = Convert.ToInt32(order.amount);
+                if (current_time - timer.Value > Client.DIFFERENCE && order.active == 0)
+                {
+                    try
+                    {
+                        buytoremove.Add(timer.Key);
+                        Client.stubs.ActivateBuyOrder(Client.username, id, amount);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+            }
+            foreach (KeyValuePair<int, long> timer in Client.s_activateTimers)
+            {
+                dynamic order = Client.SellOrderById(timer.Key);
+                int id = Convert.ToInt32(order.id);
+                int amount = Convert.ToInt32(order.amount);
+                if (current_time - timer.Value > Client.DIFFERENCE && order.active == 0)
+                {
+                    try
+                    {
+                        selltoremove.Add(timer.Key);
+                        Client.stubs.ActivateSellOrder(Client.username, id, amount);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+            }
+            foreach (int elem in buytoremove)
+            {
+                Client.b_activateTimers.Remove(elem);
+            }
+            foreach (int elem in selltoremove)
+            {
+                Client.s_activateTimers.Remove(elem);
+            }
+        }
 
         private void remove_button_Click(object sender, EventArgs e)
         {

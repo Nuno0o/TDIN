@@ -6,13 +6,17 @@ namespace Client
 {
     public partial class Add : Form
     {
+
         public Add()
         {
             InitializeComponent();
 
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
         }
-
+        /*
+         * By pressing confirm, a new order is added to the database, as long as it meets certain constraints
+         * If the order is not fully satisfied, the user is asked to change the quote value
+         */
         private void confirm_button_Click(object sender, EventArgs e)
         {
             int amount = Convert.ToInt32(diginotes_input.Text);

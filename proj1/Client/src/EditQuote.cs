@@ -12,6 +12,7 @@ namespace Client
 {
     public partial class EditQuote : Form
     {
+
         public EditQuote(string text)
         {
             InitializeComponent();
@@ -20,7 +21,9 @@ namespace Client
 
             label1.Text = text;
         }
-
+        /*
+         * When submit is clicked, the quote changes, as long as the user has unsatisfied orders
+         */
         private void button1_Click(object sender, EventArgs e)
         {
             double newquote = Convert.ToDouble(this.textBox1.Text, System.Globalization.CultureInfo.InvariantCulture);

@@ -11,7 +11,6 @@ namespace Server {
         static void Main(string[] args)
         {
             Database.Init();         
-
             TcpChannel chan = new TcpChannel(9000);
             ChannelServices.RegisterChannel(chan, false);
             RemotingConfiguration.ApplicationName = "Server";
@@ -24,6 +23,7 @@ namespace Server {
             Console.WriteLine("Press ENTER to exit ...");
             Console.ReadLine();           
         }
+
         public static int DoBuyOrder(string username, int amount, double quote)
         {
             //Remaining diginotes to buy, starts at amount in buy order

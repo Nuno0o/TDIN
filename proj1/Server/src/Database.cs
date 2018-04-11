@@ -54,7 +54,10 @@ namespace Server {
                     Console.WriteLine(e.ToString());
                 }
             }            
-        }        
+        }
+        /*
+         * Add new user to the database
+         */
         public static dynamic AddUser(string username, string hash, string salt, double balance = 0.0)
         {
             com.CommandText = "insert into User values (@user, @hash, @salt, @balance)";
@@ -79,6 +82,9 @@ namespace Server {
 
             return res;
         }
+        /*
+         * Get balance of user
+         */
         public static dynamic GetBalance(string username)
         {
 
@@ -106,6 +112,9 @@ namespace Server {
 
             return res;
         }
+        /*
+         * Change balance of user
+         */
         public static dynamic SetBalance(string username, double balance = 0.0)
         {
                          
@@ -131,6 +140,9 @@ namespace Server {
 
             return res;
         }
+        /*
+         * Get *limit* last quotes
+         */
         public static List<dynamic> GetQuotes(int limit = 1)
         {
             com.CommandText = "SELECT * FROM Quote ORDER BY date DESC LIMIT @limit";
@@ -162,6 +174,9 @@ namespace Server {
 
             return quotes;
         }
+        /*
+         * Add new current quote
+         */
         public static dynamic SetQuote(double value, string user)
         {
             
@@ -194,6 +209,9 @@ namespace Server {
 
             return res;
         }
+        /*
+         * Get user information
+         */
         public static dynamic GetUser(string username)
         {
             
@@ -225,6 +243,9 @@ namespace Server {
 
             return user;
         }
+        /*
+         * Get number of diginotes a user has
+         */
         public static dynamic GetDiginotes(string username)
         {
             com.CommandText = "SELECT count(*) as diginotes FROM Diginote WHERE owner = @user";
@@ -249,6 +270,9 @@ namespace Server {
 
             return res;
         }
+        /*
+         * Add diginotes to a user
+         */
         public static dynamic AddDiginotes(string username, int amount = 1)
         { 
             com.CommandText = "";
@@ -274,6 +298,9 @@ namespace Server {
 
             return res;
         }
+        /*
+         * Remove diginotes from a user
+         */
         public static dynamic RemoveDiginotes(string user, int amount = 1)
         {    
             com.CommandText =
@@ -298,6 +325,9 @@ namespace Server {
 
             return res;
         }
+        /*
+         * Transfer diginotes to user at the chosen quote
+         */
         public static dynamic TransferDiginotes(string seller, string buyer, int amount, double quote)
         {
             com.CommandText =
@@ -329,6 +359,9 @@ namespace Server {
 
             return res;
         }
+        /*
+         * Get list of transactions a user has been part of
+         */
         public static dynamic GetTransactions(string user)
         {
             List<dynamic> trans = new List<dynamic>();
@@ -364,6 +397,9 @@ namespace Server {
 
             return trans;
         }
+        /*
+         * Get list of diginotes a user owns
+         */
         public static dynamic GetDiginotesList(string user)
         {
             List<dynamic> dgn = new List<dynamic>();
@@ -393,6 +429,9 @@ namespace Server {
 
             return dgn;
         }
+        /*
+         * Add new buy order
+         */
         public static dynamic AddBuyOrder(string user, int amount = 1)
         {
             com.CommandText =
@@ -418,6 +457,9 @@ namespace Server {
 
             return res;
         }
+        /*
+         * Add new sell order
+         */
         public static dynamic AddSellOrder(string user, int amount = 1)
         {
             com.CommandText =
@@ -443,6 +485,9 @@ namespace Server {
 
             return res;
         }
+        /*
+         * Remove buy order
+         */
         public static dynamic RemoveBuyOrder(int id)
         {
             com.CommandText = @"delete from BuyOrder where id = @id";
@@ -464,6 +509,9 @@ namespace Server {
 
             return res;
         }
+        /*
+         * Remove sell order
+         */
         public static dynamic RemoveSellOrder(int id)
         {
             com.CommandText = @"delete from SellOrder where id = @id";
@@ -485,6 +533,9 @@ namespace Server {
 
             return res;
         }
+        /*
+         * Get list of buy orders of a user
+         */
         public static List<dynamic> GetBuyOrders(String user)
         {
             List<dynamic> orders = new List<dynamic>();
@@ -518,6 +569,9 @@ namespace Server {
 
             return orders;
         }
+        /*
+         * Get list of sell orders of a user
+         */
         public static List<dynamic> GetSellOrders(String user)
         {
             List<dynamic> orders = new List<dynamic>();
@@ -548,6 +602,9 @@ namespace Server {
 
             return orders;
         }
+        /*
+         * Edit amount of activation state of buy order
+         */
         public static dynamic EditBuyOrder(int id, int amount, int active = 1)
         {           
             com.CommandText =
@@ -575,6 +632,9 @@ namespace Server {
 
             return res;
         }
+        /*
+         * Edit amount of activation state of sell order
+         */
         public static dynamic EditSellOrder(int id, int amount, int active = 1)
         {
             com.CommandText =
@@ -601,8 +661,10 @@ namespace Server {
             }
 
             return res;
-        }  
-        
+        }
+        /*
+         * Get best sell order that satisfies amount(prioritizes older ones)
+         */
         public static dynamic GetBestSellOrder(string user,int amount)
         {
             com.CommandText =
@@ -636,7 +698,9 @@ namespace Server {
 
             return res;
         }
-
+        /*
+         * Get best buy order that satisfies amount(prioritizes older ones)
+         */
         public static dynamic GetBestBuyOrder(string user, int amount)
         {
             com.CommandText =

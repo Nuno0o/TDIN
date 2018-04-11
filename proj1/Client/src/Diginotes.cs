@@ -13,6 +13,9 @@ namespace Client
 {
     public partial class Diginotes : Form
     {
+        /*
+         * Show list of diginotes in datagridview
+         */
         public Diginotes()
         {
             InitializeComponent();
