@@ -45,7 +45,7 @@ CREATE TABLE _Transaction (
 	buyer TEXT NOT NULL,
 	seller TEXT NOT NULL,
 	quote REAL NOT NULL,
-	amount REAL NOT NULL,
+	amount INTEGER NOT NULL,
 	date TEXT NOT NULL,
 	FOREIGN KEY (buyer) REFERENCES User(username),
 	FOREIGN KEY (seller) REFERENCES User(username)

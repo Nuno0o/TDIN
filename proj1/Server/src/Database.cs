@@ -309,9 +309,9 @@ namespace Server {
 
             com.Parameters.Add(new SQLiteParameter("@buyer", buyer));
             com.Parameters.Add(new SQLiteParameter("@seller", seller));
-            com.Parameters.Add(new SQLiteParameter("@quote", quote.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@quote", quote));
             com.Parameters.Add(new SQLiteParameter("@amount", amount));           
-            com.Parameters.Add(new SQLiteParameter("@total", (quote * amount).ToString()));
+            com.Parameters.Add(new SQLiteParameter("@total", (quote * amount)));
 
             dynamic res;
             try
@@ -328,6 +328,70 @@ namespace Server {
             }
 
             return res;
+        }
+        public static dynamic GetTransactions(string user)
+        {
+            List<dynamic> trans = new List<dynamic>();
+            com.CommandText = @"select * from _Transaction where buyer = @user1 or seller = @user2";
+            com.Parameters.Add(new SQLiteParameter("@user1", user));
+            com.Parameters.Add(new SQLiteParameter("@user2", user));
+
+            try
+            {
+                reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    trans.Add(new
+                    {
+                        buyer = reader["buyer"],
+                        seller = reader["seller"],
+                        quote = reader["quote"],
+                        amount = reader["amount"],
+                        date = reader["date"],
+                        id = reader["id"]
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                trans = null;
+                Console.WriteLine(e.ToString());
+            }
+            finally
+            {
+                if (reader != null) reader.Close();
+            }
+
+            return trans;
+        }
+        public static dynamic GetDiginotesList(string user)
+        {
+            List<dynamic> dgn = new List<dynamic>();
+            com.CommandText = @"select * from Diginote where owner = @user";
+            com.Parameters.Add(new SQLiteParameter("@user", user));
+
+            try
+            {
+                reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    dgn.Add(new
+                    {
+                        id = reader["id"]
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                dgn = null;
+                Console.WriteLine(e.ToString());
+            }
+            finally
+            {
+                if (reader != null) reader.Close();
+            }
+
+            return dgn;
         }
         public static dynamic AddBuyOrder(string user, int amount = 1)
         {

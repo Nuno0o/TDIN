@@ -250,5 +250,17 @@ namespace Client
                 Client.stubs.ActivateSellOrder(Client.username, id, amount);
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Diginotes d = new Diginotes();
+            d.ShowDialog();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Transactions t = new Transactions();
+            t.ShowDialog();
+        }
     }
 }

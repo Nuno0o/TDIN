@@ -46,6 +46,16 @@ namespace Server
             if (value < 0) return null;
             return JsonConvert.SerializeObject(Database.SetQuote(value, username));
         }
+        public string GetDiginotesList(string username)
+        {
+            Console.WriteLine("GET DIGINOTE LIST " + username);
+            return JsonConvert.SerializeObject(Database.GetDiginotesList(username));
+        }
+        public string GetTransactions(string username)
+        {
+            Console.WriteLine("GET DIGINOTE LIST " + username);
+            return JsonConvert.SerializeObject(Database.GetTransactions(username));
+        }
         public string GetBuyOrders(string username)
         {
             Console.WriteLine("GET_BUY_ORDERS " + username);

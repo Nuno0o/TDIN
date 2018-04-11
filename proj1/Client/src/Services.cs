@@ -28,6 +28,14 @@ namespace Server
         {
             return null;
         }
+        public string GetDiginotesList(string username)
+        {
+            return null;
+        }
+        public string GetTransactions(string username)
+        {
+            return null;
+        }
         public string GetBuyOrders(string username)
         {
             return null;
