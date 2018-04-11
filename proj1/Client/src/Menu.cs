@@ -44,16 +44,16 @@ namespace Client
             {
                 /* get updated information */
                 string json = null;
-                json = Client.stubs.GetQuotes();
+                json = Client.services.GetQuotes();
                 List<dynamic> quotes = JsonConvert.DeserializeObject<List<dynamic>>(json);
-                json = Client.stubs.GetBalance(Client.username);
+                json = Client.services.GetBalance(Client.token);
                 double balance = JsonConvert.DeserializeObject<dynamic>(json).balance;
-                json = Client.stubs.GetDiginotes(Client.username);
+                json = Client.services.GetDiginotes(Client.token);
                 int diginotes = JsonConvert.DeserializeObject<dynamic>(json).diginotes;
                 int realdiginotes = diginotes;
-                json = Client.stubs.GetBuyOrders(Client.username);
+                json = Client.services.GetBuyOrders(Client.token);
                 List<dynamic> buy_orders = JsonConvert.DeserializeObject<List<dynamic>>(json);
-                json = Client.stubs.GetSellOrders(Client.username);
+                json = Client.services.GetSellOrders(Client.token);
                 List<dynamic> sell_orders = JsonConvert.DeserializeObject<List<dynamic>>(json);
 
                 /* subtract sell orders' amount from diginotes */
@@ -141,7 +141,7 @@ namespace Client
                         try
                         {
                             buytoremove.Add(timer.Key);
-                            Client.stubs.ActivateBuyOrder(Client.username, id, amount);
+                            Client.services.ActivateBuyOrder(Client.token, id, amount);
                         }
                         catch(Exception ex)
                         {
@@ -159,7 +159,7 @@ namespace Client
                         try
                         {
                             selltoremove.Add(timer.Key);
-                            Client.stubs.ActivateSellOrder(Client.username, id, amount);
+                            Client.services.ActivateSellOrder(Client.token, id, amount);
                         }
                         catch (Exception ex)
                         {
@@ -191,14 +191,14 @@ namespace Client
             string json = null;
             if ((string)row.Cells[1].Value == "Buy")
             {
-                json = Client.stubs.RemoveBuyOrder(id);
+                json = Client.services.RemoveBuyOrder(id);
                 if (JsonConvert.DeserializeObject(json) == null) return;
                 object order = Client.buy_orders.Find(x => ((dynamic)x).id == id);
                 Client.buy_orders.Remove(order);
             }
             else if ((string)row.Cells[1].Value == "Sell")
             {
-                json = Client.stubs.RemoveSellOrder(id);
+                json = Client.services.RemoveSellOrder(id);
                 if (JsonConvert.DeserializeObject(json) == null) return;
                 object order = Client.sell_orders.Find(x => ((dynamic)x).id == id);
                 Client.sell_orders.Remove(order);
@@ -244,10 +244,10 @@ namespace Client
             int amount = Convert.ToInt32(row.Cells[2].Value);
             int active = Convert.ToInt32(row.Cells[4].Value);
             if(type.Equals("Buy") && active == 0){
-                Client.stubs.ActivateBuyOrder(Client.username,id,amount);
+                Client.services.ActivateBuyOrder(Client.token,id,amount);
             }else if(type.Equals("Sell") && active == 0)
             {
-                Client.stubs.ActivateSellOrder(Client.username, id, amount);
+                Client.services.ActivateSellOrder(Client.token, id, amount);
             }
         }
     }

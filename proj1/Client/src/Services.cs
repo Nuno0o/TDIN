@@ -4,19 +4,19 @@ namespace Server
 {
     class Services : MarshalByRefObject
     {        
-        public string Login(string username, string hash)
+        public string Login(string token, string hash)
         {
             return null;
         }
-        public string Register(string username, string hash, string salt)
+        public string Register(string token, string hash, string salt)
         {
             return null;
         }
-        public string GetBalance(string username)
+        public string GetBalance(string token)
         {
             return null;
         }
-        public string GetDiginotes(string username)
+        public string GetDiginotes(string token)
         {
             return null;
         }
@@ -24,15 +24,15 @@ namespace Server
         {
             return null;
         }
-        public string SetQuote(string username, double value)
+        public string SetQuote(string token, double value)
         {
             return null;
         }
-        public string GetBuyOrders(string username)
+        public string GetBuyOrders(string token)
         {
             return null;
         }
-        public string GetSellOrders(string username)
+        public string GetSellOrders(string token)
         {
             return null;
         }
@@ -44,19 +44,19 @@ namespace Server
         {
             return null;
         }
-        public string AddBuyOrder(string username, int amount)
+        public string AddBuyOrder(string token, int amount)
         {
             return null;
         }
-        public string AddSellOrder(string username, int amount)
+        public string AddSellOrder(string token, int amount)
         {
             return null;
         }
-        public string ActivateBuyOrder(string username,int id, int amount)
+        public string ActivateBuyOrder(string token,int id, int amount)
         {
             return null;
         }
-        public string ActivateSellOrder(string username,int id, int amount)
+        public string ActivateSellOrder(string token,int id, int amount)
         {
             return null;
         }
@@ -68,15 +68,15 @@ namespace Server
         {
             return null;
         }
-        public string DepositBalance(string username, double amount)
+        public string DepositBalance(string token, double amount)
         {
             return null;
         }
-        public string WithdrawBalance(string username, double amount)
+        public string WithdrawBalance(string token, double amount)
         {
             return null;
         }
-        public string GetSalt(string username)
+        public string GetSalt(string token)
         {
             return null;
         }

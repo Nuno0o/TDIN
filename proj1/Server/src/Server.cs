@@ -2,15 +2,17 @@
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Lifetime;
+using System.Collections;
 
-
-namespace Server {
-  
+namespace Server {  
     class Server
     {
+        public static Hashtable clients;
         static void Main(string[] args)
         {
-            Database.Init();         
+            Database.Init();
+            clients = new Hashtable();
 
             TcpChannel chan = new TcpChannel(9000);
             ChannelServices.RegisterChannel(chan, false);
@@ -19,7 +21,12 @@ namespace Server {
                 typeof(Services),
                 "Services",
                 WellKnownObjectMode.Singleton
-            );            
+            );
+
+            LifetimeServices.LeaseManagerPollTime = TimeSpan.FromSeconds(10);
+            LifetimeServices.LeaseTime = TimeSpan.FromMinutes(5);
+            LifetimeServices.RenewOnCallTime = TimeSpan.FromMinutes(2);
+            LifetimeServices.SponsorshipTimeout = TimeSpan.FromMinutes(2);
 
             Console.WriteLine("Press ENTER to exit ...");
             Console.ReadLine();           
@@ -87,6 +94,22 @@ namespace Server {
             }
             //Returns number of diginotes that couldn't be satisfied
             return remainder;
+        }
+        public static string Salt()
+        {
+            Random rng = new Random();
+            string alphabet =
+                "qwertyuiopasdfghjklzxcvbnm" +
+                "QWERTYUIOPASDFGHJKLZXCVBNM" +
+                "1234567890";
+            string salt = "";
+            while (salt.Length != 16)
+            {
+                int index = rng.Next() % alphabet.Length;
+                salt += alphabet.Substring(index, 1);
+            }
+
+            return salt;
         }
     }    
 }
