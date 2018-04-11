@@ -38,7 +38,7 @@ namespace Client
                 return;
             }
             Console.WriteLine(newquote);
-            Client.stubs.SetQuote(Client.username, newquote);
+            Client.services.SetQuote(Client.token, newquote);
             Dispose();
         }
     }

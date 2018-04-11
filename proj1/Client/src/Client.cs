@@ -6,14 +6,16 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Text;
 using System.Security.Cryptography;
+using System.Runtime.Remoting.Lifetime;
 
 namespace Client
 {
     static class Client
     {
-        public static Services stubs;
+        public static Services services;
         public static Login login;
         public static Menu menu;
+        public static ClientSponsor sponsor;
 
         public static Mutex mut;
         //Balance
@@ -22,7 +24,7 @@ namespace Client
         public static int diginotes;
         //Diginotes without sell orders included
         public static int realdiginotes;
-        public static string username;
+        public static string token;
         //Current orders and quote
         public static List<dynamic> buy_orders;
         public static List<dynamic> sell_orders;
@@ -35,10 +37,14 @@ namespace Client
         [STAThread]
         static void Main()
         {
-            stubs = (Services)RemotingServices.Connect(
+            services = (Services)RemotingServices.Connect(
                 typeof(Services),
                 "tcp://localhost:9000/Server/Services"
             );
+
+            sponsor = new ClientSponsor();
+            sponsor.RenewalTime = TimeSpan.FromMinutes(5);
+            sponsor.Register(services);
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -62,7 +68,6 @@ namespace Client
             }
             return hash.ToString();
         }
-
         public static string Salt()
         {
             Random rng = new Random();
@@ -79,7 +84,6 @@ namespace Client
 
             return salt;
         }
-
         public static double GetCurrentQuote()
         {
             if (Client.quotes.Count == 0) return 1.0;

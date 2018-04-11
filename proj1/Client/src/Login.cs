@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Client
@@ -11,8 +9,7 @@ namespace Client
         public Login()
         {
             InitializeComponent();
-
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
         }
         private void login_button_Click(object sender, EventArgs e)
         {
@@ -21,49 +18,34 @@ namespace Client
 
             if (username.Length < 4 || username.Length > 16) return;
             if (password.Length < 4 || password.Length > 16) return;
-            try
-            { 
-
-                string json = Client.stubs.GetSalt(username);
-                dynamic res = JsonConvert.DeserializeObject(json);
-                if (res == null)
-                {
-                    this.label3.Text = "User doesn't exist";
-                    this.label3.ForeColor = System.Drawing.Color.Red;
-                    return;
-                }
-
-                string salt = res.salt;
-                string hash = Client.Hash(password + salt);
-                json = Client.stubs.Login(username, hash);
-                res = JsonConvert.DeserializeObject(json);
-                if (res == null)
-                {
-                    this.label3.Text = "User doesn't exist";
-                    this.label3.ForeColor = System.Drawing.Color.Red;
-                    return;
-                }
-                if (!res)
-                {
-                    this.label3.Text = "Wrong password";
-                    this.label3.ForeColor = System.Drawing.Color.Red;
-                    return;
-                }
-            }catch(Exception ex)
+           
+            string json = Client.services.GetSalt(username);
+            dynamic res = JsonConvert.DeserializeObject(json);
+            if (res == null)
             {
-                this.label3.Text = "Login failed";
-                this.label3.ForeColor = System.Drawing.Color.Red;
+                label3.Text = "Invalid credentials!";
+                label3.ForeColor = System.Drawing.Color.Red;
                 return;
             }
 
+            string salt = res.salt;
+            string hash = Client.Hash(password + salt);
+            json = Client.services.Login(username, hash);
+            res = JsonConvert.DeserializeObject(json);
+            if (res == null)
+            {
+                label3.Text = "Invalid credentials!";
+                label3.ForeColor = System.Drawing.Color.Red;
+                return;
+            }         
 
-            Client.username = username;
+            Client.token = res.token;
             Client.menu = new Menu();
             Client.login.Visible = false;
             Client.menu.Visible = true;
             password_input.Text = "";
-            this.label3.Text = "Login or register";
-            this.label3.ForeColor = System.Drawing.Color.Black;
+            label3.Text = "Login or Register";
+            label3.ForeColor = System.Drawing.Color.Black;
         }
         private void register_button_Click(object sender, EventArgs e)
         {
@@ -75,33 +57,17 @@ namespace Client
 
             string salt = Client.Salt();
             string hash = Client.Hash(password + salt);
-            string json;
-            try
-            {
-                json = Client.stubs.Register(username, hash, salt);
-            }
-            catch(Exception ex)
-            {
-                this.label3.Text = "Register failed";
-                this.label3.ForeColor = System.Drawing.Color.Red;
-                return;
-            }
-            dynamic res = JsonConvert.DeserializeObject(json);
 
+            string json = Client.services.Register(username, hash, salt);           
+            dynamic res = JsonConvert.DeserializeObject(json);
             if (res == null)
             {
-                this.label3.Text = "Register failed";
-                this.label3.ForeColor = System.Drawing.Color.Red;
+                label3.Text = "Register failed!";
+                label3.ForeColor = System.Drawing.Color.Red;
                 return;
             }
-            if (!res)
-            {
-                this.label3.Text = "Account already exists";
-                this.label3.ForeColor = System.Drawing.Color.Red;
-                return;
-            }
-
-            Client.username = username;
+            
+            Client.token = res.token;
             Client.menu = new Menu();
             Client.login.Visible = false;
             Client.menu.Visible = true;
