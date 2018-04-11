@@ -164,16 +164,13 @@ namespace Client
                 {
                     try
                     {
-                        try
-                        {
-                            buytoremove.Add(timer.Key);
-                            Client.services.ActivateBuyOrder(Client.token, id, amount);
-                        }
-                        catch(Exception ex)
-                        {
-
+                        buytoremove.Add(timer.Key);
+                        Client.services.ActivateBuyOrder(Client.token, id, amount);
                     }
-                }
+                    catch (Exception ex)
+                    {
+                    }
+                }                
             }
             foreach (KeyValuePair<int, long> timer in Client.s_activateTimers)
             {
@@ -182,18 +179,16 @@ namespace Client
                 int amount = Convert.ToInt32(order.amount);
                 if (current_time - timer.Value > Client.DIFFERENCE && order.active == 0)
                 {
+
                     try
                     {
-                        try
-                        {
-                            selltoremove.Add(timer.Key);
-                            Client.services.ActivateSellOrder(Client.token, id, amount);
-                        }
-                        catch (Exception ex)
-                        {
-
+                        selltoremove.Add(timer.Key);
+                        Client.services.ActivateSellOrder(Client.token, id, amount);
                     }
-                }
+                    catch (Exception ex)
+                    {
+                    }
+                }                                   
             }
             foreach (int elem in buytoremove)
             {

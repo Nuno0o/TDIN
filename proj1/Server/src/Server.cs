@@ -4,17 +4,28 @@ using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Lifetime;
 using System.Collections;
+using System.Runtime.Serialization.Formatters;
 
 namespace Server {  
     class Server
     {
         public static Hashtable clients;
+        public static TcpChannel chan;
+        public static BinaryServerFormatterSinkProvider provider;
+        public static IDictionary props;
         static void Main(string[] args)
         {
-            Database.Init();
+            Database.Init(true);
             clients = new Hashtable();
 
-            TcpChannel chan = new TcpChannel(9000);
+            provider = new BinaryServerFormatterSinkProvider();
+            provider.TypeFilterLevel = TypeFilterLevel.Full;
+
+            props = new Hashtable();
+            props["port"] = 9000;
+
+            chan = new TcpChannel(props, null, provider);
+
             ChannelServices.RegisterChannel(chan, false);
             RemotingConfiguration.ApplicationName = "Server";
             RemotingConfiguration.RegisterWellKnownServiceType(

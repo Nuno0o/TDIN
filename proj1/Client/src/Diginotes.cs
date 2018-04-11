@@ -35,7 +35,7 @@ namespace Client
 
             try
             {
-                string json = Client.stubs.GetDiginotesList(Client.username);
+                string json = Client.services.GetDiginotesList(Client.token);
                 List<dynamic> diginotes = JsonConvert.DeserializeObject<List<dynamic>>(json);
                 foreach(dynamic diginote in diginotes)
                 {

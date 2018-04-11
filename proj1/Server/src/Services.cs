@@ -11,7 +11,7 @@ namespace Server
 
         public override object InitializeLifetimeService()
         {
-            ILease lease = (ILease)InitializeLifetimeService();
+            ILease lease = (ILease)base.InitializeLifetimeService();
             // Normally, the initial lease time would be much longer.
             // It is shortened here for demonstration purposes.
             if (lease.CurrentState == LeaseState.Initial)
@@ -87,17 +87,23 @@ namespace Server
             if (value < 0) return null;
             return JsonConvert.SerializeObject(Database.SetQuote(value, username));
         }
-        public string GetDiginotesList(string username)
+        public string GetDiginotesList(string token)
         {
+            if (!Server.clients.ContainsKey(token)) return NULL;
+            string username = (string)Server.clients[token];
+
             Console.WriteLine("GET DIGINOTE LIST " + username);
             return JsonConvert.SerializeObject(Database.GetDiginotesList(username));
         }
-        public string GetTransactions(string username)
+        public string GetTransactions(string token)
         {
+            if (!Server.clients.ContainsKey(token)) return NULL;
+            string username = (string)Server.clients[token];
+
             Console.WriteLine("GET DIGINOTE LIST " + username);
             return JsonConvert.SerializeObject(Database.GetTransactions(username));
         }
-        public string GetBuyOrders(string username)
+        public string GetBuyOrders(string token)
         {
             if (!Server.clients.ContainsKey(token)) return NULL;
             string username = (string)Server.clients[token];

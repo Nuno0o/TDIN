@@ -34,7 +34,7 @@ namespace Client
             res = JsonConvert.DeserializeObject(json);
             if (res == null)
             {
-                label3.Text = "Invalid credentials!";
+                label3.Text = "Login failed!";
                 label3.ForeColor = System.Drawing.Color.Red;
                 return;
             }         
@@ -52,8 +52,12 @@ namespace Client
             string username = username_input.Text;
             string password = password_input.Text;
 
-            if (username.Length < 4 || username.Length > 16) return;
-            if (password.Length < 4 || password.Length > 16) return;
+            if (username.Length < 4 || username.Length > 16 || password.Length < 4 || password.Length > 16)
+            {
+                label3.Text = "Invalid username and/or password!";
+                label3.ForeColor = System.Drawing.Color.Red;
+                return;
+            }
 
             string salt = Client.Salt();
             string hash = Client.Hash(password + salt);
@@ -62,7 +66,7 @@ namespace Client
             dynamic res = JsonConvert.DeserializeObject(json);
             if (res == null)
             {
-                label3.Text = "Register failed!";
+                label3.Text = "Registration failed!";
                 label3.ForeColor = System.Drawing.Color.Red;
                 return;
             }
@@ -72,6 +76,8 @@ namespace Client
             Client.login.Visible = false;
             Client.menu.Visible = true;
             password_input.Text = "";
+            label3.Text = "Login or Register";
+            label3.ForeColor = System.Drawing.Color.Black;
         }        
     }
 }

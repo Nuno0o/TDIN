@@ -37,8 +37,7 @@ namespace Client
 
             try
             {
-                string json = Client.stubs.GetTransactions(Client.username);
-                Console.WriteLine(json + "xdd");
+                string json = Client.services.GetTransactions(Client.token);
                 List<dynamic> transactions = JsonConvert.DeserializeObject<List<dynamic>>(json);
                 foreach (dynamic trans in transactions)
                 {
