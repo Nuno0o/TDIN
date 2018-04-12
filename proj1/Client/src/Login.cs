@@ -18,19 +18,40 @@ namespace Client
 
             if (username.Length < 4 || username.Length > 16) return;
             if (password.Length < 4 || password.Length > 16) return;
-           
-            string json = Client.services.GetSalt(username);
-            dynamic res = JsonConvert.DeserializeObject(json);
-            if (res == null)
+            string json;
+            dynamic res;
+            try
             {
-                label3.Text = "Invalid credentials!";
+                json = Client.services.GetSalt(username);
+                res = JsonConvert.DeserializeObject(json);
+                if (res == null)
+                {
+                    label3.Text = "Invalid credentials!";
+                    label3.ForeColor = System.Drawing.Color.Red;
+                    return;
+                }
+            }
+            catch(Exception ex)
+            {
+                label3.Text = "Login failed!";
+
                 label3.ForeColor = System.Drawing.Color.Red;
                 return;
             }
 
             string salt = res.salt;
             string hash = Client.Hash(password + salt);
-            json = Client.services.Login(username, hash);
+            try
+            {
+                json = Client.services.Login(username, hash);
+            }catch(Exception ex)
+            {
+                label3.Text = "Login failed!";
+
+                label3.ForeColor = System.Drawing.Color.Red;
+                return;
+            }
+            
             res = JsonConvert.DeserializeObject(json);
             if (res == null)
             {
@@ -63,13 +84,23 @@ namespace Client
 
             string salt = Client.Salt();
             string hash = Client.Hash(password + salt);
+            string json;
+            try
+            {
+                json = Client.services.Register(username, hash, salt);
+            }
+            catch(Exception ex)
+            {
+                label3.Text = "Registration failed!";
 
-
-            string json = Client.services.Register(username, hash, salt);           
+                label3.ForeColor = System.Drawing.Color.Red;
+                return;
+            }
+               
             dynamic res = JsonConvert.DeserializeObject(json);
             if (res == null)
             {
-                label3.Text = "Registration failed!";
+                label3.Text = "User already exists!";
 
                 label3.ForeColor = System.Drawing.Color.Red;
                 return;
