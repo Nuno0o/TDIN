@@ -206,26 +206,34 @@ namespace Client
 
         private void remove_button_Click(object sender, EventArgs e)
         {
-            if (orders_grid.SelectedRows.Count != 1) return;
-            var row = orders_grid.SelectedRows[0];
-            object cell = row.Cells[0].Value;
-            if (cell == null) return;
-            int id = Convert.ToInt32(cell);
-            int index = row.Index;
-            string json = null;
-            if ((string)row.Cells[1].Value == "Buy")
+            try
             {
-                json = Client.services.RemoveBuyOrder(id);
-                if (JsonConvert.DeserializeObject(json) == null) return;
-                object order = Client.buy_orders.Find(x => ((dynamic)x).id == id);
-                Client.buy_orders.Remove(order);
-            }
-            else if ((string)row.Cells[1].Value == "Sell")
+
+
+                if (orders_grid.SelectedRows.Count != 1) return;
+                var row = orders_grid.SelectedRows[0];
+                object cell = row.Cells[0].Value;
+                if (cell == null) return;
+                int id = Convert.ToInt32(cell);
+                int index = row.Index;
+                string json = null;
+                if ((string)row.Cells[1].Value == "Buy")
+                {
+                    json = Client.services.RemoveBuyOrder(id);
+                    if (JsonConvert.DeserializeObject(json) == null) return;
+                    object order = Client.buy_orders.Find(x => ((dynamic)x).id == id);
+                    Client.buy_orders.Remove(order);
+                }
+                else if ((string)row.Cells[1].Value == "Sell")
+                {
+                    json = Client.services.RemoveSellOrder(id);
+                    if (JsonConvert.DeserializeObject(json) == null) return;
+                    object order = Client.sell_orders.Find(x => ((dynamic)x).id == id);
+                    Client.sell_orders.Remove(order);
+                }
+            }catch(Exception ex)
             {
-                json = Client.services.RemoveSellOrder(id);
-                if (JsonConvert.DeserializeObject(json) == null) return;
-                object order = Client.sell_orders.Find(x => ((dynamic)x).id == id);
-                Client.sell_orders.Remove(order);
+
             }
         }
 
@@ -260,18 +268,28 @@ namespace Client
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (orders_grid.SelectedRows.Count != 1) return;
-            var row = orders_grid.SelectedRows[0];
-            if (row.Cells[0].Value == null) return;
-            int id = Convert.ToInt32(row.Cells[0].Value);
-            string type = Convert.ToString(row.Cells[1].Value);
-            int amount = Convert.ToInt32(row.Cells[2].Value);
-            int active = Convert.ToInt32(row.Cells[4].Value);
-            if(type.Equals("Buy") && active == 0){
-                Client.services.ActivateBuyOrder(Client.token,id,amount);
-            }else if(type.Equals("Sell") && active == 0)
+            try
             {
-                Client.services.ActivateSellOrder(Client.token, id, amount);
+
+
+                if (orders_grid.SelectedRows.Count != 1) return;
+                var row = orders_grid.SelectedRows[0];
+                if (row.Cells[0].Value == null) return;
+                int id = Convert.ToInt32(row.Cells[0].Value);
+                string type = Convert.ToString(row.Cells[1].Value);
+                int amount = Convert.ToInt32(row.Cells[2].Value);
+                int active = Convert.ToInt32(row.Cells[4].Value);
+                if (type.Equals("Buy") && active == 0)
+                {
+                    Client.services.ActivateBuyOrder(Client.token, id, amount);
+                }
+                else if (type.Equals("Sell") && active == 0)
+                {
+                    Client.services.ActivateSellOrder(Client.token, id, amount);
+                }
+            }catch(Exception ex)
+            {
+
             }
         }
 
