@@ -68,7 +68,7 @@ namespace Server {
                 //If the sell order was only partially satisfied, reduce the amount it's selling
                 else
                 {
-                    Database.EditSellOrder(order.id, order.amount - amount);
+                    Database.EditSellOrder(order.id, order.amount - remainder);
                 }
                 //Remaining diginotes to buy reduced by the amount sold in this iteration
                 remainder -= maxamount;
@@ -100,7 +100,7 @@ namespace Server {
                 //If the buy order was only partially satisfied, reduce the amount it's selling
                 else
                 {
-                    Database.EditBuyOrder(order.id, order.amount - amount);
+                    Database.EditBuyOrder(order.id, order.amount - remainder);
                 }
                 //Remaining diginotes to buy reduced by the amount sold in this iteration
                 remainder -= maxamount;
