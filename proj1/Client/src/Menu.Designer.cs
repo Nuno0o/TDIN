@@ -159,9 +159,9 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(153, 35);
+            this.button4.Location = new System.Drawing.Point(153, 32);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(80, 21);
+            this.button4.Size = new System.Drawing.Size(80, 23);
             this.button4.TabIndex = 14;
             this.button4.Text = "Transactions";
             this.button4.UseVisualStyleBackColor = true;
@@ -181,7 +181,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(330, 475);
+            this.ClientSize = new System.Drawing.Size(330, 430);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
