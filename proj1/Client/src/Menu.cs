@@ -59,7 +59,7 @@ namespace Client
             {
                 /* get updated information */
                 string json = null;
-                json = Client.services.GetQuotes();
+                json = Client.services.GetQuotes(10);
                 List<dynamic> quotes = JsonConvert.DeserializeObject<List<dynamic>>(json);
                 json = Client.services.GetBalance(Client.token);
                 double balance = JsonConvert.DeserializeObject<dynamic>(json).balance;
@@ -310,6 +310,12 @@ namespace Client
         {
             Transactions t = new Transactions();
             t.ShowDialog();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Quotes q = new Quotes();
+            q.ShowDialog();
         }
     }
 }
