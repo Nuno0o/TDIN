@@ -84,10 +84,17 @@ namespace Client
                 Client.sell_orders = sell_orders;
                 Client.mut.ReleaseMutex();
                 /* end of protected region */
+                Client.timeout_counter = 0;
             }
             catch (Exception ex)
             {
-
+                Client.timeout_counter++;
+                if (Client.timeout_counter >= Client.MAX_TIMEOUT)
+                {
+                    Client.login.Visible = true;
+                    Client.login.SetText("Client timed out", System.Drawing.Color.Red);
+                }
+                Dispose();
             }
            
         }

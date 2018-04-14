@@ -11,6 +11,11 @@ namespace Client
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.FixedSingle;
         }
+        public void SetText(string text,System.Drawing.Color color)
+        {
+            label3.Text = text;
+            label3.ForeColor = color;
+        }
         private void login_button_Click(object sender, EventArgs e)
         {
             try

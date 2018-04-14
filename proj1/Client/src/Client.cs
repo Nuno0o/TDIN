@@ -18,6 +18,9 @@ namespace Client
         public static ClientSponsor sponsor;
 
         public static Mutex mut;
+        //Timeout
+        public const int MAX_TIMEOUT = 2;
+        public static int timeout_counter = 0;
         //Balance
         public static double balance;
         //Diginotes with sell orders included
