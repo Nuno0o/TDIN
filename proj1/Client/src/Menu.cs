@@ -88,13 +88,14 @@ namespace Client
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 Client.timeout_counter++;
                 if (Client.timeout_counter >= Client.MAX_TIMEOUT)
                 {
                     Client.login.Visible = true;
                     Client.login.SetText("Client timed out", System.Drawing.Color.Red);
                 }
-                Dispose();
+                Invoke(new Action (() => Dispose()));
             }
            
         }
