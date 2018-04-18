@@ -165,6 +165,11 @@ namespace Client
             foreach (KeyValuePair<int, long> timer in Client.b_activateTimers)
             {
                 dynamic order = Client.BuyOrderById(timer.Key);
+                if (order == null)
+                {
+                    buytoremove.Add(timer.Key);
+                    continue;
+                }
                 int id = Convert.ToInt32(order.id);
                 int amount = Convert.ToInt32(order.amount);
                 if (current_time - timer.Value > Client.DIFFERENCE && order.active == 0)
@@ -186,6 +191,11 @@ namespace Client
             foreach (KeyValuePair<int, long> timer in Client.s_activateTimers)
             {
                 dynamic order = Client.SellOrderById(timer.Key);
+                if (order == null)
+                {
+                    selltoremove.Add(timer.Key);
+                    continue;
+                }
                 int id = Convert.ToInt32(order.id);
                 int amount = Convert.ToInt32(order.amount);
                 if (current_time - timer.Value > Client.DIFFERENCE && order.active == 0)
