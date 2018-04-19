@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Threading;
 
 namespace Server {
 
@@ -12,6 +13,7 @@ namespace Server {
         private static SQLiteCommand com;
         private static SQLiteTransaction trans;
         private static SQLiteDataReader reader;
+        private static Mutex mut;
 
         public static readonly string DB_PATH = "../../db/db.sqlite";
         public static readonly string SQL_PATH = "../../db/db.sql";
@@ -35,6 +37,8 @@ namespace Server {
 
             /* creates sql command for future use */
             com = new SQLiteCommand(conn);
+
+            mut = new Mutex();
 
             /* if new db was created */
             if (overwrite)
@@ -60,6 +64,7 @@ namespace Server {
          */
         public static dynamic AddUser(string username, string hash, string salt, double balance = 0.0)
         {
+            mut.WaitOne();
             com.CommandText = "insert into User values (@user, @hash, @salt, @balance)";
             com.Parameters.Add(new SQLiteParameter("@user", username));
             com.Parameters.Add(new SQLiteParameter("@hash", hash));
@@ -79,7 +84,7 @@ namespace Server {
                 res = null;
                 Console.WriteLine(e.ToString());
             }
-
+            mut.ReleaseMutex();
             return res;
         }
         /*
@@ -87,6 +92,7 @@ namespace Server {
          */
         public static dynamic GetBalance(string username)
         {
+            mut.WaitOne();
 
             com.CommandText =
                 @"select balance from User
@@ -109,6 +115,7 @@ namespace Server {
             {
                 if(reader != null) reader.Close();
             }
+            mut.ReleaseMutex();
 
             return res;
         }
@@ -117,7 +124,8 @@ namespace Server {
          */
         public static dynamic SetBalance(string username, double balance = 0.0)
         {
-                         
+            mut.WaitOne();
+
             com.CommandText =
                 @"update User set balance = @balance
                 where username = @username";
@@ -137,6 +145,7 @@ namespace Server {
                 res = null;
                 Console.WriteLine(e.ToString());
             }
+            mut.ReleaseMutex();
 
             return res;
         }
@@ -145,6 +154,7 @@ namespace Server {
          */
         public static List<dynamic> GetQuotes(int limit = 1)
         {
+            mut.WaitOne();
             com.CommandText = "SELECT * FROM Quote ORDER BY date DESC LIMIT @limit";
             com.Parameters.Add(new SQLiteParameter("@limit", limit));
 
@@ -172,6 +182,7 @@ namespace Server {
                 if(reader != null) reader.Close();
             }
 
+            mut.ReleaseMutex();
             return quotes;
         }
         /*
@@ -179,7 +190,8 @@ namespace Server {
          */
         public static dynamic SetQuote(double value, string user)
         {
-            
+            mut.WaitOne();
+
             dynamic quotes = Database.GetQuotes();
             if (quotes == null) return null;
             double quote = quotes[0].value;
@@ -207,6 +219,7 @@ namespace Server {
                 Console.WriteLine(e.ToString());
             }
 
+            mut.ReleaseMutex();
             return res;
         }
         /*
@@ -214,7 +227,8 @@ namespace Server {
          */
         public static dynamic GetUser(string username)
         {
-            
+
+            mut.WaitOne();
             com.CommandText = "SELECT * FROM User WHERE username = @user";
             com.Parameters.Add(new SQLiteParameter("@user", username));
 
@@ -241,6 +255,7 @@ namespace Server {
                 if(reader != null) reader.Close();
             }
 
+            mut.ReleaseMutex();
             return user;
         }
         /*
@@ -248,6 +263,7 @@ namespace Server {
          */
         public static dynamic GetDiginotes(string username)
         {
+            mut.WaitOne();
             com.CommandText = "SELECT count(*) as diginotes FROM Diginote WHERE owner = @user";
             com.Parameters.Add(new SQLiteParameter("@user", username));
 
@@ -268,13 +284,15 @@ namespace Server {
                 if(reader != null) reader.Close();
             }
 
+            mut.ReleaseMutex();
             return res;
         }
         /*
          * Add diginotes to a user
          */
         public static dynamic AddDiginotes(string username, int amount = 1)
-        { 
+        {
+            mut.WaitOne();
             com.CommandText = "";
             for (int i = 0; i < amount; i++)
             {                   
@@ -296,13 +314,15 @@ namespace Server {
                 Console.WriteLine(e.ToString());
             }
 
+            mut.ReleaseMutex();
             return res;
         }
         /*
          * Remove diginotes from a user
          */
         public static dynamic RemoveDiginotes(string user, int amount = 1)
-        {    
+        {
+            mut.WaitOne();
             com.CommandText =
                 @"delete from Diginote where id in
                 (select id from Diginote where owner = @user limit @amount)";
@@ -323,6 +343,7 @@ namespace Server {
                 Console.WriteLine(e.ToString());
             }
 
+            mut.ReleaseMutex();
             return res;
         }
         /*
@@ -330,6 +351,7 @@ namespace Server {
          */
         public static dynamic TransferDiginotes(string seller, string buyer, int amount, double quote)
         {
+            mut.WaitOne();
             com.CommandText =
                @"update Diginote set owner = @buyer where id in
                 (select id from Diginote where owner = @seller limit @amount);
@@ -357,6 +379,7 @@ namespace Server {
                 Console.WriteLine(e.ToString());
             }
 
+            mut.ReleaseMutex();
             return res;
         }
         /*
@@ -364,6 +387,7 @@ namespace Server {
          */
         public static dynamic GetTransactions(string user)
         {
+            mut.WaitOne();
             List<dynamic> trans = new List<dynamic>();
             com.CommandText = @"select * from _Transaction where buyer = @user1 or seller = @user2";
             com.Parameters.Add(new SQLiteParameter("@user1", user));
@@ -395,6 +419,7 @@ namespace Server {
                 if (reader != null) reader.Close();
             }
 
+            mut.ReleaseMutex();
             return trans;
         }
         /*
@@ -402,6 +427,7 @@ namespace Server {
          */
         public static dynamic GetDiginotesList(string user)
         {
+            mut.WaitOne();
             List<dynamic> dgn = new List<dynamic>();
             com.CommandText = @"select * from Diginote where owner = @user";
             com.Parameters.Add(new SQLiteParameter("@user", user));
@@ -427,6 +453,7 @@ namespace Server {
                 if (reader != null) reader.Close();
             }
 
+            mut.ReleaseMutex();
             return dgn;
         }
         /*
@@ -434,6 +461,7 @@ namespace Server {
          */
         public static dynamic AddBuyOrder(string user, int amount = 1)
         {
+            mut.WaitOne();
             com.CommandText =
                 @"insert into BuyOrder(id,user,amount,date)
                 values(NULL,@user,@amount,datetime())";
@@ -455,6 +483,7 @@ namespace Server {
                 Console.WriteLine(e.ToString());
             }
 
+            mut.ReleaseMutex();
             return res;
         }
         /*
@@ -462,6 +491,7 @@ namespace Server {
          */
         public static dynamic AddSellOrder(string user, int amount = 1)
         {
+            mut.WaitOne();
             com.CommandText =
                 @"insert into SellOrder(id,user,amount,date)
                 values(NULL,@user,@amount,datetime())";
@@ -483,6 +513,7 @@ namespace Server {
                 Console.WriteLine(e.ToString());
             }
 
+            mut.ReleaseMutex();
             return res;
         }
         /*
@@ -490,6 +521,7 @@ namespace Server {
          */
         public static dynamic RemoveBuyOrder(int id)
         {
+            mut.WaitOne();
             com.CommandText = @"delete from BuyOrder where id = @id";
             com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
 
@@ -507,6 +539,7 @@ namespace Server {
                 Console.WriteLine(e.ToString());
             }
 
+            mut.ReleaseMutex();
             return res;
         }
         /*
@@ -514,6 +547,7 @@ namespace Server {
          */
         public static dynamic RemoveSellOrder(int id)
         {
+            mut.WaitOne();
             com.CommandText = @"delete from SellOrder where id = @id";
             com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
 
@@ -531,6 +565,7 @@ namespace Server {
                 Console.WriteLine(e.ToString());
             }
 
+            mut.ReleaseMutex();
             return res;
         }
         /*
@@ -538,6 +573,7 @@ namespace Server {
          */
         public static List<dynamic> GetBuyOrders(String user)
         {
+            mut.WaitOne();
             List<dynamic> orders = new List<dynamic>();
             com.CommandText = @"select * from BuyOrder where user = @user";
             com.Parameters.Add(new SQLiteParameter("@user", user));
@@ -567,6 +603,7 @@ namespace Server {
                 if(reader != null) reader.Close();
             }
 
+            mut.ReleaseMutex();
             return orders;
         }
         /*
@@ -574,6 +611,7 @@ namespace Server {
          */
         public static List<dynamic> GetSellOrders(String user)
         {
+            mut.WaitOne();
             List<dynamic> orders = new List<dynamic>();
             com.CommandText = @"select * from SellOrder where user = @user";
             com.Parameters.Add(new SQLiteParameter("@user", user));
@@ -598,15 +636,17 @@ namespace Server {
             {                
                 orders = null;
                 Console.WriteLine(e.ToString());
-            }            
+            }
 
+            mut.ReleaseMutex();
             return orders;
         }
         /*
          * Edit amount of activation state of buy order
          */
         public static dynamic EditBuyOrder(int id, int amount, int active = 1)
-        {           
+        {
+            mut.WaitOne();
             com.CommandText =
                 @"update BuyOrder
                 set amount = @amount, active = @active
@@ -630,6 +670,7 @@ namespace Server {
                 Console.WriteLine(e.ToString());
             }
 
+            mut.ReleaseMutex();
             return res;
         }
         /*
@@ -637,6 +678,7 @@ namespace Server {
          */
         public static dynamic EditSellOrder(int id, int amount, int active = 1)
         {
+            mut.WaitOne();
             com.CommandText =
                 @"update SellOrder
                 set amount = @amount, active = @active
@@ -660,6 +702,7 @@ namespace Server {
                 Console.WriteLine(e.ToString());
             }
 
+            mut.ReleaseMutex();
             return res;
         }
         /*
@@ -667,6 +710,7 @@ namespace Server {
          */
         public static dynamic GetBestSellOrder(string user,int amount)
         {
+            mut.WaitOne();
             com.CommandText =
                 @"select * from SellOrder 
                 where user <> @user and active = 1
@@ -696,6 +740,7 @@ namespace Server {
                 if(reader != null) reader.Close();
             }
 
+            mut.ReleaseMutex();
             return res;
         }
         /*
@@ -703,6 +748,7 @@ namespace Server {
          */
         public static dynamic GetBestBuyOrder(string user, int amount)
         {
+            mut.WaitOne();
             com.CommandText =
                 @"select * from BuyOrder where user <> @user
                 and active = 1 order by date asc limit 1";
@@ -731,6 +777,7 @@ namespace Server {
                 if(reader != null) reader.Close();
             }
 
+            mut.ReleaseMutex();
             return res;
         }       
     }
