@@ -1,46 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using System.Windows.Forms;
 
 namespace Client
 {
-    static class Operations
+    public partial class EditQuote : Form
     {
-        #region login
-        public static void login(string username, string password)
+
+        public EditQuote(string text)
+        {
+            InitializeComponent();
+
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+
+            label1.Text = text;
+        }
+        /*
+         * When submit is clicked, the quote changes, as long as the user has unsatisfied orders
+         */
+        private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-                string json = Client.stub.Login(username, password);
-                dynamic obj = JsonConvert.DeserializeObject(json);
-                if (!obj) throw new System.Exception("Login failed");
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return;
-        }
 
-        public static void register(string username, string password)
-        {
-            try
-            {
-                string json = Client.stub.Register(username, password);
-                dynamic obj = JsonConvert.DeserializeObject(json);
-                if (!obj) throw new System.Exception("Register failed");
-            }catch(Exception ex)
-            {
-                throw ex;
-            }
-            return;
-        }
 
-        #endregion login
-
+<<<<<<< HEAD:proj1/Client/src/Operations.cs
         #region menu
 
         public static double GetBalance(string username)
@@ -178,9 +168,26 @@ namespace Client
             catch (Exception ex)
             {
                 throw ex;
+=======
+                double newquote = Convert.ToDouble(this.textBox1.Text, System.Globalization.CultureInfo.InvariantCulture);
+                if (newquote < Client.GetCurrentQuote() && Client.sell_orders.Count == 0)
+                {
+                    label1.Text = "Can't decrease quote when " + Environment.NewLine + " you don't have active sell orders";
+                    return;
+                }
+                if (newquote > Client.GetCurrentQuote() && Client.buy_orders.Count == 0)
+                {
+                    label1.Text = "Can't increase quote when " + Environment.NewLine + " you don't have active buy orders";
+                    return;
+                }
+                Console.WriteLine(newquote);
+                Client.services.SetQuote(Client.token, newquote);
+                Dispose();
+            }catch(Exception ex)
+            {
+
+>>>>>>> final:proj1/Client/src/EditQuote.cs
             }
         }
-
-        #endregion add
     }
 }

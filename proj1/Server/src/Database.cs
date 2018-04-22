@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Threading;
 
 namespace Server {
 
@@ -12,6 +13,7 @@ namespace Server {
         private static SQLiteCommand com;
         private static SQLiteTransaction trans;
         private static SQLiteDataReader reader;
+        private static Mutex mut;
 
         public static readonly string DB_PATH = "../../db/db.sqlite";
         public static readonly string SQL_PATH = "../../db/db.sql";
@@ -36,179 +38,261 @@ namespace Server {
             /* creates sql command for future use */
             com = new SQLiteCommand(conn);
 
+            mut = new Mutex();
+
             /* if new db was created */
             if (overwrite)
             {
-                /* reads sql script */
-                com.CommandText = File.ReadAllText(SQL_PATH);
 
                 /* executes sql script */
                 try {
                     trans = conn.BeginTransaction();
+                    /* reads sql script */
+                    com.CommandText = File.ReadAllText(SQL_PATH);
                     com.ExecuteNonQuery();
                     trans.Commit();
                 }
-                catch (SQLiteException e)
+                catch (Exception e)
                 {
                     trans.Rollback();
-                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine(e.ToString());
                 }
             }            
-        }        
-        public static int AddUser(string username, string password, double balance = 0.0)
+        }
+        /*
+         * Add new user to the database
+         */
+        public static dynamic AddUser(string username, string hash, string salt, double balance = 0.0)
         {
-            com.CommandText = "insert into User values (@user, @pass, @balance)";
+            mut.WaitOne();
+            com.CommandText = "insert into User values (@user, @hash, @salt, @balance)";
             com.Parameters.Add(new SQLiteParameter("@user", username));
-            com.Parameters.Add(new SQLiteParameter("@pass", password));
-            com.Parameters.Add(new SQLiteParameter("@balance", balance.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@hash", hash));
+            com.Parameters.Add(new SQLiteParameter("@salt", salt));
+            com.Parameters.Add(new SQLiteParameter("@balance", balance));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
-                Console.WriteLine(e.StackTrace);
+                res = null;
+                Console.WriteLine(e.ToString());
             }
-
-            return rows;
+            mut.ReleaseMutex();
+            return res;
         }
-        public static Object GetBalance(string username)
+        /*
+         * Get balance of user
+         */
+        public static dynamic GetBalance(string username)
         {
+            mut.WaitOne();
 
             com.CommandText =
                 @"select balance from User
                 where username = @username";
             com.Parameters.Add(new SQLiteParameter("@username", username));
 
+            dynamic res;          
             try
             {
                 reader = com.ExecuteReader();
-            }
-            catch (SQLiteException e)
-            {
-                Console.WriteLine(e.StackTrace);
-            }
-
-            Object balance;
-            try
-            {
                 reader.Read();
-                balance = new { balance = reader["balance"] };
+                res = new { balance = reader["balance"] };
             }
-            catch (InvalidOperationException e)
+            catch (Exception e)
             {
-                balance = null;
-                Console.WriteLine(e.StackTrace);
+                res = null;
+                Console.WriteLine(e.ToString());
             }
             finally
             {
-                reader.Close();
+                if(reader != null) reader.Close();
             }
+            mut.ReleaseMutex();
 
-            return balance;
+            return res;
         }
-        public static object SetBalance(string username, double balance = 0.0)
+        /*
+         * Change balance of user
+         */
+        public static dynamic SetBalance(string username, double balance = 0.0)
         {
-                         
+            mut.WaitOne();
+
             com.CommandText =
                 @"update User set balance = @balance
                 where username = @username";
             com.Parameters.Add(new SQLiteParameter("@username", username));
-            com.Parameters.Add(new SQLiteParameter("@balance", balance.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@balance", balance));
 
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
-                Console.WriteLine(e.StackTrace);
-                return null;
+                res = null;
+                Console.WriteLine(e.ToString());
             }
+            mut.ReleaseMutex();
 
-            return 1;
+            return res;
         }
-        public static Object GetUser(string username)
+        /*
+         * Get *limit* last quotes
+         */
+        public static List<dynamic> GetQuotes(int limit = 1)
         {
-            
-            com.CommandText = "SELECT * FROM User WHERE username = @user";
-            com.Parameters.Add(new SQLiteParameter("@user", username));
-            
+            mut.WaitOne();
+            com.CommandText = "SELECT * FROM Quote ORDER BY date DESC LIMIT @limit";
+            com.Parameters.Add(new SQLiteParameter("@limit", limit));
+
+            List<dynamic> quotes = new List<dynamic>();
             try
             {
                 reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    quotes.Add(new
+                        {
+                            value = reader["value"],
+                            date = reader["date"]
+                        }
+                    );
+                }
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                quotes = null;
+                Console.WriteLine(e.ToString());
+            }
+            finally
+            {
+                if(reader != null) reader.Close();
             }
 
-            Object user;
+            mut.ReleaseMutex();
+            return quotes;
+        }
+        /*
+         * Add new current quote
+         */
+        public static dynamic SetQuote(double value, string user)
+        {
+            mut.WaitOne();
+
+            dynamic quotes = Database.GetQuotes();
+            if (quotes == null) return null;
+            double quote = quotes[0].value;
+
+            com.CommandText = @"INSERT INTO Quote(value,date) VALUES(@value,datetime());";
+            if (value < quote)
+                com.CommandText += @"UPDATE SellOrder SET active = 0 WHERE user <> @user;";
+            else if (value > quote)
+                com.CommandText += @"UPDATE BuyOrder SET active = 0 WHERE user <> @user;";           
+
+            com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@value", value));
+
+            dynamic res;
             try
             {
+                trans = conn.BeginTransaction();                
+                res = new { rows = com.ExecuteNonQuery() };
+                trans.Commit();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                res = null;
+                Console.WriteLine(e.ToString());
+            }
+
+            mut.ReleaseMutex();
+            return res;
+        }
+        /*
+         * Get user information
+         */
+        public static dynamic GetUser(string username)
+        {
+
+            mut.WaitOne();
+            com.CommandText = "SELECT * FROM User WHERE username = @user";
+            com.Parameters.Add(new SQLiteParameter("@user", username));
+
+            dynamic user;
+            try
+            {
+                reader = com.ExecuteReader();
                 reader.Read();
                 user = new
                 {
                     username = reader["username"],
-                    password = reader["password"],
-                    balance = reader["balance"]
+                    hash = reader["hash"],
+                    balance = reader["balance"],
+                    salt = reader["salt"]
                 };
             }
-            catch(InvalidOperationException e)
+            catch(Exception e)
             {
                 user = null;
-                Console.WriteLine(e.StackTrace);
+                //Console.WriteLine(e.ToString());
             }
             finally
             {
-                reader.Close();
+                if(reader != null) reader.Close();
             }
 
-
+            mut.ReleaseMutex();
             return user;
         }
-        public static Object GetDiginotes(string username)
+        /*
+         * Get number of diginotes a user has
+         */
+        public static dynamic GetDiginotes(string username)
         {
+            mut.WaitOne();
             com.CommandText = "SELECT count(*) as diginotes FROM Diginote WHERE owner = @user";
             com.Parameters.Add(new SQLiteParameter("@user", username));
 
+            dynamic res;
             try
             {
                 reader = com.ExecuteReader();
-            }
-            catch (SQLiteException e)
-            {
-                Console.WriteLine(e.StackTrace);
-            }
-
-            Object obj;
-            try
-            {
                 reader.Read();
-                obj = new { diginotes = reader["diginotes"] };
+                res = new { diginotes = reader["diginotes"] };
             }
             catch (InvalidOperationException e)
             {
-                obj = null;
-                Console.WriteLine(e.StackTrace);
+                res = null;
+                Console.WriteLine(e.ToString());
             }
             finally
             {
-                reader.Close();
+                if(reader != null) reader.Close();
             }
 
-            return obj;
+            mut.ReleaseMutex();
+            return res;
         }
-        public static int AddDiginotes(string username, int amount = 1)
-        { 
+        /*
+         * Add diginotes to a user
+         */
+        public static dynamic AddDiginotes(string username, int amount = 1)
+        {
+            mut.WaitOne();
             com.CommandText = "";
             for (int i = 0; i < amount; i++)
             {                   
@@ -216,270 +300,493 @@ namespace Server {
             }
             com.Parameters.Add(new SQLiteParameter("@user", username));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
-                Console.WriteLine(e.StackTrace);
+                res = null;
+                Console.WriteLine(e.ToString());
             }
 
-            return rows;
+            mut.ReleaseMutex();
+            return res;
         }
-        public static int RemoveDiginotes(string user, int amount = 1)
-        {    
+        /*
+         * Remove diginotes from a user
+         */
+        public static dynamic RemoveDiginotes(string user, int amount = 1)
+        {
+            mut.WaitOne();
             com.CommandText =
                 @"delete from Diginote where id in
                 (select id from Diginote where owner = @user limit @amount)";
             com.Parameters.Add(new SQLiteParameter("@user", user));
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();                
+                res = new { rows = com.ExecuteNonQuery() };                
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
-                Console.WriteLine(e.StackTrace);
+                res = null;
+                Console.WriteLine(e.ToString());
             }
 
-            return rows;
+            mut.ReleaseMutex();
+            return res;
         }
-        public static int TransferDiginotes(string from, string to, int amount = 1)
+        /*
+         * Transfer diginotes to user at the chosen quote
+         */
+        public static dynamic TransferDiginotes(string seller, string buyer, int amount, double quote)
         {
+            mut.WaitOne();
             com.CommandText =
-                @"update Diginote set owner = @to where id in
-                (select id from Diginote where owner = @from limit @amount)";
+               @"update Diginote set owner = @buyer where id in
+                (select id from Diginote where owner = @seller limit @amount);
+                update User set balance = balance - @total where username = @buyer;
+                update User set balance = balance + @total where username = @seller;
+                insert into _Transaction values (NULL,@buyer,@seller,@quote,@amount,datetime());";
 
-            com.Parameters.Add(new SQLiteParameter("@from", from));
-            com.Parameters.Add(new SQLiteParameter("@to", to));
-            com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@buyer", buyer));
+            com.Parameters.Add(new SQLiteParameter("@seller", seller));
+            com.Parameters.Add(new SQLiteParameter("@quote", quote));
+            com.Parameters.Add(new SQLiteParameter("@amount", amount));           
+            com.Parameters.Add(new SQLiteParameter("@total", (quote * amount)));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
-                Console.WriteLine(e.StackTrace);
+                res = null;
+                Console.WriteLine(e.ToString());
             }
 
-            return rows;
+            mut.ReleaseMutex();
+            return res;
         }
-        public static int AddBuyOrder(string user, int amount = 1, double price = 1.0)
+        /*
+         * Get list of transactions a user has been part of
+         */
+        public static dynamic GetTransactions(string user)
         {
+            mut.WaitOne();
+            List<dynamic> trans = new List<dynamic>();
+            com.CommandText = @"select * from _Transaction where buyer = @user1 or seller = @user2";
+            com.Parameters.Add(new SQLiteParameter("@user1", user));
+            com.Parameters.Add(new SQLiteParameter("@user2", user));
+
+            try
+            {
+                reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    trans.Add(new
+                    {
+                        buyer = reader["buyer"],
+                        seller = reader["seller"],
+                        quote = reader["quote"],
+                        amount = reader["amount"],
+                        date = reader["date"],
+                        id = reader["id"]
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                trans = null;
+                Console.WriteLine(e.ToString());
+            }
+            finally
+            {
+                if (reader != null) reader.Close();
+            }
+
+            mut.ReleaseMutex();
+            return trans;
+        }
+        /*
+         * Get list of diginotes a user owns
+         */
+        public static dynamic GetDiginotesList(string user)
+        {
+            mut.WaitOne();
+            List<dynamic> dgn = new List<dynamic>();
+            com.CommandText = @"select * from Diginote where owner = @user";
+            com.Parameters.Add(new SQLiteParameter("@user", user));
+
+            try
+            {
+                reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    dgn.Add(new
+                    {
+                        id = reader["id"]
+                    });
+                }
+            }
+            catch (Exception e)
+            {
+                dgn = null;
+                Console.WriteLine(e.ToString());
+            }
+            finally
+            {
+                if (reader != null) reader.Close();
+            }
+
+            mut.ReleaseMutex();
+            return dgn;
+        }
+        /*
+         * Add new buy order
+         */
+        public static dynamic AddBuyOrder(string user, int amount = 1)
+        {
+            mut.WaitOne();
             com.CommandText =
-                @"insert into BuyOrder(id,user,amount,price,date)
-                values(NULL,@user,@amount,@price,datetime())";
+                @"insert into BuyOrder(id,user,amount,date)
+                values(NULL,@user,@amount,datetime())";
 
             com.Parameters.Add(new SQLiteParameter("@user", user));
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
+<<<<<<< HEAD
                 rows = com.ExecuteNonQuery();
+=======
+                res = new { rows = com.ExecuteNonQuery() };
+>>>>>>> final
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
-                Console.WriteLine(e.StackTrace);
+                res = null;
+                Console.WriteLine(e.ToString());
             }
 
-            return rows;
+            mut.ReleaseMutex();
+            return res;
         }
-        public static int AddSellOrder(string user, int amount = 1, double price = 1.0)
+        /*
+         * Add new sell order
+         */
+        public static dynamic AddSellOrder(string user, int amount = 1)
         {
+            mut.WaitOne();
             com.CommandText =
-                @"insert into SellOrder(id,user,amount,price,date)
-                values(NULL,@user,@amount,@price,datetime())";
+                @"insert into SellOrder(id,user,amount,date)
+                values(NULL,@user,@amount,datetime())";
 
             com.Parameters.Add(new SQLiteParameter("@user", user));
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
+<<<<<<< HEAD
                 rows = com.ExecuteNonQuery();
+=======
+                res = new { rows = com.ExecuteNonQuery() };
+>>>>>>> final
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
-                Console.WriteLine(e.StackTrace);
+                res = null;
+                Console.WriteLine(e.ToString());
             }
 
-            return rows;
+            mut.ReleaseMutex();
+            return res;
         }
-        public static int RemoveBuyOrder(int id)
+        /*
+         * Remove buy order
+         */
+        public static dynamic RemoveBuyOrder(int id)
         {
+            mut.WaitOne();
             com.CommandText = @"delete from BuyOrder where id = @id";
             com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
-
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
-                Console.WriteLine(e.StackTrace);
+                res = null;
+                Console.WriteLine(e.ToString());
             }
 
-            return rows;
+            mut.ReleaseMutex();
+            return res;
         }
-        public static int RemoveSellOrder(int id)
+        /*
+         * Remove sell order
+         */
+        public static dynamic RemoveSellOrder(int id)
         {
+            mut.WaitOne();
             com.CommandText = @"delete from SellOrder where id = @id";
             com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
-                Console.WriteLine(e.StackTrace);
+                res = null;
+                Console.WriteLine(e.ToString());
             }
 
-            return rows;
+            mut.ReleaseMutex();
+            return res;
         }
-        public static List<Object> GetBuyOrders(String user)
+        /*
+         * Get list of buy orders of a user
+         */
+        public static List<dynamic> GetBuyOrders(String user)
         {
-            List<Object> orders = new List<Object>();
+            mut.WaitOne();
+            List<dynamic> orders = new List<dynamic>();
             com.CommandText = @"select * from BuyOrder where user = @user";
             com.Parameters.Add(new SQLiteParameter("@user", user));
 
             try
             {
                 reader = com.ExecuteReader();
+                while (reader.Read())
+                {
+                    orders.Add(new
+                    {
+                        user = reader["user"],
+                        amount = reader["amount"],
+                        date = reader["date"],
+                        active = reader["active"],
+                        id = reader["id"],
+                    });
+                }
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                orders = null;
+                Console.WriteLine(e.ToString());
+            }
+            finally
+            {
+                if(reader != null) reader.Close();
             }
 
-            while (reader.Read())
-            {
-                orders.Add(new {
-                    user = reader["user"],
-                    amount = reader["amount"],
-                    price = reader["price"],
-                    date = reader["date"],
-                    id = reader["id"],
-                });
-            }
-            reader.Close();
-
+            mut.ReleaseMutex();
             return orders;
         }
-        public static List<Object> GetSellOrders(String user)
+        /*
+         * Get list of sell orders of a user
+         */
+        public static List<dynamic> GetSellOrders(String user)
         {
-            List<Object> orders = new List<Object>();
+            mut.WaitOne();
+            List<dynamic> orders = new List<dynamic>();
             com.CommandText = @"select * from SellOrder where user = @user";
             com.Parameters.Add(new SQLiteParameter("@user", user));
 
             try
             {
                 reader = com.ExecuteReader();
-            }
-            catch (SQLiteException e)
-            {
-                Console.WriteLine(e.StackTrace);
-            }
-
-            while (reader.Read())
-            {
-                orders.Add(new
+                while (reader.Read())
                 {
-                    user = reader["user"],
-                    amount = reader["amount"],
-                    price = reader["price"],
-                    date = reader["date"],
-                    id = reader["id"],
-                });
+                    orders.Add(new
+                    {
+                        user = reader["user"],
+                        amount = reader["amount"],
+                        date = reader["date"],
+                        active = reader["active"],
+                        id = reader["id"],
+                    });
+                }
+                if(reader != null) reader.Close();
             }
-            reader.Close();
+            catch (Exception e)
+            {                
+                orders = null;
+                Console.WriteLine(e.ToString());
+            }
 
+            mut.ReleaseMutex();
             return orders;
-        }       
-        public static int EditBuyOrder(int id, int amount, double price)
-        {           
+        }
+        /*
+         * Edit amount of activation state of buy order
+         */
+        public static dynamic EditBuyOrder(int id, int amount, int active = 1)
+        {
+            mut.WaitOne();
             com.CommandText =
                 @"update BuyOrder
-                set amount = @amount, price = @price
+                set amount = @amount, active = @active
                 where id = @id";
 
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
             com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@active", active.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
-                Console.WriteLine(e.StackTrace);
+                res = null;
+                Console.WriteLine(e.ToString());
             }
 
-            return rows;
+            mut.ReleaseMutex();
+            return res;
         }
-        public static int EditSellOrder(int id, int amount, double price)
+        /*
+         * Edit amount of activation state of sell order
+         */
+        public static dynamic EditSellOrder(int id, int amount, int active = 1)
         {
+            mut.WaitOne();
             com.CommandText =
                 @"update SellOrder
-                set amount = @amount, price = @price
+                set amount = @amount, active = @active
                 where id = @id";
 
             com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
-            com.Parameters.Add(new SQLiteParameter("@price", price.ToString()));
             com.Parameters.Add(new SQLiteParameter("@id", id.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@active", active.ToString()));
 
-            int rows = -1;
+            dynamic res;
             try
             {
                 trans = conn.BeginTransaction();
-                rows = com.ExecuteNonQuery();
+                res = new { rows = com.ExecuteNonQuery() };
                 trans.Commit();
             }
-            catch (SQLiteException e)
+            catch (Exception e)
             {
                 trans.Rollback();
-                Console.WriteLine(e.StackTrace);
+                res = null;
+                Console.WriteLine(e.ToString());
             }
 
-            return rows;
+            mut.ReleaseMutex();
+            return res;
+        }
+        /*
+         * Get best sell order that satisfies amount(prioritizes older ones)
+         */
+        public static dynamic GetBestSellOrder(string user,int amount)
+        {
+            mut.WaitOne();
+            com.CommandText =
+                @"select * from SellOrder 
+                where user <> @user and active = 1
+                order by date asc limit 1";
+            com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@user", user.ToString()));
+
+            dynamic res;
+            try
+            {
+                reader = com.ExecuteReader();
+                reader.Read();
+                res = new
+                {
+                    id = System.Convert.ToInt32(reader["id"]),
+                    amount = System.Convert.ToInt32(reader["amount"]),
+                    user = reader["user"]
+                };
+            }
+            catch (Exception e)
+            {
+                res = null;
+                Console.WriteLine(e.ToString());
+            }
+            finally
+            {
+                if(reader != null) reader.Close();
+            }
+
+            mut.ReleaseMutex();
+            return res;
+        }
+        /*
+         * Get best buy order that satisfies amount(prioritizes older ones)
+         */
+        public static dynamic GetBestBuyOrder(string user, int amount)
+        {
+            mut.WaitOne();
+            com.CommandText =
+                @"select * from BuyOrder where user <> @user
+                and active = 1 order by date asc limit 1";
+            com.Parameters.Add(new SQLiteParameter("@amount", amount.ToString()));
+            com.Parameters.Add(new SQLiteParameter("@user", user));
+
+            dynamic res;
+            try
+            {
+                reader = com.ExecuteReader();
+                reader.Read();
+                res = new
+                {
+                    id = System.Convert.ToInt32(reader["id"]),
+                    amount = System.Convert.ToInt32(reader["amount"]),
+                    user = reader["user"]
+                };
+            }
+            catch (Exception e)
+            {
+                res = null;
+                Console.WriteLine(e.ToString());
+            }
+            finally
+            {
+                if(reader != null) reader.Close();
+            }
+
+            mut.ReleaseMutex();
+            return res;
         }       
     }
 }

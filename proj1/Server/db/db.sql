@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS User;
 CREATE TABLE User (
     username TEXT PRIMARY KEY NOT NULL,
-    password TEXT NOT NULL,
-    balance REAL NOT NULL
+    hash TEXT NOT NULL,
+    salt TEXT NOT NULL,
+    balance REAL NOT NULL CHECK(balance >= 0)
 );
 
 DROP TABLE IF EXISTS Diginote;
@@ -16,9 +17,9 @@ DROP TABLE IF EXISTS BuyOrder;
 CREATE TABLE BuyOrder (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user TEXT NOT NULL,
-	price REAL NOT NULL,
-	amount INTEGER NOT NULL,
-	date TEXT NOT NULL,
+	  amount INTEGER NOT NULL,
+	  date TEXT NOT NULL,
+	  active INTEGER DEFAULT 1,
     FOREIGN KEY (user) REFERENCES User(username)
 );
 
@@ -26,8 +27,28 @@ DROP TABLE IF EXISTS SellOrder;
 CREATE TABLE SellOrder (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user TEXT NOT NULL,
-	price REAL NOT NULL,
-	amount INTEGER NOT NULL,
-	date TEXT NOT NULL,
+	  amount INTEGER NOT NULL,
+	  date TEXT NOT NULL,
+	  active INTEGER DEFAULT 1,
     FOREIGN KEY (user) REFERENCES User(username)
 );
+
+DROP TABLE IF EXISTS Quote;
+CREATE TABLE Quote (
+  value REAL NOT NULL,
+  date TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS _Transaction;
+CREATE TABLE _Transaction (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	buyer TEXT NOT NULL,
+	seller TEXT NOT NULL,
+	quote REAL NOT NULL,
+	amount INTEGER NOT NULL,
+	date TEXT NOT NULL,
+	FOREIGN KEY (buyer) REFERENCES User(username),
+	FOREIGN KEY (seller) REFERENCES User(username)
+);
+
+INSERT INTO Quote(value,date) VALUES(1.0,datetime());

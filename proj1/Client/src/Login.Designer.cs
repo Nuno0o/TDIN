@@ -93,17 +93,17 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 119);
+            this.label3.Location = new System.Drawing.Point(15, 118);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(82, 13);
+            this.label3.Size = new System.Drawing.Size(87, 13);
             this.label3.TabIndex = 6;
-            this.label3.Text = "Login or register";
+            this.label3.Text = "Login or Register";
             // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(239, 141);
+            this.ClientSize = new System.Drawing.Size(237, 138);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.register_button);
             this.Controls.Add(this.login_button);
@@ -113,7 +113,6 @@
             this.Controls.Add(this.username_input);
             this.Name = "Login";
             this.Text = "Login";
-            this.Load += new System.EventHandler(this.Login_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

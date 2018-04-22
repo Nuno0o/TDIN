@@ -16,30 +16,41 @@ namespace Client
         public Funds()
         {
             InitializeComponent();
-        }
 
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+        }
+        /*
+         * Add or remove funds from the account
+         */
         private void funds_button_Click(object sender, EventArgs e)
         {
-            double amount = Convert.ToDouble(amount_input.Text);
-            if (amount <= 0.0) return;
+            try
+            {
 
-            double balance = Client.balance;
-            string json = null;
 
-            if (deposit_radio.Checked)
-                json = Client.stub.DepositBalance(Client.username,amount);
-            else if (withdraw_radio.Checked && amount <= balance)
-                json = Client.stub.WithdrawBalance(Client.username, amount);
-            else return;
+                double amount = Convert.ToDouble(amount_input.Text, System.Globalization.CultureInfo.InvariantCulture);
+                if (amount <= 0.0) return;
 
-            Visible = false;
+                double balance = Client.balance;
+                string json = null;
 
-            dynamic obj = JsonConvert.DeserializeObject(json);
-            if (obj == null) return;
+                if (deposit_radio.Checked)
+                    json = Client.services.DepositBalance(Client.token, amount);
+                else if (withdraw_radio.Checked && amount <= balance)
+                    json = Client.services.WithdrawBalance(Client.token, amount);
+                else return;
 
-            balance = obj.balance;            
-            Client.balance = balance;
-            //Client.menu.UpdateBalance();                       
+                dynamic obj = JsonConvert.DeserializeObject(json);
+                if (obj == null) return;
+            }
+            catch(Exception ex)
+            {
+                return;
+            }
+
+            Visible = false;            
+
+            Close();                     
         }
     }
 }
