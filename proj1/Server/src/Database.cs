@@ -473,7 +473,11 @@ namespace Server {
             try
             {
                 trans = conn.BeginTransaction();
+<<<<<<< HEAD
+                rows = com.ExecuteNonQuery();
+=======
                 res = new { rows = com.ExecuteNonQuery() };
+>>>>>>> final
                 trans.Commit();
             }
             catch (Exception e)
@@ -503,7 +507,11 @@ namespace Server {
             try
             {
                 trans = conn.BeginTransaction();
+<<<<<<< HEAD
+                rows = com.ExecuteNonQuery();
+=======
                 res = new { rows = com.ExecuteNonQuery() };
+>>>>>>> final
                 trans.Commit();
             }
             catch (Exception e)
