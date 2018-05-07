@@ -118,7 +118,6 @@ namespace Server
                 if (reader != null) reader.Close();
             }
             mut.ReleaseMutex();
-
             return res;
         }
     }
