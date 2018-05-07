@@ -19,15 +19,9 @@ namespace Client
             orders_grid.ColumnCount = 5;
             orders_grid.Columns[0].Name = "ID";
             orders_grid.Columns[1].Name = "Type";
-<<<<<<< HEAD
-            orders_grid.Columns[2].Name = "Diginotes";
-            orders_grid.Columns[3].Name = "Price";
-            orders_grid.Columns[4].Name = "Date";           
-=======
             orders_grid.Columns[2].Name = "Amount";
             orders_grid.Columns[3].Name = "Date";
             orders_grid.Columns[4].Name = "Active";
->>>>>>> final
 
             orders_grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             orders_grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -35,41 +29,28 @@ namespace Client
             orders_grid.AllowUserToAddRows = false;
             orders_grid.RowHeadersVisible = false;
             orders_grid.ReadOnly = true;
-<<<<<<< HEAD
-            //orders_grid.Columns["ID"].Visible = false;
-=======
             orders_grid.Columns["ID"].Visible = false;
             orders_grid.MultiSelect = false;
 
             poll += update_client;
             poll += update_interface;
             poll += update_timers;
->>>>>>> final
 
             updater = new Thread(Poll_Info);
             updater.IsBackground = true;
             updater.Start();
             
 
-<<<<<<< HEAD
-            this.FormClosing += CloseActions;
-=======
             FormClosing += Menu_FormClosing;
->>>>>>> final
         }
         delegate void Poll_Information();
         private void Poll_Info()
         {
             while (true)
             {
-<<<<<<< HEAD
-                UpdateInformation(true);
-                System.Threading.Thread.Sleep(Consts.POLLINGRATE);
-=======
                 poll();
                 /* wait 2 seconds */
                 Thread.Sleep(2000);
->>>>>>> final
             }
         }
         private void update_client()
@@ -90,30 +71,6 @@ namespace Client
                 json = Client.services.GetSellOrders(Client.token);
                 List<dynamic> sell_orders = JsonConvert.DeserializeObject<List<dynamic>>(json);
 
-<<<<<<< HEAD
-        }
-        public void UpdateInformation(bool request = false)
-        {
-            UpdateBalance(request);
-            UpdateDiginotes(request);
-            UpdateBuyOrders(request);
-            UpdateSellOrders(request);
-        }
-        public void UpdateBalance(bool request = false)
-        {
-            if (request)
-            {
-                try
-                {
-                    Client.balance = Operations.GetBalance(Client.username);
-                }catch(Exception ex)
-                {
-
-                }
-            }    
-                    
-            balance_display.Invoke(new Action(()=>balance_display.Text = Client.balance.ToString()));          
-=======
                 /* subtract sell orders' amount from diginotes */
                 foreach (dynamic sell_order in sell_orders)
                     diginotes -= (int)sell_order.amount;
@@ -141,25 +98,11 @@ namespace Client
                 Invoke(new Action (() => Dispose()));
             }
            
->>>>>>> final
         }
         private void update_interface()
         {
             Invoke(new Action(() =>
             {
-<<<<<<< HEAD
-                try
-                {
-                    Client.diginotes = Operations.GetDiginotes(Client.username);
-                }
-                catch (Exception ex)
-                {
-
-                }
-            }
-                
-            diginotes_display.Invoke(new Action(() => diginotes_display.Text = Client.diginotes.ToString()));           
-=======
                 Text = "Current quote : " + Client.GetCurrentQuote();
                 balance_display.Text = Client.balance.ToString();
                 diginotes_display.Text = Client.realdiginotes.ToString() + " (" + Client.diginotes.ToString() + " avail.)";
@@ -194,7 +137,6 @@ namespace Client
                         break;
                     }
             }));
->>>>>>> final
         }
         private void update_timers()
         {
@@ -202,116 +144,14 @@ namespace Client
             /* Add inactive orders to the timer dictionary */
             foreach (dynamic buy_order in Client.buy_orders)
             {
-<<<<<<< HEAD
-                try
-                {
-                    Client.buy_orders = Operations.GetBuyOrders(Client.username);
-                }
-                catch (Exception ex)
-                {
-
-=======
                 int id = Convert.ToInt32(buy_order.id);
                 if (buy_order.active == 0 && !Client.b_activateTimers.ContainsKey(id))
                 {
                     Client.b_activateTimers.Add(id, current_time);
->>>>>>> final
                 }
             }
             foreach (dynamic sell_order in Client.sell_orders)
             {
-<<<<<<< HEAD
-                bool inGrid = false;
-                int id = buy_order.id;
-                foreach (DataGridViewRow row in orders_grid.Rows)
-                {
-                    if (row.Cells[1].Value.ToString().Equals("Buy") && row.Cells[0].Value.ToString().Equals(id + ""))
-                    {
-                        inGrid = true;
-                    }
-                }
-                if(inGrid == false)
-                    orders_grid.Invoke(new Action(()=>orders_grid.Rows.Add(new string[]
-                    {
-                        buy_order.id,
-                        "Buy",
-                        buy_order.amount,
-                        buy_order.price,
-                        buy_order.date
-                    })));
-
-            }
-            foreach (DataGridViewRow row in orders_grid.Rows)
-            {
-                if (!row.Cells[1].Value.ToString().Equals("Buy"))
-                    continue;
-                bool deleted = true;
-                foreach (dynamic buy_order in Client.buy_orders)
-                {
-                    int id = buy_order.id;
-                    if ((id + "").Equals(row.Cells[0].Value.ToString()))
-                    {
-                        deleted = false;
-                    }
-                }
-                if(deleted == true)
-                {
-                    orders_grid.Invoke(new Action(() => orders_grid.Rows.Remove(row)));
-                }
-            }
-        }
-        private void UpdateSellOrders(bool request = false)
-        {
-            if (request)
-            {
-                try
-                {
-                    Client.sell_orders = Operations.GetSellOrders(Client.username);
-                }
-                catch (Exception ex)
-                {
-
-                }
-            }
-            foreach (dynamic sell_order in Client.sell_orders)
-            {
-                bool inGrid = false;
-                int id = sell_order.id;
-                foreach (DataGridViewRow row in orders_grid.Rows)
-                {
-                    if (row.Cells[1].Value.ToString().Equals("Sell") && row.Cells[0].Value.ToString().Equals(id + ""))
-                    {
-                        inGrid = true;
-                    }
-                }
-                if(inGrid == false)
-                    orders_grid.Invoke(new Action(() => orders_grid.Rows.Add(new string[]
-                    {
-                        sell_order.id,
-                        "Sell",
-                        sell_order.amount,
-                        sell_order.price,
-                        sell_order.date
-                    })));
-            }
-            foreach (DataGridViewRow row in orders_grid.Rows)
-            {
-                if (!row.Cells[1].Value.ToString().Equals("Sell"))
-                    continue;
-                bool deleted = true;
-                foreach (dynamic sell_order in Client.sell_orders)
-                {
-                    int id = sell_order.id;
-                    if ((id + "").Equals(row.Cells[0].Value.ToString()))
-                    {
-                        deleted = false;
-                    }
-                }
-                if (deleted == true)
-                {
-                    orders_grid.Invoke(new Action(() => orders_grid.Rows.Remove(row)));
-                }
-=======
                 int id = Convert.ToInt32(sell_order.id);
                 if (sell_order.active == 0 && !Client.s_activateTimers.ContainsKey(id))
                 {
@@ -379,53 +219,11 @@ namespace Client
             foreach (int elem in selltoremove)
             {
                 Client.s_activateTimers.Remove(elem);
->>>>>>> final
             }
-        }
-        private void ClearOrdersGrid()
-        {
-            orders_grid.Invoke(new Action(() => orders_grid.Rows.Clear()));
         }
 
         private void remove_button_Click(object sender, EventArgs e)
         {
-<<<<<<< HEAD
-            DataGridViewRow selectedRow = orders_grid.CurrentCell.OwningRow;
-            if (selectedRow == null)
-                return;
-            string diginotes = selectedRow.Cells[2].Value.ToString();
-            string price = selectedRow.Cells[3].Value.ToString();
-            string id = selectedRow.Cells[0].Value.ToString();
-            string type = selectedRow.Cells[1].Value.ToString();
-            Edit ed = new Edit(id,type,diginotes,price);
-            ed.ShowDialog();
-            UpdateInformation(true);
-        }
-
-        private void remove_button_Click(object sender, EventArgs e)
-        {
-            DataGridViewRow selectedRow = orders_grid.CurrentCell.OwningRow;
-            if (selectedRow == null)
-                return;
-            string id = selectedRow.Cells[0].Value.ToString();
-            string type = selectedRow.Cells[1].Value.ToString();
-            try
-            {
-                if (type.Equals("Buy"))
-                {
-                    Operations.RemoveBuyOrder(int.Parse(id));
-                }
-                else
-                {
-                    Operations.RemoveSellOrder(int.Parse(id));
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-            UpdateInformation(true);
-=======
             try
             {
 
@@ -453,7 +251,6 @@ namespace Client
                 }
             }catch(Exception ex)
             {
->>>>>>> final
 
             }
         }
@@ -473,17 +270,12 @@ namespace Client
 
         private void funds_button_Click(object sender, EventArgs e)
         {
-            Funds f = new Funds();
-            f.ShowDialog();
+            new Funds().Visible = true;
         }
 
-        private void CloseActions(object sender,EventArgs e)
+        private void Menu_FormClosing(object sender,EventArgs e)
         {
             logout_button_Click(sender, e);
-<<<<<<< HEAD
-            updater.Abort();
-            ClearOrdersGrid();
-=======
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -535,7 +327,6 @@ namespace Client
         {
             Quotes q = new Quotes();
             q.ShowDialog();
->>>>>>> final
         }
     }
 }

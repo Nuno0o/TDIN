@@ -28,29 +28,6 @@ namespace Server
         {
             return null;
         }
-<<<<<<< HEAD:proj1/Client/src/RemObj.cs
-        public string GetBuyOrder(int id)
-        {
-            return null;
-        }
-        public string GetSellOrder(int id)
-        {
-            return null;
-        }
-        public string AddBuyOrder(string username,int amount, double price)
-        {
-            return null;
-        }
-        public string AddSellOrder(string username,int amount, double price)
-        {
-            return null;
-        }
-        public string RemoveBuyOrder(int id)
-        {
-            return null;
-        }
-        public string RemoveSellOrder(int id)
-=======
         public string GetDiginotesList(string token)
         {
             return null;
@@ -101,7 +78,6 @@ namespace Server
             return null;
         }
         public string DepositBalance(string token, double amount)
->>>>>>> final:proj1/Client/src/Services.cs
         {
             return null;
         }
