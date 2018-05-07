@@ -117,7 +117,7 @@ namespace Server
             {
                 if (reader != null) reader.Close();
             }
-            mut.ReleaseMutex();
+            mut.ReleaseMutex(); 
             return res;
         }
     }
