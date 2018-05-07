@@ -83,11 +83,7 @@
             // 
             // remove_button
             // 
-<<<<<<< HEAD
-            this.remove_button.Location = new System.Drawing.Point(219, 374);
-=======
             this.remove_button.Location = new System.Drawing.Point(172, 374);
->>>>>>> final
             this.remove_button.Name = "remove_button";
             this.remove_button.Size = new System.Drawing.Size(146, 23);
             this.remove_button.TabIndex = 5;
@@ -95,19 +91,6 @@
             this.remove_button.UseVisualStyleBackColor = true;
             this.remove_button.Click += new System.EventHandler(this.remove_button_Click);
             // 
-<<<<<<< HEAD
-            // edit_button
-            // 
-            this.edit_button.Location = new System.Drawing.Point(116, 374);
-            this.edit_button.Name = "edit_button";
-            this.edit_button.Size = new System.Drawing.Size(98, 23);
-            this.edit_button.TabIndex = 6;
-            this.edit_button.Text = "Edit";
-            this.edit_button.UseVisualStyleBackColor = true;
-            this.edit_button.Click += new System.EventHandler(this.edit_button_Click);
-            // 
-=======
->>>>>>> final
             // diginotes_display
             // 
             this.diginotes_display.Location = new System.Drawing.Point(64, 6);
@@ -198,16 +181,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-<<<<<<< HEAD
-            this.ClientSize = new System.Drawing.Size(329, 407);
-=======
             this.ClientSize = new System.Drawing.Size(330, 430);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
->>>>>>> final
             this.Controls.Add(this.funds_button);
             this.Controls.Add(this.logout_button);
             this.Controls.Add(this.balance_display);
