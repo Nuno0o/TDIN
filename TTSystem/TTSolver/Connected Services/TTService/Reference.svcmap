@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="85f76e7b-4a83-488d-a470-e4014f201084" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c8883301-d215-4c5c-ade1-c85e1c522e88" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,13 +19,12 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:8000/TTSystem/" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:8000/TTSystem/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="TTServ.wsdl" MetadataType="Wsdl" ID="7055dcb7-62da-4ad9-8306-e81855b9e376" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/?wsdl" />
-    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="71c93852-97aa-41b5-ba88-3955a788459e" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/?xsd=xsd1" />
-    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="651ba3c2-6619-4f0f-ad0b-4e10860a85d2" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/?xsd=xsd0" />
-    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="799f92d9-c04f-439a-bc88-ba56ad2d7393" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/?disco" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="91c24480-6d7b-477d-b3cf-098fe4b64546" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="33319e54-2e74-4590-a9fb-350021f19f16" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="de4256c6-7133-4d2e-98ad-7e851106881f" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -10,10 +10,10 @@ namespace TTServHost
         static void Main(string[] args)
         {
             // uri to serve as the base address.  
-            Uri baseAddress = new Uri("http://localhost:8000/TTSystem/");
+            Uri baseAddress = new Uri("http://localhost:8080/TTSystem/");
 
             // ServiceHost instance  
-            ServiceHost host = new ServiceHost(typeof(TTServ), baseAddress);
+            ServiceHost host = new ServiceHost(typeof(TTService.TTServ), baseAddress);
 
             try
             {
