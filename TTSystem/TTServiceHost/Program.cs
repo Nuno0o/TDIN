@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.IO;
 using TTService;
+using System.Reflection;
 
 namespace TTServHost
 {
@@ -14,6 +19,9 @@ namespace TTServHost
 
             // ServiceHost instance  
             ServiceHost host = new ServiceHost(typeof(TTService.TTServ), baseAddress);
+
+            // Set folder containing database ( full path in app.config )
+            AppDomain.CurrentDomain.SetData("DataDirectory", Directory.GetParent(Directory.GetParent(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)).ToString()).ToString());
 
             try
             {
