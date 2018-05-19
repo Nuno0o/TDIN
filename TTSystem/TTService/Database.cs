@@ -12,18 +12,59 @@ namespace TTService
     {
         public static string DBPATH = ConfigurationManager.ConnectionStrings["TTs"].ConnectionString;
 
-        public static dynamic AddTicket()
+        public static dynamic AddDepartment (string name)
+        {
+            dynamic result = -1;
+            using (SqlConnection c = new SqlConnection(DBPATH))
+            {
+                try
+                {
+                    c.Open();
+                    string sql = "insert into Department(Name) values (@name)";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    cmd.Parameters.AddWithValue("name", name);
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
+        public static dynamic AddUser ()
         {
             using (SqlConnection c = new SqlConnection(DBPATH))
             {
                 try
                 {
                     c.Open();
-                    //string sql = "insert into TTickets(Author, Problem, Answer, Status) values (" + author + ", '" + problem + "', '', 1)";
-                    //SqlCommand cmd = new SqlCommand(sql, c);
-                    //cmd.ExecuteNonQuery();
-                    //cmd.CommandText = "select max(Id) from TTickets";
-                    //id = (int)cmd.ExecuteScalar();
+
+                }
+                catch(SqlException ex)
+                {
+
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return -1;
+        }
+
+        public static dynamic AddTicket ()
+        {
+            using (SqlConnection c = new SqlConnection(DBPATH))
+            {
+                try
+                {
+                    c.Open();
                 }
                 catch (SqlException)
                 {
@@ -33,7 +74,7 @@ namespace TTService
                     c.Close();
                 }
             }
-            return 1;
+            return -1;
         }
     }
 }

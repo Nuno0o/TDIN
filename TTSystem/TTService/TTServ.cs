@@ -11,5 +11,9 @@ namespace TTService
         {
             return "test"; 
         }
+        public dynamic AddDepartment(string name)
+        {
+            return Database.AddDepartment(name);
+        }
     }
 }

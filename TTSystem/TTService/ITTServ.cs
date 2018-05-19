@@ -7,5 +7,8 @@ namespace TTService
     {
         [OperationContract]
         string HelloWorld(string name);
+
+        [OperationContract]
+        dynamic AddDepartment(string name);
     }
 }
