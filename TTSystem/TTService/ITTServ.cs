@@ -11,4 +11,9 @@ namespace TTService
         [OperationContract]
         dynamic AddDepartment(string name);
     }
+
+    public interface ITTServ2
+    {
+
+    }
 }
