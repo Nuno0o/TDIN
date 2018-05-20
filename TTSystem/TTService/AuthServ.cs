@@ -62,7 +62,7 @@ namespace TTService
             else
             {
                 sessions.Remove(token);
-                res = new { success = "Session closed!" };
+                res = new { success = "Session ended!" };
             }
 
             return JsonConvert.SerializeObject(res);

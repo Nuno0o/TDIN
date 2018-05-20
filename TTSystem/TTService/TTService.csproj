@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="AuthServ.cs" />
     <Compile Include="Database.cs" />
+    <Compile Include="IAuthServ.cs" />
     <Compile Include="ITTQueue.cs" />
     <Compile Include="ITTServ.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
