@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -28,6 +29,17 @@ namespace TTSolver
             //Console.ReadLine();
 
             // close the connection and clean up resources  
+
+            //MessageQueue.Create(@".\Private$\IDG");
+
+            //MessageQueue messageQueue;
+
+            //messageQueue = new MessageQueue(@".\Private$\IDG");
+
+            //messageQueue.Label = "This is a test queue.";
+
+            //messageQueue.Send("This is a test age.", "IDG");
+
             proxy.Close();
         }
     }
