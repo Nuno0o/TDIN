@@ -71,4 +71,51 @@ namespace TTSolver.TTSvc {
             return base.Channel.AddDepartmentAsync(name);
         }
     }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="TTSvc.ITTQueue")]
+    public interface ITTQueue {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ITTQueue/HelloWorld2")]
+        void HelloWorld2(string name);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ITTQueue/HelloWorld2")]
+        System.Threading.Tasks.Task HelloWorld2Async(string name);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface ITTQueueChannel : TTSolver.TTSvc.ITTQueue, System.ServiceModel.IClientChannel {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class TTQueueClient : System.ServiceModel.ClientBase<TTSolver.TTSvc.ITTQueue>, TTSolver.TTSvc.ITTQueue {
+        
+        public TTQueueClient() {
+        }
+        
+        public TTQueueClient(string endpointConfigurationName) : 
+                base(endpointConfigurationName) {
+        }
+        
+        public TTQueueClient(string endpointConfigurationName, string remoteAddress) : 
+                base(endpointConfigurationName, remoteAddress) {
+        }
+        
+        public TTQueueClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(endpointConfigurationName, remoteAddress) {
+        }
+        
+        public TTQueueClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(binding, remoteAddress) {
+        }
+        
+        public void HelloWorld2(string name) {
+            base.Channel.HelloWorld2(name);
+        }
+        
+        public System.Threading.Tasks.Task HelloWorld2Async(string name) {
+            return base.Channel.HelloWorld2Async(name);
+        }
+    }
 }

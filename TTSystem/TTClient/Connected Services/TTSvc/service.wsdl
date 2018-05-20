@@ -172,6 +172,15 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="NetMsmqBinding_ITTQueue_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <msmq:MsmqBestEffort xmlns:msmq="http://schemas.microsoft.com/ws/06/2004/mspolicy/msmq" />
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import namespace="http://tempuri.org/" />
@@ -190,6 +199,9 @@
   <wsdl:message name="ITTServ_AddDepartment_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddDepartmentResponse" />
   </wsdl:message>
+  <wsdl:message name="ITTQueue_HelloWorld2_InputMessage">
+    <wsdl:part name="parameters" element="tns:HelloWorld2" />
+  </wsdl:message>
   <wsdl:portType name="ITTServ">
     <wsdl:operation name="HelloWorld">
       <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/HelloWorld" message="tns:ITTServ_HelloWorld_InputMessage" />
@@ -198,6 +210,11 @@
     <wsdl:operation name="AddDepartment">
       <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/AddDepartment" message="tns:ITTServ_AddDepartment_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITTServ/AddDepartmentResponse" message="tns:ITTServ_AddDepartment_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="ITTQueue">
+    <wsdl:operation name="HelloWorld2">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITTQueue/HelloWorld2" message="tns:ITTQueue_HelloWorld2_InputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="WSHttpBinding_ITTServ" type="tns:ITTServ">
@@ -226,6 +243,16 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
+  <wsdl:binding name="NetMsmqBinding_ITTQueue" type="tns:ITTQueue">
+    <wsp:PolicyReference URI="#NetMsmqBinding_ITTQueue_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/msmq" />
+    <wsdl:operation name="HelloWorld2">
+      <soap12:operation soapAction="http://tempuri.org/ITTQueue/HelloWorld2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+    </wsdl:operation>
+  </wsdl:binding>
   <wsdl:service name="TTServ">
     <wsdl:port name="WSHttpBinding_ITTServ" binding="tns:WSHttpBinding_ITTServ">
       <soap12:address location="http://localhost:8000/TTSystem/" />
@@ -234,6 +261,12 @@
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
           <Dns>localhost</Dns>
         </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+    <wsdl:port name="NetMsmqBinding_ITTQueue" binding="tns:NetMsmqBinding_ITTQueue">
+      <soap12:address location="net.msmq://localhost/private/depq" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.msmq://localhost/private/depq</wsa10:Address>
       </wsa10:EndpointReference>
     </wsdl:port>
   </wsdl:service>

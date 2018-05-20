@@ -3,7 +3,7 @@
 namespace TTService
 {
     [ServiceContract]
-    interface ITTQueue
+    public interface ITTQueue
     {
         [OperationContract(IsOneWay = true)]
         void HelloWorld2(string name);

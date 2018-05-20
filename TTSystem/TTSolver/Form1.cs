@@ -20,10 +20,10 @@ namespace TTSolver
 
             // create an instance of the WCF proxy
             TTServClient proxy = new TTServClient();
-
+            TTQueueClient q = new TTQueueClient();
             // call the service operations
-            string result = proxy.HelloWorld("John");
-            Console.WriteLine("Answer from server: " + result);
+            q.HelloWorld2("John");
+            Console.WriteLine("Answer from server: ");
             Console.WriteLine("Press <ENTER> to terminate service.");
             Console.WriteLine();
             //Console.ReadLine();
