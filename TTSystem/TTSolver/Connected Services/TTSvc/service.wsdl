@@ -264,9 +264,9 @@
       </wsa10:EndpointReference>
     </wsdl:port>
     <wsdl:port name="NetMsmqBinding_ITTQueue" binding="tns:NetMsmqBinding_ITTQueue">
-      <soap12:address location="net.msmq://localhost/private/depQ" />
+      <soap12:address location="net.msmq://localhost/private/depq" />
       <wsa10:EndpointReference>
-        <wsa10:Address>net.msmq://localhost/private/depQ</wsa10:Address>
+        <wsa10:Address>net.msmq://localhost/private/depq</wsa10:Address>
       </wsa10:EndpointReference>
     </wsdl:port>
   </wsdl:service>

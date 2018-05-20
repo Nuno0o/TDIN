@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="3TztqkvbrWOhbwSlGHo4SOHAyvA=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="JqC9YCsGtWlY4NWXpVxB0awhX0Y=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="netMsmqBinding" name="NetMsmqBinding_ITTQueue">
       <properties>
@@ -330,10 +330,10 @@
         </property>
       </properties>
     </endpoint>
-    <endpoint name="NetMsmqBinding_ITTQueue" contract="TTSvc.ITTQueue" bindingType="netMsmqBinding" address="net.msmq://localhost/private/depQ" bindingConfiguration="NetMsmqBinding_ITTQueue">
+    <endpoint name="NetMsmqBinding_ITTQueue" contract="TTSvc.ITTQueue" bindingType="netMsmqBinding" address="net.msmq://localhost/private/depq" bindingConfiguration="NetMsmqBinding_ITTQueue">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>net.msmq://localhost/private/depQ</serializedValue>
+          <serializedValue>net.msmq://localhost/private/depq</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

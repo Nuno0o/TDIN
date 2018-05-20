@@ -39,8 +39,9 @@ namespace TTSolver
             //messageQueue.Label = "This is a test queue.";
 
             //messageQueue.Send("This is a test age.", "IDG");
-
+            
             proxy.Close();
+            q.Close();
         }
     }
 }
