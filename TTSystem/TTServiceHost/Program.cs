@@ -7,6 +7,7 @@ using System.ServiceModel.Description;
 using System.IO;
 using TTService;
 using System.Reflection;
+using System.Messaging;
 
 namespace TTServHost
 {
@@ -26,14 +27,18 @@ namespace TTServHost
             try
             {
                 // add a service endpoint.  
-                host.AddServiceEndpoint(typeof(ITTServ), new WSHttpBinding(), "TTService");
+                //host.AddServiceEndpoint(typeof(ITTServ), new WSHttpBinding(), "");
+                //host.AddServiceEndpoint(typeof(ITTServ), new NetMsmqBinding(), "queue");
 
                 // enable metadata exchange.  
-                ServiceMetadataBehavior smb = new ServiceMetadataBehavior
+                /*ServiceMetadataBehavior smb = new ServiceMetadataBehavior
                 {
                     HttpGetEnabled = true
                 };
-                host.Description.Behaviors.Add(smb);
+                host.Description.Behaviors.Add(smb);*/
+                if (!MessageQueue.Exists(".\\private$\\depQ")){
+                    MessageQueue.Create(".\\private$\\depQ");
+                }
 
                 // start the service.  
                 host.Open();
