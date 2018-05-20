@@ -44,39 +44,48 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connected Services\TTService\Reference.cs">
+    <Compile Include="Connected Services\TTSvc\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="generatedProxy.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Connected Services\TTService\service.wsdl" />
-    <None Include="Connected Services\TTService\service.xsd">
+    <None Include="Connected Services\TTSvc\service.wsdl" />
+    <None Include="Connected Services\TTSvc\service.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\TTService\service1.xsd">
+    <None Include="Connected Services\TTSvc\service1.xsd">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TTServiceHost\TTServiceHost.csproj">
+      <Project>{169946f0-eb5c-47de-8854-c6540441f8be}</Project>
+      <Name>TTServiceHost</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TTService\TTService.csproj">
+      <Project>{57cccf4b-a95a-4817-999f-691e78bf8f4c}</Project>
+      <Name>TTService</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\TTService\" />
+    <WCFMetadataStorage Include="Connected Services\TTSvc\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TTService\configuration91.svcinfo" />
+    <None Include="Connected Services\TTSvc\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TTService\configuration.svcinfo" />
+    <None Include="Connected Services\TTSvc\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TTService\Reference.svcmap">
+    <None Include="Connected Services\TTSvc\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
