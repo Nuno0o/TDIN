@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4B00222B-1D55-45C8-8CC6-1D64305E936D}</ProjectGuid>
+    <ProjectGuid>{BBB43504-7E39-493B-A138-DAA41EF831DA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>TTSolver</RootNamespace>
-    <AssemblyName>TTSolver</AssemblyName>
+    <RootNamespace>TTDepartment</RootNamespace>
+    <AssemblyName>TTDepartment</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
