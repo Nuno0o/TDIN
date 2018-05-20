@@ -36,9 +36,6 @@ namespace TTServHost
                     HttpGetEnabled = true
                 };
                 host.Description.Behaviors.Add(smb);*/
-                if (!MessageQueue.Exists(".\\private$\\depQ")){
-                    MessageQueue.Create(".\\private$\\depQ");
-                }
 
                 // start the service.  
                 host.Open();

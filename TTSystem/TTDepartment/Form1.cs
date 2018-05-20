@@ -15,6 +15,8 @@ namespace TTDepartment
         public Form1()
         {
             InitializeComponent();
+
+            Operations.receiveMessageDepartment("it2");
         }
     }
 }
