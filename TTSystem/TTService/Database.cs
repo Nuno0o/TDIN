@@ -62,7 +62,7 @@ namespace TTService
             return result;
         }
 
-        public static dynamic AddUser(string name, string email, string password, int department)
+        public static dynamic AddUser(string name, string email, string hash, string salt, int department)
         {
             dynamic result = null;
             using (SqlConnection c = new SqlConnection(DBPATH))
@@ -70,11 +70,14 @@ namespace TTService
                 try
                 {
                     c.Open();
-                    string sql = "insert into User(Name, Email, Password, Department) values (@name, @email, @password, @department)";
+                    string sql = 
+                        @"insert into User(Name, Email, Password, Department)
+                        values (@name, @email, @hash, @salt, @department)";
                     SqlCommand cmd = new SqlCommand(sql, c);
                     cmd.Parameters.AddWithValue("name", name);
                     cmd.Parameters.AddWithValue("email", email);
-                    cmd.Parameters.AddWithValue("password", password);
+                    cmd.Parameters.AddWithValue("hash", hash);
+                    cmd.Parameters.AddWithValue("salt", salt);
                     cmd.Parameters.AddWithValue("department", department);
                     result = cmd.ExecuteNonQuery();
                 }
@@ -101,6 +104,43 @@ namespace TTService
                     string sql = "select * from User where User.id = @id";
                     SqlCommand cmd = new SqlCommand(sql, c);
                     cmd.Parameters.AddWithValue("id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    result = new List<dynamic>();
+                    while (reader.Read())
+                    {
+                        result.Add(new
+                        {
+                            id = reader["Id"],
+                            name = reader["Name"],
+                            email = reader["Email"],
+                            password = reader["Password"],
+                            department = reader["Department"]
+                        });
+                    }
+                }
+                catch (SqlException ex)
+                {
+
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
+        public static dynamic GetUser(string email)
+        {
+            dynamic result = null;
+            using (SqlConnection c = new SqlConnection(DBPATH))
+            {
+                try
+                {
+                    c.Open();
+                    string sql = "select * from User where User.email = @email";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    cmd.Parameters.AddWithValue("email", email);
                     SqlDataReader reader = cmd.ExecuteReader();
                     result = new List<dynamic>();
                     while (reader.Read())
