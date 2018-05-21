@@ -12,6 +12,141 @@ namespace TTService
     {
         public static string DBPATH = ConfigurationManager.ConnectionStrings["TTs"].ConnectionString;
 
+        public static dynamic AddTicket(string title, string description, int author, int? parent)
+        {            
+            dynamic result = null;
+            using (SqlConnection c = new SqlConnection(DBPATH))
+            {
+                try
+                {
+                    c.Open();
+
+                    string sql;
+                    if (parent != null)
+                    {
+                        sql = @"
+                            INSERT INTO Ticket (Title, Description, Author, Parent)
+                            VALUES (@title, @description, @author, @parent)
+                        ";
+                    }
+                    else
+                    {
+                        sql = @"
+                            INSERT INTO Ticket (Title, Description, Author)
+                            VALUES (@title, @description, @author)
+                        ";
+                    }                    
+
+                    SqlCommand cmd = new SqlCommand(sql, c);
+
+                    cmd.Parameters.AddWithValue("title", title);
+                    cmd.Parameters.AddWithValue("description", description);
+                    cmd.Parameters.AddWithValue("author", author);
+
+                    if (parent != null)
+                    {
+                        cmd.Parameters.AddWithValue("parent", parent);
+                    }
+
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
+        public static dynamic AssignTicket(int id, int assignee)
+        {
+            dynamic result = null;
+            using (SqlConnection c = new SqlConnection(DBPATH))
+            {
+                try
+                {
+                    c.Open();
+
+                    string sql = @"
+                        UPDATE Ticket
+                        SET Status = 'assigned', Assignee = @assignee
+                        WHERE Id = @id
+                    ";
+
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    
+                    cmd.Parameters.AddWithValue("assignee", assignee);
+                    cmd.Parameters.AddWithValue("id", id);
+
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
+        public static dynamic GetTicket(int id)
+        {
+            dynamic result = null;
+            using (SqlConnection c = new SqlConnection(DBPATH))
+            {
+                try
+                {
+                    c.Open();
+
+                    string sql = @"
+                        SELECT *
+                        FROM Ticket
+                        WHERE Id = @id
+                    ";
+
+                    SqlCommand cmd = new SqlCommand(sql, c);
+
+                    cmd.Parameters.AddWithValue("id", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    result = new List<dynamic>();
+
+                    while (reader.Read())
+                    {
+                        result.Add(new
+                        {
+                            id = reader["Id"],
+                            title = reader["Title"],
+                            description = reader["Description"],
+                            author = reader["Author"],
+                            createdAt = reader["CreatedAt"],
+                            status = reader["Status"],
+                            parent = reader["Parent"],
+                            answer = reader["Answer"],
+                            assignee = reader["Assignee"]
+                        });
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
         public static dynamic AddDepartment (string name)
         {
             dynamic result = null;
@@ -154,35 +289,6 @@ namespace TTService
                             department = reader["Department"]
                         });
                     }
-                }
-                catch (SqlException ex)
-                {
-
-                }
-                finally
-                {
-                    c.Close();
-                }
-            }
-            return result;
-        }
-
-        public static dynamic AddTicket (string title, string description, int author, int parent)
-        {
-            dynamic result = null;
-            using (SqlConnection c = new SqlConnection(DBPATH))
-            {
-                try
-                {
-                    c.Open();
-                    string sql = "insert into Ticket(Title, Description, Author, CreatedAt, Parent) " +
-                                  "values (@title, @description, @author, datetime(), @parentid)";
-                    SqlCommand cmd = new SqlCommand(sql, c);
-                    cmd.Parameters.AddWithValue("title", title);
-                    cmd.Parameters.AddWithValue("description", description);
-                    cmd.Parameters.AddWithValue("author", author);
-                    cmd.Parameters.AddWithValue("parent", parent);
-                    result = cmd.ExecuteNonQuery();
                 }
                 catch (SqlException ex)
                 {

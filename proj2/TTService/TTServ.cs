@@ -19,6 +19,18 @@ namespace TTService
         {
             return Database.AddDepartment(name);
         }
+        public dynamic AddTicket(string title, string description, int author, int? parent)
+        {
+            return Database.AddTicket(title, description, author, parent);
+        }
+        public dynamic AssignTicket(int id, int assignee)
+        {
+            return Database.AssignTicket(id, assignee);
+        }
+        public dynamic GetTicket(int id)
+        {
+            return Database.GetTicket(id);
+        }
         #endregion
 
         #region Auth
