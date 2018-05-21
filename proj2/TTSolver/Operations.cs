@@ -21,16 +21,12 @@ namespace TTSolver
                 MessageQueue q = new MessageQueue(path);
                 q.Formatter = new BinaryMessageFormatter();
                 q.Send(message);
-                Message[] m = q.GetAllMessages();
-                Console.WriteLine(m.Length);
             }
             catch(Exception ex)
             {
                 return false;
             }
-            return true;
-
-            
+            return true;  
         }
     }
 }

@@ -17,17 +17,6 @@ namespace TTSolver
         public Form1()
         {
             InitializeComponent();
-
-            // create an instance of the WCF proxy
-            TTServClient proxy = new TTServClient();
-            // call the service operations
-            Console.WriteLine("Answer from server: ");
-            Console.WriteLine("Press <ENTER> to terminate service.");
-            Console.WriteLine();
-            //Operations.sendMessageToDepartment("IT2", "ola");
-
-            
-            proxy.Close();
         }
     }
 }
