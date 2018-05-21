@@ -31,6 +31,14 @@ namespace TTService
         {
             return Database.GetTicket(id);
         }
+        public dynamic AnswerTicket(int id, string answer)
+        {
+            return Database.AnswerTicket(id, answer);
+        }
+        public dynamic GetTicketChildren(int id)
+        {
+            return Database.GetTicketChildren(id);
+        }
         #endregion
 
         #region Auth

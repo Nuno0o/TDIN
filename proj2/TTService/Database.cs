@@ -12,6 +12,8 @@ namespace TTService
     {
         public static string DBPATH = ConfigurationManager.ConnectionStrings["TTs"].ConnectionString;
 
+        #region Ticket
+
         public static dynamic AddTicket(string title, string description, int author, int? parent)
         {            
             dynamic result = null;
@@ -49,6 +51,12 @@ namespace TTService
                     }
 
                     result = cmd.ExecuteNonQuery();
+                    
+                    // hold parent ticket - waiting for answers
+                    if (parent != null)
+                    {
+                        HoldTicket((int) parent);
+                    }       
                 }
                 catch (SqlException ex)
                 {
@@ -147,6 +155,120 @@ namespace TTService
             return result;
         }
 
+        public static dynamic GetTicketChildren(int id)
+        {
+            dynamic result = null;
+            using (SqlConnection c = new SqlConnection(DBPATH))
+            {
+                try
+                {
+                    c.Open();
+
+                    string sql = @"
+                        SELECT Id
+                        FROM Ticket
+                        WHERE parent = @id
+                    ";
+
+                    SqlCommand cmd = new SqlCommand(sql, c);
+
+                    cmd.Parameters.AddWithValue("id", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    result = new List<dynamic>();
+
+                    while (reader.Read())
+                    {
+                        result.Add(new
+                        {
+                            id = reader["Id"]
+                        });
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
+        public static dynamic AnswerTicket(int id, string answer)
+        {
+            dynamic result = null;
+            using (SqlConnection c = new SqlConnection(DBPATH))
+            {
+                try
+                {
+                    c.Open();
+
+                    string sql = @"
+                        UPDATE Ticket
+                        SET Status = 'solved', Answer = @answer
+                        WHERE Id = @id
+                    ";
+
+                    SqlCommand cmd = new SqlCommand(sql, c);
+
+                    cmd.Parameters.AddWithValue("id", id);
+                    cmd.Parameters.AddWithValue("answer", answer);
+
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
+        private static dynamic HoldTicket(int id)
+        {
+            dynamic result = null;
+            using (SqlConnection c = new SqlConnection(DBPATH))
+            {
+                try
+                {
+                    c.Open();
+
+                    string sql = @"
+                        UPDATE Ticket
+                        SET Status = 'waiting for answers'
+                        WHERE Id = @id
+                    ";
+
+                    SqlCommand cmd = new SqlCommand(sql, c);
+
+                    cmd.Parameters.AddWithValue("id", id);
+
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region Department
+
         public static dynamic AddDepartment (string name)
         {
             dynamic result = null;
@@ -196,6 +318,10 @@ namespace TTService
             }
             return result;
         }
+
+        #endregion
+
+        #region User
 
         public static dynamic AddUser(string name, string email, string hash, string salt, int department)
         {
@@ -301,5 +427,7 @@ namespace TTService
             }
             return result;
         }
+
+        #endregion
     }
 }
