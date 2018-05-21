@@ -7,16 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TTDepartment.TTSvc;
 
 namespace TTDepartment
 {
-    public partial class Main : Form
+    public partial class Register : Form
     {
-        public Main()
+        public Register()
         {
             InitializeComponent();
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+        }      
+
+        private void back_button_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void register_button_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

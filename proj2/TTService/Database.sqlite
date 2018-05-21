@@ -1,0 +1,37 @@
+DROP TABLE IF EXISTS Department;
+CREATE TABLE Department (
+	Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+	Name TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS User;
+CREATE TABLE User (
+	Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+	Name TEXT NOT NULL,
+	Email TEXT NOT NULL,
+	Hash TEXT NOT NULL,
+	Salt TEXT NOT NULL,
+	Department INT NOT NULL,
+	FOREIGN KEY (Department) REFERENCES Department(Id)
+);
+
+DROP TABLE IF EXISTS Ticket;
+CREATE TABLE Ticket (
+	Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+	Title TEXT,
+	Description TEXT NOT NULL,
+	Author INT NOT NULL,
+	CreatedAt TEXT NOT NULL,
+	Status TEXT NOT NULL DEFAULT "unassigned",
+	Parent INT,
+	Answer TEXT,
+	Assignee INT,
+	FOREIGN KEY (Author) REFERENCES User(Id),
+	FOREIGN KEY (Parent) REFERENCES Ticket(Id),
+	FOREIGN KEY (Assignee) REFERENCES User(Id)
+);
+
+INSERT INTO Department(Name) VALUES ("IT");
+INSERT INTO Department(Name) VALUES ("Legal");
+
+INSERT INTO User(Name, Email, Hash, Salt, Department) VALUES ("Nuno", "Nuno@hotmail.com", "aa", "dd", 1);

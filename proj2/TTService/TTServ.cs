@@ -5,25 +5,53 @@ using System.Configuration;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Threading;
+using System.Diagnostics;
 
 namespace TTService
 {
     public class TTServ : ITTServ, IAuthServ
     {
         #region Operations
-
-        public string InitDb(bool overload)
-        {
-            Database.Init(overload);
-            return null;
-        }
         public string HelloWorld(string name)
         {
             return "test"; 
         }
+        public string InitDb(bool overwrite)
+        {
+            Database.Init(overwrite);
+            return null;
+        }
         public dynamic AddDepartment(string name)
         {
             return Database.AddDepartment(name);
+        }
+        public dynamic AddTicket(string title, string description, int author, int? parent)
+        {
+            return Database.AddTicket(title, description, author, parent);
+        }
+        public dynamic AssignTicket(int id, int assignee)
+        {
+            return Database.AssignTicket(id, assignee);
+        }
+        public dynamic AnswerTicket(int id, string answer)
+        {
+            return Database.AnswerTicket(id, answer);
+        }
+        public dynamic GetTicket(int id)
+        {
+            return Database.GetTicket(id);
+        }
+        public dynamic GetTicketChildren(int id)
+        {
+            return Database.GetTicketChildren(id);
+        }
+        public dynamic GetAuthorTickets(int id, string status)
+        {
+            return Database.GetAuthorTickets(id, status);
+        }
+        public dynamic GetSolverTickets(int id, string status)
+        {
+            return Database.GetSolverTickets(id, status);
         }
         #endregion
 

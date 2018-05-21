@@ -7,16 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TTDepartment.TTSvc;
 
 namespace TTDepartment
 {
-    public partial class Main : Form
+    public partial class Login : Form
     {
-        public Main()
+        public Login()
         {
             InitializeComponent();
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+        }       
+
+        private void login_button_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void register_button_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -110,9 +110,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Database.sqlite" />
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\TTSvc\" />
   </ItemGroup>
   <ItemGroup>
