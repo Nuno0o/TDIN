@@ -27,17 +27,25 @@ namespace TTService
         {
             return Database.AssignTicket(id, assignee);
         }
-        public dynamic GetTicket(int id)
-        {
-            return Database.GetTicket(id);
-        }
         public dynamic AnswerTicket(int id, string answer)
         {
             return Database.AnswerTicket(id, answer);
         }
+        public dynamic GetTicket(int id)
+        {
+            return Database.GetTicket(id);
+        }
         public dynamic GetTicketChildren(int id)
         {
             return Database.GetTicketChildren(id);
+        }
+        public dynamic GetAuthorTickets(int id, string status)
+        {
+            return Database.GetAuthorTickets(id, status);
+        }
+        public dynamic GetSolverTickets(int id, string status)
+        {
+            return Database.GetSolverTickets(id, status);
         }
         #endregion
 

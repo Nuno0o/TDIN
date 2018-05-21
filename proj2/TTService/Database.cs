@@ -104,6 +104,73 @@ namespace TTService
             return result;
         }
 
+        public static dynamic AnswerTicket(int id, string answer)
+        {
+            dynamic result = null;
+            using (SqlConnection c = new SqlConnection(DBPATH))
+            {
+                try
+                {
+                    c.Open();
+
+                    string sql = @"
+                        UPDATE Ticket
+                        SET Status = 'solved', Answer = @answer
+                        WHERE Id = @id
+                    ";
+
+                    SqlCommand cmd = new SqlCommand(sql, c);
+
+                    cmd.Parameters.AddWithValue("id", id);
+                    cmd.Parameters.AddWithValue("answer", answer);
+
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
+        private static dynamic HoldTicket(int id)
+        {
+            dynamic result = null;
+            using (SqlConnection c = new SqlConnection(DBPATH))
+            {
+                try
+                {
+                    c.Open();
+
+                    string sql = @"
+                        UPDATE Ticket
+                        SET Status = 'waiting for answers'
+                        WHERE Id = @id
+                    ";
+
+                    SqlCommand cmd = new SqlCommand(sql, c);
+
+                    cmd.Parameters.AddWithValue("id", id);
+
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
         public static dynamic GetTicket(int id)
         {
             dynamic result = null;
@@ -167,7 +234,7 @@ namespace TTService
                     string sql = @"
                         SELECT Id
                         FROM Ticket
-                        WHERE parent = @id
+                        WHERE Parent = @id
                     ";
 
                     SqlCommand cmd = new SqlCommand(sql, c);
@@ -198,7 +265,7 @@ namespace TTService
             return result;
         }
 
-        public static dynamic AnswerTicket(int id, string answer)
+        public static dynamic GetAuthorTickets(int id, string status)
         {
             dynamic result = null;
             using (SqlConnection c = new SqlConnection(DBPATH))
@@ -207,18 +274,45 @@ namespace TTService
                 {
                     c.Open();
 
-                    string sql = @"
-                        UPDATE Ticket
-                        SET Status = 'solved', Answer = @answer
-                        WHERE Id = @id
-                    ";
+                    string sql;
+                    if (status != null)
+                    {
+                        sql = @"
+                            SELECT Id
+                            FROM Ticket
+                            WHERE Author = @id
+                            AND Status = '@status'
+                        ";
+                    }
+                    else
+                    {
+                        sql = @"
+                            SELECT Id
+                            FROM Ticket
+                            WHERE Author = @id
+                        ";
+                    }
 
                     SqlCommand cmd = new SqlCommand(sql, c);
 
                     cmd.Parameters.AddWithValue("id", id);
-                    cmd.Parameters.AddWithValue("answer", answer);
 
-                    result = cmd.ExecuteNonQuery();
+                    if (status != null)
+                    {
+                        cmd.Parameters.AddWithValue("status", status);
+                    }
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    result = new List<dynamic>();
+
+                    while (reader.Read())
+                    {
+                        result.Add(new
+                        {
+                            id = reader["Id"]
+                        });
+                    }
                 }
                 catch (SqlException ex)
                 {
@@ -232,7 +326,7 @@ namespace TTService
             return result;
         }
 
-        private static dynamic HoldTicket(int id)
+        public static dynamic GetSolverTickets(int id, string status)
         {
             dynamic result = null;
             using (SqlConnection c = new SqlConnection(DBPATH))
@@ -241,17 +335,45 @@ namespace TTService
                 {
                     c.Open();
 
-                    string sql = @"
-                        UPDATE Ticket
-                        SET Status = 'waiting for answers'
-                        WHERE Id = @id
-                    ";
+                    string sql;
+                    if (status != null)
+                    {
+                        sql = @"
+                            SELECT Id
+                            FROM Ticket
+                            WHERE Assignee = @id
+                            AND Status = '@status'
+                        ";
+                    }
+                    else
+                    {
+                        sql = @"
+                            SELECT Id
+                            FROM Ticket
+                            WHERE Assignee = @id
+                        ";
+                    }
 
                     SqlCommand cmd = new SqlCommand(sql, c);
 
                     cmd.Parameters.AddWithValue("id", id);
 
-                    result = cmd.ExecuteNonQuery();
+                    if (status != null)
+                    {
+                        cmd.Parameters.AddWithValue("status", status);
+                    }
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    result = new List<dynamic>();
+
+                    while (reader.Read())
+                    {
+                        result.Add(new
+                        {
+                            id = reader["Id"]
+                        });
+                    }
                 }
                 catch (SqlException ex)
                 {

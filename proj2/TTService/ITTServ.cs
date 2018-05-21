@@ -20,8 +20,7 @@ namespace TTService
         /// <returns>Greater than 0 if success, less than or equal to 0 otherwise.</returns>
         [OperationContract]
         dynamic AddTicket(string title, string description, int author, int? parent);
-
-
+        
         /// <summary>
         /// Assigns a ticket to a user.
         /// </summary>
@@ -30,26 +29,7 @@ namespace TTService
         /// <returns>Greater than 0 if success, less than or equal to 0 otherwise.</returns>
         [OperationContract]
         dynamic AssignTicket(int id, int assignee);
-
-
-        /// <summary>
-        /// Gets a ticket's information.
-        /// </summary>
-        /// <param name="id">Id of ticket to retrieve information of.</param>
-        /// <returns>Ticket information.</returns>
-        [OperationContract]
-        dynamic GetTicket(int id);
-
-
-        /// <summary>
-        /// Gets the ids of all the children of a ticket.
-        /// </summary>
-        /// <param name="id">Id of the parent ticket.</param>
-        /// <returns>A list of all the ids of the ticket's children.</returns>
-        [OperationContract]
-        dynamic GetTicketChildren(int id);
-
-
+        
         /// <summary>
         /// Answers a ticket.
         /// </summary>
@@ -58,6 +38,40 @@ namespace TTService
         /// <returns>Greater than 0 if success, less than or equal to 0 otherwise.</returns>
         [OperationContract]
         dynamic AnswerTicket(int id, string answer);
+        
+        /// <summary>
+        /// Gets a ticket's information.
+        /// </summary>
+        /// <param name="id">Id of ticket to retrieve information of.</param>
+        /// <returns>Ticket information.</returns>
+        [OperationContract]
+        dynamic GetTicket(int id);
+
+        /// <summary>
+        /// Gets the ids of all the children of a ticket.
+        /// </summary>
+        /// <param name="id">Id of the parent ticket.</param>
+        /// <returns>List of all the ids of the ticket's children.</returns>
+        [OperationContract]
+        dynamic GetTicketChildren(int id);
+
+        /// <summary>
+        /// Gets the ids of all the tickets a user posted.
+        /// </summary>
+        /// <param name="id">User id.</param>
+        /// <param name="status">Filter tickets by status - null to get all tickets.</param>
+        /// <returns>List of all the ids of the tickets posted by the user.</returns>
+        [OperationContract]
+        dynamic GetAuthorTickets(int id, string status);
+
+        /// <summary>
+        /// Gets the ids of all the tickets a user is assigned to.
+        /// </summary>
+        /// <param name="id">User id.</param>
+        /// <param name="status">Filter tickets by status - null to get all tickets.</param>
+        /// <returns>List of all the ids of the tickets assigned to the user.</returns>
+        [OperationContract]
+        dynamic GetSolverTickets(int id, string status);
 
         #endregion
 
