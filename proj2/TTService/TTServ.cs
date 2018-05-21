@@ -5,6 +5,7 @@ using System.Configuration;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Threading;
+using System.Diagnostics;
 
 namespace TTService
 {
@@ -14,6 +15,11 @@ namespace TTService
         public string HelloWorld(string name)
         {
             return "test"; 
+        }
+        public string InitDb(bool overwrite)
+        {
+            Database.Init(overwrite);
+            return null;
         }
         public dynamic AddDepartment(string name)
         {

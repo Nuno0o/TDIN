@@ -17,16 +17,6 @@ namespace TTDepartment
         {
             InitializeComponent();
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
-
-            /* --- TESTING --- */
-
-            Console.WriteLine("Testing started!");
-
-            TTServClient proxy = new TTServClient();
-
-            proxy.AddTicket("titulo", "texto", 1, null);
-
-            Console.WriteLine("Testing finished!");
         }
     }
 }

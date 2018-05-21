@@ -8,6 +8,9 @@ namespace TTService
         [OperationContract]
         string HelloWorld(string name);
 
+        [OperationContract]
+        string InitDb(bool overwrite);
+
         #region Ticket
 
         /// <summary>

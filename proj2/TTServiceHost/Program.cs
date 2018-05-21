@@ -26,22 +26,18 @@ namespace TTServHost
 
             try
             {
-                // add a service endpoint.  
-                //host.AddServiceEndpoint(typeof(ITTServ), new WSHttpBinding(), "");
-                //host.AddServiceEndpoint(typeof(ITTServ), new NetMsmqBinding(), "queue");
-
-                // enable metadata exchange.  
-                /*ServiceMetadataBehavior smb = new ServiceMetadataBehavior
-                {
-                    HttpGetEnabled = true
-                };
-                host.Description.Behaviors.Add(smb);*/
-
                 // start the service.  
                 host.Open();
                 Console.WriteLine("The service is ready.");
                 Console.WriteLine("Press <ENTER> to terminate service.");
                 Console.WriteLine();
+
+                TTSvc.TTServClient proxy = new TTSvc.TTServClient();
+                proxy.InitDb(true);
+                //test scripts here
+                proxy.Close();
+
+
                 Console.ReadLine();
 
                 // close the ServiceHostBase to shutdown the service.  
