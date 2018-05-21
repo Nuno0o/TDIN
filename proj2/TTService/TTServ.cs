@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Configuration;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Threading;
