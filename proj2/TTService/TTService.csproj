@@ -48,7 +48,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthServ.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="IAuthServ.cs" />
     <Compile Include="ITTServ.cs" />
