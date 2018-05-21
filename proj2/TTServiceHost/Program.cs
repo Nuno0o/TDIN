@@ -43,6 +43,9 @@ namespace TTServHost
                 Console.WriteLine("Press <ENTER> to terminate service.");
                 Console.WriteLine();
                 Console.ReadLine();
+                TTSvc.TTServClient proxy = new TTSvc.TTServClient();
+                proxy.InitDb(true);
+                proxy.Close();
 
                 // close the ServiceHostBase to shutdown the service.  
                 host.Close();

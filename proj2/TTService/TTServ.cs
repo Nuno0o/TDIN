@@ -11,6 +11,12 @@ namespace TTService
     public class TTServ : ITTServ, IAuthServ
     {
         #region Operations
+
+        public string InitDb(bool overload)
+        {
+            Database.Init(overload);
+            return null;
+        }
         public string HelloWorld(string name)
         {
             return "test"; 

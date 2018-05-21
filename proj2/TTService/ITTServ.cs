@@ -6,6 +6,9 @@ namespace TTService
     public interface ITTServ
     {
         [OperationContract]
+        string InitDb(bool overwrite);
+
+        [OperationContract]
         string HelloWorld(string name);
 
         [OperationContract]
