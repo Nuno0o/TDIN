@@ -35,6 +35,7 @@ namespace TTServHost
                 TTSvc.TTServClient proxy = new TTSvc.TTServClient();
                 proxy.InitDb(true);
                 //test scripts here
+                proxy.AddTicket("a", "b", 1, null);
                 proxy.Close();
 
 

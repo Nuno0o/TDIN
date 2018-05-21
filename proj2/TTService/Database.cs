@@ -65,7 +65,7 @@ namespace TTService
         public static dynamic AddTicket(string title, string description, int author, int? parent)
         {            
             dynamic result = null;
-            using (SQLiteConnection c = new SQLiteConnection(DB_PATH))
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
@@ -75,15 +75,15 @@ namespace TTService
                     if (parent != null)
                     {
                         sql = @"
-                            INSERT INTO Ticket (Title, Description, Author, Parent)
-                            VALUES (@title, @description, @author, @parent)
+                            INSERT INTO Ticket (Title, Description, Author, Parent, CreatedAt)
+                            VALUES (@title, @description, @author, @parent, datetime())
                         ";
                     }
                     else
                     {
                         sql = @"
-                            INSERT INTO Ticket (Title, Description, Author)
-                            VALUES (@title, @description, @author)
+                            INSERT INTO Ticket (Title, Description, Author, CreatedAt)
+                            VALUES (@title, @description, @author, datetime())
                         ";
                     }                    
 
@@ -108,7 +108,7 @@ namespace TTService
                 }
                 catch (SQLiteException ex)
                 {
-                    Console.WriteLine(ex);
+                    Debug.WriteLine(ex);
                 }
                 finally
                 {
@@ -121,7 +121,7 @@ namespace TTService
         public static dynamic AssignTicket(int id, int assignee)
         {
             dynamic result = null;
-            using (SQLiteConnection c = new SQLiteConnection(DB_PATH))
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
@@ -142,7 +142,7 @@ namespace TTService
                 }
                 catch (SQLiteException ex)
                 {
-                    Console.WriteLine(ex);
+                    Debug.WriteLine(ex);
                 }
                 finally
                 {
@@ -155,7 +155,7 @@ namespace TTService
         public static dynamic AnswerTicket(int id, string answer)
         {
             dynamic result = null;
-            using (SQLiteConnection c = new SQLiteConnection(DB_PATH))
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
@@ -176,7 +176,7 @@ namespace TTService
                 }
                 catch (SQLiteException ex)
                 {
-                    Console.WriteLine(ex);
+                    Debug.WriteLine(ex);
                 }
                 finally
                 {
@@ -189,7 +189,7 @@ namespace TTService
         private static dynamic HoldTicket(int id)
         {
             dynamic result = null;
-            using (SQLiteConnection c = new SQLiteConnection(DB_PATH))
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
@@ -209,7 +209,7 @@ namespace TTService
                 }
                 catch (SQLiteException ex)
                 {
-                    Console.WriteLine(ex);
+                    Debug.WriteLine(ex);
                 }
                 finally
                 {
@@ -222,7 +222,7 @@ namespace TTService
         public static dynamic GetTicket(int id)
         {
             dynamic result = null;
-            using (SQLiteConnection c = new SQLiteConnection(DB_PATH))
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
@@ -260,7 +260,7 @@ namespace TTService
                 }
                 catch (SQLiteException ex)
                 {
-                    Console.WriteLine(ex);
+                    Debug.WriteLine(ex);
                 }
                 finally
                 {
@@ -273,7 +273,7 @@ namespace TTService
         public static dynamic GetTicketChildren(int id)
         {
             dynamic result = null;
-            using (SQLiteConnection c = new SQLiteConnection(DB_PATH))
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
@@ -303,7 +303,7 @@ namespace TTService
                 }
                 catch (SQLiteException ex)
                 {
-                    Console.WriteLine(ex);
+                    Debug.WriteLine(ex);
                 }
                 finally
                 {
@@ -316,7 +316,7 @@ namespace TTService
         public static dynamic GetAuthorTickets(int id, string status)
         {
             dynamic result = null;
-            using (SQLiteConnection c = new SQLiteConnection(DB_PATH))
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
@@ -364,7 +364,7 @@ namespace TTService
                 }
                 catch (SQLiteException ex)
                 {
-                    Console.WriteLine(ex);
+                    Debug.WriteLine(ex);
                 }
                 finally
                 {
@@ -377,7 +377,7 @@ namespace TTService
         public static dynamic GetSolverTickets(int id, string status)
         {
             dynamic result = null;
-            using (SQLiteConnection c = new SQLiteConnection(DB_PATH))
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
@@ -425,7 +425,7 @@ namespace TTService
                 }
                 catch (SQLiteException ex)
                 {
-                    Console.WriteLine(ex);
+                    Debug.WriteLine(ex);
                 }
                 finally
                 {
@@ -442,7 +442,7 @@ namespace TTService
         public static dynamic AddDepartment (string name)
         {
             dynamic result = null;
-            using (SQLiteConnection c = new SQLiteConnection(DB_PATH))
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
@@ -467,7 +467,7 @@ namespace TTService
         public static dynamic RemoveDepartment (int id)
         {
             dynamic result = -1;
-            using (SQLiteConnection c = new SQLiteConnection(DB_PATH))
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
@@ -496,7 +496,7 @@ namespace TTService
         public static dynamic AddUser(string name, string email, string hash, string salt, int department)
         {
             dynamic result = null;
-            using (SQLiteConnection c = new SQLiteConnection(DB_PATH))
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
@@ -527,7 +527,7 @@ namespace TTService
         public static dynamic GetUser(int id)
         {
             dynamic result = null;
-            using (SQLiteConnection c = new SQLiteConnection(DB_PATH))
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
@@ -564,7 +564,7 @@ namespace TTService
         public static dynamic GetUser(string email)
         {
             dynamic result = null;
-            using (SQLiteConnection c = new SQLiteConnection(DB_PATH))
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
