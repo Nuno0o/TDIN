@@ -64,7 +64,7 @@ namespace TTDepartment
                 MessageQueue q = new MessageQueue(path);
                 q.Formatter = new BinaryMessageFormatter();
                 Message m = q.ReceiveById(id);
-                Console.WriteLine(m.Body);
+                Debug.WriteLine(m.Body);
             }
             catch (Exception ex)
             {
