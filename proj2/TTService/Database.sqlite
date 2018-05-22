@@ -18,7 +18,7 @@ CREATE TABLE User (
 	Email TEXT NOT NULL UNIQUE,
 	Hash TEXT NOT NULL,
 	Salt TEXT NOT NULL,
-	Department INT NOT NULL,
+	Department INT,
 	FOREIGN KEY (Department) REFERENCES Department(Id)
 );
 

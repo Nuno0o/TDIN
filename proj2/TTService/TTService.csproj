@@ -69,6 +69,7 @@
     <Compile Include="Database.cs" />
     <Compile Include="IAuthServ.cs" />
     <Compile Include="ITTServ.cs" />
+    <Compile Include="ITTServEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TTServ.cs" />
   </ItemGroup>
