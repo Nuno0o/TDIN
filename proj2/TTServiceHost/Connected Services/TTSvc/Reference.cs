@@ -69,6 +69,12 @@ namespace TTServHost.TTSvc {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetSolverTickets", ReplyAction="http://tempuri.org/ITTServ/GetSolverTicketsResponse")]
         System.Threading.Tasks.Task<object> GetSolverTicketsAsync(int id, string status);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetUnassignedTickets", ReplyAction="http://tempuri.org/ITTServ/GetUnassignedTicketsResponse")]
+        object GetUnassignedTickets();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetUnassignedTickets", ReplyAction="http://tempuri.org/ITTServ/GetUnassignedTicketsResponse")]
+        System.Threading.Tasks.Task<object> GetUnassignedTicketsAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddDepartment", ReplyAction="http://tempuri.org/ITTServ/AddDepartmentResponse")]
         object AddDepartment(string name);
         
@@ -173,6 +179,14 @@ namespace TTServHost.TTSvc {
         
         public System.Threading.Tasks.Task<object> GetSolverTicketsAsync(int id, string status) {
             return base.Channel.GetSolverTicketsAsync(id, status);
+        }
+        
+        public object GetUnassignedTickets() {
+            return base.Channel.GetUnassignedTickets();
+        }
+        
+        public System.Threading.Tasks.Task<object> GetUnassignedTicketsAsync() {
+            return base.Channel.GetUnassignedTicketsAsync();
         }
         
         public object AddDepartment(string name) {
