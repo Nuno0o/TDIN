@@ -10,12 +10,6 @@ namespace TTSolver
     static class Operations
     {      
 
-        static Operations()
-        {
-            auth_proxy.Open();
-            serv_proxy.Open();
-        }
-
         public static bool sendMessageToDepartment(string department, string message)
         {
             try
@@ -48,10 +42,11 @@ namespace TTSolver
         public static bool Login(string email, string password)
         {
             bool ret;
+            AuthServClient proxy = new AuthServClient();
 
             try
             {
-                //auth_proxy.Open();
+                proxy.Open();
 
                 string json;
                 dynamic res;
@@ -72,7 +67,7 @@ namespace TTSolver
                 else
                 {
                     ret = false;
-                }                   
+                }
             }
             catch (Exception ex)
             {
@@ -80,7 +75,7 @@ namespace TTSolver
             }
             finally
             {
-                //auth_proxy.Close();
+                proxy.Close();
             }
 
             return ret;
@@ -89,10 +84,11 @@ namespace TTSolver
         public static bool Register(string name, string email, string password, int department)
         {
             bool ret;
+            AuthServClient proxy = new AuthServClient();
 
             try
             {
-                //auth_proxy.Open();                
+                proxy.Open();
 
                 string salt = Salt();
                 string hash = Hash(password + salt);
@@ -107,7 +103,7 @@ namespace TTSolver
             }
             finally
             {
-                //auth_proxy.Close();
+                proxy.Close();
             }
 
             return ret;

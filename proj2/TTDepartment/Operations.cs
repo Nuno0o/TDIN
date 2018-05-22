@@ -13,12 +13,6 @@ namespace TTDepartment
         public static string department = "";
         public static Message[] messages;
 
-        static Operations()
-        {
-            auth_proxy.Open();
-            serv_proxy.Open();
-        }
-
         public static bool receiveMessageDepartment()
         {
             try
@@ -101,10 +95,11 @@ namespace TTDepartment
         public static bool Login(string email, string password)
         {
             bool ret;
+            AuthServClient proxy = new AuthServClient();
 
             try
             {
-                //auth_proxy.Open();
+                proxy.Open();
 
                 string json;
                 dynamic res;
@@ -133,7 +128,7 @@ namespace TTDepartment
             }
             finally
             {
-                //auth_proxy.Close();
+                proxy.Close();
             }
 
             return ret;
@@ -142,10 +137,11 @@ namespace TTDepartment
         public static bool Register(string name, string email, string password, int department)
         {
             bool ret;
+            AuthServClient proxy = new AuthServClient();
 
             try
             {
-                //auth_proxy.Open();
+                proxy.Open();
 
                 string salt = Salt();
                 string hash = Hash(password + salt);
@@ -160,7 +156,7 @@ namespace TTDepartment
             }
             finally
             {
-                //auth_proxy.Close();
+                proxy.Close();
             }
 
             return ret;
