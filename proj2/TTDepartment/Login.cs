@@ -32,6 +32,7 @@ namespace TTDepartment
         {
             new Register().Show();
             Hide();
+            password_input.Text = "";
         }
     }
 }

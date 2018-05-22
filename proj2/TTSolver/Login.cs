@@ -32,6 +32,7 @@ namespace TTSolver
         {
             new Register().Show();
             Hide();
+            password_input.Text = "";
         }
     }
 }
