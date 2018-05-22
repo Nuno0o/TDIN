@@ -16,7 +16,7 @@ namespace TTSolver
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new AssignedTicket());
+            Application.Run(new Login());
         }
     }
 }

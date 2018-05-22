@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Configuration;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Threading;
-using System.Diagnostics;
 
 namespace TTService
 {
@@ -70,16 +67,16 @@ namespace TTService
             {
                 res = new { error = "Invalid email!" };
             }
-            else if (user.Hash != hash)
+            else if (user.hash != hash)
             {
                 res = new { error = "Invalid hash!" };
             }
             else
             {
                 string token = createToken();
-                mut.WaitOne();
-                sessions.Add(token, user.Id);
-                mut.Close();
+                //mut.WaitOne();
+                sessions.Add(token, user.id);
+                //mut.Close();
                 res = new { token = token };
             }
 
@@ -100,7 +97,9 @@ namespace TTService
                 res = new { success = "User created!" };
             }
 
-            return JsonConvert.SerializeObject(res);
+            string json = JsonConvert.SerializeObject(res);
+
+            return json;
         }
 
         public string logout(string token)
@@ -131,7 +130,7 @@ namespace TTService
             }
             else
             {
-                res = new { salt = user.Salt };
+                res = new { salt = user.salt };
             }
 
             return JsonConvert.SerializeObject(res);
@@ -139,7 +138,7 @@ namespace TTService
 
         /* session management stuff */
         private static Hashtable sessions = new Hashtable();
-        private static Mutex mut = new Mutex();
+        //private static Mutex mut = new Mutex();
         public static int tokenLifetime = 300; // in seconds
 
         public static bool isValidToken(int id, string token)
@@ -147,9 +146,9 @@ namespace TTService
             if (!sessions.ContainsKey(token)) return false;
             if (tokenIsExpired(token)) return false;
             token = createToken();
-            mut.WaitOne();
+            //mut.WaitOne();
             sessions.Add(token, id);
-            mut.Close();
+            //mut.Close();
             return true;
         }
 

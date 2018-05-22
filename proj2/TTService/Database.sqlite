@@ -4,11 +4,18 @@ CREATE TABLE Department (
 	Name TEXT NOT NULL
 );
 
+INSERT INTO Department VALUES (NULL,"Information Technology");
+INSERT INTO Department VALUES (NULL,"Human Relations");
+INSERT INTO Department VALUES (NULL,"Sales and Marketing");
+INSERT INTO Department VALUES (NULL,"Financial and Accounting");
+INSERT INTO Department VALUES (NULL,"Research and Development");
+INSERT INTO Department VALUES (NULL,"Production and SCM");
+
 DROP TABLE IF EXISTS User;
 CREATE TABLE User (
 	Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 	Name TEXT NOT NULL,
-	Email TEXT NOT NULL,
+	Email TEXT NOT NULL UNIQUE,
 	Hash TEXT NOT NULL,
 	Salt TEXT NOT NULL,
 	Department INT NOT NULL,

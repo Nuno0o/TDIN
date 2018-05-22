@@ -1,4 +1,4 @@
-﻿namespace TTClient
+namespace TTDepartment
 {
     partial class Register
     {
@@ -37,10 +37,10 @@
             this.password_input = new System.Windows.Forms.TextBox();
             this.repeat_password_input = new System.Windows.Forms.TextBox();
             this.register_button = new System.Windows.Forms.Button();
-            this.department_drop_down = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.back_button = new System.Windows.Forms.Button();
             this.status_display = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.department_drop_down = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -119,23 +119,6 @@
             this.register_button.UseVisualStyleBackColor = true;
             this.register_button.Click += new System.EventHandler(this.register_button_Click);
             // 
-            // department_drop_down
-            // 
-            this.department_drop_down.FormattingEnabled = true;
-            this.department_drop_down.Location = new System.Drawing.Point(112, 110);
-            this.department_drop_down.Name = "department_drop_down";
-            this.department_drop_down.Size = new System.Drawing.Size(121, 21);
-            this.department_drop_down.TabIndex = 9;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(41, 113);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 13);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Department:";
-            // 
             // back_button
             // 
             this.back_button.Location = new System.Drawing.Point(15, 137);
@@ -150,10 +133,26 @@
             // 
             this.status_display.Location = new System.Drawing.Point(15, 166);
             this.status_display.Name = "status_display";
-            this.status_display.PasswordChar = '*';
             this.status_display.ReadOnly = true;
             this.status_display.Size = new System.Drawing.Size(218, 20);
             this.status_display.TabIndex = 12;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(41, 113);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 13);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Department:";
+            // 
+            // department_drop_down
+            // 
+            this.department_drop_down.FormattingEnabled = true;
+            this.department_drop_down.Location = new System.Drawing.Point(112, 110);
+            this.department_drop_down.Name = "department_drop_down";
+            this.department_drop_down.Size = new System.Drawing.Size(121, 21);
+            this.department_drop_down.TabIndex = 9;
             // 
             // Register
             // 
@@ -174,7 +173,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "Register";
-            this.Text = "Register";
+            this.Text = "Department Register";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,9 +190,9 @@
         private System.Windows.Forms.TextBox password_input;
         private System.Windows.Forms.TextBox repeat_password_input;
         private System.Windows.Forms.Button register_button;
-        private System.Windows.Forms.ComboBox department_drop_down;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button back_button;
         private System.Windows.Forms.TextBox status_display;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox department_drop_down;
     }
 }

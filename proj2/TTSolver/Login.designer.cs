@@ -1,4 +1,4 @@
-﻿namespace TTDepartment
+﻿namespace TTSolver
 {
     partial class Login
     {
@@ -86,6 +86,7 @@
             // 
             this.password_input.Location = new System.Drawing.Point(74, 29);
             this.password_input.Name = "password_input";
+            this.password_input.PasswordChar = '*';
             this.password_input.Size = new System.Drawing.Size(100, 20);
             this.password_input.TabIndex = 7;
             // 
@@ -110,7 +111,7 @@
             this.Controls.Add(this.register_button);
             this.Controls.Add(this.login_button);
             this.Name = "Login";
-            this.Text = "Login";
+            this.Text = "Solver Login";
             this.ResumeLayout(false);
             this.PerformLayout();
 
