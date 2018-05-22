@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="098550ce-37c5-4c44-aa37-4a1df8bc7fea" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="e3380252-c128-423b-8b34-7dd8748c51bb" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,9 +22,9 @@
     <MetadataSource Address="http://localhost:8000/TTSystem/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="036443b5-1628-4a1b-be51-90790d84d2b0" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
-    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="512abab3-06c5-4780-bbc3-59d2e90590f6" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
-    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="147ca5a0-fe82-4301-b585-3ca3db53db35" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="36858ffd-acd4-40e6-b1d8-41a3ef017653" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="37dd8afa-2d45-409a-aeec-0373af523757" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="245bc25f-a935-448f-aa5e-0e6c5a5b93da" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

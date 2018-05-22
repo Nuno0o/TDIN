@@ -41,7 +41,7 @@
   <xs:element name="AddTicketResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="AddTicketResult" nillable="true" type="xs:anyType" />
+        <xs:element minOccurs="0" name="AddTicketResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -56,7 +56,7 @@
   <xs:element name="AssignTicketResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="AssignTicketResult" nillable="true" type="xs:anyType" />
+        <xs:element minOccurs="0" name="AssignTicketResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -71,7 +71,7 @@
   <xs:element name="AnswerTicketResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="AnswerTicketResult" nillable="true" type="xs:anyType" />
+        <xs:element minOccurs="0" name="AnswerTicketResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -85,7 +85,7 @@
   <xs:element name="GetTicketResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="GetTicketResult" nillable="true" type="xs:anyType" />
+        <xs:element minOccurs="0" name="GetTicketResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -99,7 +99,7 @@
   <xs:element name="GetTicketChildrenResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="GetTicketChildrenResult" nillable="true" type="xs:anyType" />
+        <xs:element minOccurs="0" name="GetTicketChildrenResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -114,7 +114,7 @@
   <xs:element name="GetAuthorTicketsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="GetAuthorTicketsResult" nillable="true" type="xs:anyType" />
+        <xs:element minOccurs="0" name="GetAuthorTicketsResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -129,7 +129,7 @@
   <xs:element name="GetSolverTicketsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="GetSolverTicketsResult" nillable="true" type="xs:anyType" />
+        <xs:element minOccurs="0" name="GetSolverTicketsResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -141,7 +141,7 @@
   <xs:element name="GetUnassignedTicketsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="GetUnassignedTicketsResult" nillable="true" type="xs:anyType" />
+        <xs:element minOccurs="0" name="GetUnassignedTicketsResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -155,7 +155,7 @@
   <xs:element name="AddDepartmentResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="AddDepartmentResult" nillable="true" type="xs:anyType" />
+        <xs:element minOccurs="0" name="AddDepartmentResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
