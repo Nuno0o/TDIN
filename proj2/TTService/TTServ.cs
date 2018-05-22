@@ -13,6 +13,7 @@ namespace TTService
 
         public string HelloWorld(string name)
         {
+            TTCallbacks.m_event();
             return "test"; 
         }
 

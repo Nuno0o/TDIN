@@ -21,11 +21,65 @@ namespace TTSolver.TTSvc {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/HelloWorld", ReplyAction="http://tempuri.org/ITTServ/HelloWorldResponse")]
         System.Threading.Tasks.Task<string> HelloWorldAsync(string name);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddDepartment", ReplyAction="http://tempuri.org/ITTServ/AddDepartmentResponse")]
-        object AddDepartment(string name);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/InitDb", ReplyAction="http://tempuri.org/ITTServ/InitDbResponse")]
+        string InitDb(bool overwrite);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/InitDb", ReplyAction="http://tempuri.org/ITTServ/InitDbResponse")]
+        System.Threading.Tasks.Task<string> InitDbAsync(bool overwrite);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddTicket", ReplyAction="http://tempuri.org/ITTServ/AddTicketResponse")]
+        string AddTicket(string title, string description, int author, System.Nullable<int> parent);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddTicket", ReplyAction="http://tempuri.org/ITTServ/AddTicketResponse")]
+        System.Threading.Tasks.Task<string> AddTicketAsync(string title, string description, int author, System.Nullable<int> parent);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AssignTicket", ReplyAction="http://tempuri.org/ITTServ/AssignTicketResponse")]
+        string AssignTicket(int id, int assignee);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AssignTicket", ReplyAction="http://tempuri.org/ITTServ/AssignTicketResponse")]
+        System.Threading.Tasks.Task<string> AssignTicketAsync(int id, int assignee);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AnswerTicket", ReplyAction="http://tempuri.org/ITTServ/AnswerTicketResponse")]
+        string AnswerTicket(int id, string answer);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AnswerTicket", ReplyAction="http://tempuri.org/ITTServ/AnswerTicketResponse")]
+        System.Threading.Tasks.Task<string> AnswerTicketAsync(int id, string answer);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetTicket", ReplyAction="http://tempuri.org/ITTServ/GetTicketResponse")]
+        string GetTicket(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetTicket", ReplyAction="http://tempuri.org/ITTServ/GetTicketResponse")]
+        System.Threading.Tasks.Task<string> GetTicketAsync(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetTicketChildren", ReplyAction="http://tempuri.org/ITTServ/GetTicketChildrenResponse")]
+        string GetTicketChildren(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetTicketChildren", ReplyAction="http://tempuri.org/ITTServ/GetTicketChildrenResponse")]
+        System.Threading.Tasks.Task<string> GetTicketChildrenAsync(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetAuthorTickets", ReplyAction="http://tempuri.org/ITTServ/GetAuthorTicketsResponse")]
+        string GetAuthorTickets(int id, string status);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetAuthorTickets", ReplyAction="http://tempuri.org/ITTServ/GetAuthorTicketsResponse")]
+        System.Threading.Tasks.Task<string> GetAuthorTicketsAsync(int id, string status);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetSolverTickets", ReplyAction="http://tempuri.org/ITTServ/GetSolverTicketsResponse")]
+        string GetSolverTickets(int id, string status);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetSolverTickets", ReplyAction="http://tempuri.org/ITTServ/GetSolverTicketsResponse")]
+        System.Threading.Tasks.Task<string> GetSolverTicketsAsync(int id, string status);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetUnassignedTickets", ReplyAction="http://tempuri.org/ITTServ/GetUnassignedTicketsResponse")]
+        string GetUnassignedTickets();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetUnassignedTickets", ReplyAction="http://tempuri.org/ITTServ/GetUnassignedTicketsResponse")]
+        System.Threading.Tasks.Task<string> GetUnassignedTicketsAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddDepartment", ReplyAction="http://tempuri.org/ITTServ/AddDepartmentResponse")]
-        System.Threading.Tasks.Task<object> AddDepartmentAsync(string name);
+        string AddDepartment(string name);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddDepartment", ReplyAction="http://tempuri.org/ITTServ/AddDepartmentResponse")]
+        System.Threading.Tasks.Task<string> AddDepartmentAsync(string name);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -63,11 +117,83 @@ namespace TTSolver.TTSvc {
             return base.Channel.HelloWorldAsync(name);
         }
         
-        public object AddDepartment(string name) {
+        public string InitDb(bool overwrite) {
+            return base.Channel.InitDb(overwrite);
+        }
+        
+        public System.Threading.Tasks.Task<string> InitDbAsync(bool overwrite) {
+            return base.Channel.InitDbAsync(overwrite);
+        }
+        
+        public string AddTicket(string title, string description, int author, System.Nullable<int> parent) {
+            return base.Channel.AddTicket(title, description, author, parent);
+        }
+        
+        public System.Threading.Tasks.Task<string> AddTicketAsync(string title, string description, int author, System.Nullable<int> parent) {
+            return base.Channel.AddTicketAsync(title, description, author, parent);
+        }
+        
+        public string AssignTicket(int id, int assignee) {
+            return base.Channel.AssignTicket(id, assignee);
+        }
+        
+        public System.Threading.Tasks.Task<string> AssignTicketAsync(int id, int assignee) {
+            return base.Channel.AssignTicketAsync(id, assignee);
+        }
+        
+        public string AnswerTicket(int id, string answer) {
+            return base.Channel.AnswerTicket(id, answer);
+        }
+        
+        public System.Threading.Tasks.Task<string> AnswerTicketAsync(int id, string answer) {
+            return base.Channel.AnswerTicketAsync(id, answer);
+        }
+        
+        public string GetTicket(int id) {
+            return base.Channel.GetTicket(id);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetTicketAsync(int id) {
+            return base.Channel.GetTicketAsync(id);
+        }
+        
+        public string GetTicketChildren(int id) {
+            return base.Channel.GetTicketChildren(id);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetTicketChildrenAsync(int id) {
+            return base.Channel.GetTicketChildrenAsync(id);
+        }
+        
+        public string GetAuthorTickets(int id, string status) {
+            return base.Channel.GetAuthorTickets(id, status);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetAuthorTicketsAsync(int id, string status) {
+            return base.Channel.GetAuthorTicketsAsync(id, status);
+        }
+        
+        public string GetSolverTickets(int id, string status) {
+            return base.Channel.GetSolverTickets(id, status);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetSolverTicketsAsync(int id, string status) {
+            return base.Channel.GetSolverTicketsAsync(id, status);
+        }
+        
+        public string GetUnassignedTickets() {
+            return base.Channel.GetUnassignedTickets();
+        }
+        
+        public System.Threading.Tasks.Task<string> GetUnassignedTicketsAsync() {
+            return base.Channel.GetUnassignedTicketsAsync();
+        }
+        
+        public string AddDepartment(string name) {
             return base.Channel.AddDepartment(name);
         }
         
-        public System.Threading.Tasks.Task<object> AddDepartmentAsync(string name) {
+        public System.Threading.Tasks.Task<string> AddDepartmentAsync(string name) {
             return base.Channel.AddDepartmentAsync(name);
         }
     }

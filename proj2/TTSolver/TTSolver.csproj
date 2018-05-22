@@ -57,6 +57,7 @@
     <Compile Include="AssignedTicket.Designer.cs">
       <DependentUpon>AssignedTicket.cs</DependentUpon>
     </Compile>
+    <Compile Include="TTCallback.cs" />
     <Compile Include="Connected Services\TTCallbacks\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -12,7 +12,7 @@ namespace TTService
     {
         #region events
 
-        static Action m_event = delegate { };
+        public static Action m_event = delegate { };
 
         public void Subscribe()
         {

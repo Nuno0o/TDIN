@@ -4,35 +4,28 @@ using System.Messaging;
 using TTSolver.TTSvc;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
+using System.ServiceModel;
 
 namespace TTSolver
 {
     static class Operations
-    {      
+    {
+        //auth
+        public static TTServClient serv_proxy = new TTServClient();
+        public static AuthServClient auth_proxy = new AuthServClient();
+        public static string token;
+        //callbacks
+        public static TTCallback cb = new TTCallback();
+        public static InstanceContext icntxt = new InstanceContext(cb);
+        public static TTCallbacks.TTServContractsClient c = new TTCallbacks.TTServContractsClient(icntxt);
 
-        public static bool sendMessageToDepartment(string department, string message)
+        public static void init()
         {
-            try
-            {
-                string path = ".\\private$\\dep" + department;
-                if (!MessageQueue.Exists(path))
-                {
-                    MessageQueue.Create(path);
-                }
-                MessageQueue q = new MessageQueue(path);
-                q.Formatter = new BinaryMessageFormatter();
-                q.Send(message);
-            }
-            catch(Exception ex)
-            {
-                return false;
-            }
-            return true;  
+            //subscribe to callbacks from server
+            c.Subscribe();
         }
 
-        private static TTServClient serv_proxy = new TTServClient();
-        private static AuthServClient auth_proxy = new AuthServClient();
-        private static string token;
+        #region auth
 
         public static string GetToken()
         {
@@ -143,5 +136,34 @@ namespace TTSolver
 
             return salt;
         }
+        #endregion
+
+        #region departments
+        public static bool sendMessageToDepartment(string department, string message)
+        {
+            try
+            {
+                string path = ".\\private$\\dep" + department;
+                if (!MessageQueue.Exists(path))
+                {
+                    MessageQueue.Create(path);
+                }
+                MessageQueue q = new MessageQueue(path);
+                q.Formatter = new BinaryMessageFormatter();
+                q.Send(message);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+        #endregion
+
+        #region solver
+
+
+
+        #endregion
     }
 }
