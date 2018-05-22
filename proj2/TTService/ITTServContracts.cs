@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace TTService
 {
-    interface ITTServEvents
+    [ServiceContract(CallbackContract = typeof(ITTServEvents))]
+    interface ITTServContracts
     {
-        [OperationContract(IsOneWay = true)]
-        void NewTickets();
+        [OperationContract]
+        void Subscribe();
     }
 }
