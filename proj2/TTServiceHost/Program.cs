@@ -32,12 +32,32 @@ namespace TTServHost
                 Console.WriteLine("Press <ENTER> to terminate service.");
                 Console.WriteLine();
 
+                /* --- TESTING --- */
+
                 TTSvc.TTServClient proxy = new TTSvc.TTServClient();
                 proxy.InitDb(true);
-                //test scripts here
-                proxy.AddTicket("a", "b", 1, null);
+
+                // tests
+                Console.WriteLine("AddTicket");
+                proxy.AddTicket("titulo", "descripcao", 1, null);
+
+                // O ERRO ESTÁ AQUI
+                try
+                {
+                    proxy.GetTicket(1);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    Console.ReadLine();
+                }
+
+                Console.WriteLine("Adeus");
+
+
                 proxy.Close();
 
+                /* --- !TESTING --- */
 
                 Console.ReadLine();
 
