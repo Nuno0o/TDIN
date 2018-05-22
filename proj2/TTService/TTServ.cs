@@ -3,6 +3,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Threading;
+using System.ServiceModel;
 
 namespace TTService
 {

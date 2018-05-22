@@ -12,5 +12,7 @@ namespace TTService
     {
         [OperationContract]
         void Subscribe();
+        [OperationContract]
+        void Unsubscribe();
     }
 }

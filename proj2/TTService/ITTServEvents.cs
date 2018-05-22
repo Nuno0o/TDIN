@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace TTService
 {
+    
     interface ITTServEvents
     {
         [OperationContract(IsOneWay = true)]
-        void NewTickets();
+        void EventCall();
     }
 }
