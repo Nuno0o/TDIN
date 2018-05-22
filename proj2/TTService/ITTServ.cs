@@ -20,27 +20,27 @@ namespace TTService
         /// <param name="description">Description of the ticket.</param>
         /// <param name="author">Id of the user who posted this ticket.</param>
         /// <param name="parent">Id of the parent (ticket) of this ticket - can be null.</param>
-        /// <returns>Greater than 0 if success, less than or equal to 0 otherwise.</returns>
+        /// <returns>Success or error message.</returns>
         [OperationContract]
-        dynamic AddTicket(string title, string description, int author, int? parent);
+        string AddTicket(string title, string description, int author, int? parent);
         
         /// <summary>
         /// Assigns a ticket to a user.
         /// </summary>
         /// <param name="id">Id of the ticket to assign.</param>
         /// <param name="assignee">Id of the user to assign.</param>
-        /// <returns>Greater than 0 if success, less than or equal to 0 otherwise.</returns>
+        /// <returns>Success or error message.</returns>
         [OperationContract]
-        dynamic AssignTicket(int id, int assignee);
+        string AssignTicket(int id, int assignee);
         
         /// <summary>
         /// Answers a ticket.
         /// </summary>
         /// <param name="id">Ticket to answer.</param>
         /// <param name="answer">Answer to add.</param>
-        /// <returns>Greater than 0 if success, less than or equal to 0 otherwise.</returns>
+        /// <returns>Success or error message.</returns>
         [OperationContract]
-        dynamic AnswerTicket(int id, string answer);
+        string AnswerTicket(int id, string answer);
         
         /// <summary>
         /// Gets a ticket's information.
@@ -48,7 +48,7 @@ namespace TTService
         /// <param name="id">Id of ticket to retrieve information of.</param>
         /// <returns>Ticket information.</returns>
         [OperationContract]
-        dynamic GetTicket(int id);
+        string GetTicket(int id);
 
         /// <summary>
         /// Gets the ids of all the children of a ticket.
@@ -56,7 +56,7 @@ namespace TTService
         /// <param name="id">Id of the parent ticket.</param>
         /// <returns>List of all the ids of the ticket's children.</returns>
         [OperationContract]
-        dynamic GetTicketChildren(int id);
+        string GetTicketChildren(int id);
 
         /// <summary>
         /// Gets the ids of all the tickets a user posted.
@@ -65,7 +65,7 @@ namespace TTService
         /// <param name="status">Filter tickets by status - null to get all tickets.</param>
         /// <returns>List of all the ids of the tickets posted by the user.</returns>
         [OperationContract]
-        dynamic GetAuthorTickets(int id, string status);
+        string GetAuthorTickets(int id, string status);
 
         /// <summary>
         /// Gets the ids of all the tickets a user is assigned to.
@@ -74,21 +74,27 @@ namespace TTService
         /// <param name="status">Filter tickets by status - null to get all tickets.</param>
         /// <returns>List of all the ids of the tickets assigned to the user.</returns>
         [OperationContract]
-        dynamic GetSolverTickets(int id, string status);
+        string GetSolverTickets(int id, string status);
 
         /// <summary>
         /// Gets the ids of all the tickets that are unassigned.
         /// </summary>
         /// <returns>List of all ids of all the  unassigned tickets.</returns>
         [OperationContract]
-        dynamic GetUnassignedTickets();
+        string GetUnassignedTickets();
+
+        [OperationContract]
+        string GetUserByEmail(string email);
+
+        [OperationContract]
+        string GetUserById(int id);
 
         #endregion
 
         #region Department
 
         [OperationContract]
-        dynamic AddDepartment(string name);
+        string AddDepartment(string name);
 
         #endregion
     }

@@ -3,57 +3,213 @@ using System.Linq;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Threading;
+using System.ServiceModel;
 
 namespace TTService
 {
     public class TTServ : ITTServ, IAuthServ
     {
         #region Operations
+
         public string HelloWorld(string name)
         {
+            TTCallbacks.m_event();
             return "test"; 
         }
+
         public string InitDb(bool overwrite)
         {
             Database.Init(overwrite);
             return null;
         }
-        public dynamic AddDepartment(string name)
+
+        public string AddDepartment(string name)
         {
-            return Database.AddDepartment(name);
+            dynamic res = null;
+            dynamic rows = Database.AddDepartment(name);
+
+            if (rows == null || rows <= 0)
+            {
+                res = new { error = "Couldn't add a new department!" };
+            }
+            else
+            {
+                res = new { success = "Department added!" };
+            }
+
+            return JsonConvert.SerializeObject(res);
         }
-        public dynamic AddTicket(string title, string description, int author, int? parent)
+
+        public string AddTicket(string title, string description, int author, int? parent)
         {
-            return Database.AddTicket(title, description, author, parent);
+            dynamic res = null;
+            dynamic rows = Database.AddTicket(title, description, author, parent);
+
+            if (rows == null || rows <= 0)
+            {
+                res = new { error = "Couldn't add a new ticket!" };
+            }
+            else
+            {
+                res = new { success = "Ticket added!" };
+            }
+
+            return JsonConvert.SerializeObject(res);
         }
-        public dynamic AssignTicket(int id, int assignee)
+
+        public string AssignTicket(int id, int assignee)
         {
-            return Database.AssignTicket(id, assignee);
+            dynamic res = null;
+            dynamic rows = Database.AssignTicket(id, assignee);
+
+            if (rows == null || rows <= 0)
+            {
+                res = new { error = "Couldn't assign ticket!" };
+            }
+            else
+            {
+                res = new { success = "Ticket assigned!" };
+            }
+
+            return JsonConvert.SerializeObject(res);            
         }
-        public dynamic AnswerTicket(int id, string answer)
+
+        public string AnswerTicket(int id, string answer)
         {
-            return Database.AnswerTicket(id, answer);
+            dynamic res = null;
+            dynamic rows = Database.AnswerTicket(id, answer);
+
+            if (rows == null || rows <= 0)
+            {
+                res = new { error = "Couldn't answer ticket!" };
+            }
+            else
+            {
+                res = new { success = "Ticket answered!" };
+            }
+
+            return JsonConvert.SerializeObject(res);
         }
-        public dynamic GetTicket(int id)
+
+        public string GetTicket(int id)
         {
-            return Database.GetTicket(id);
+            dynamic res = null;
+            dynamic ticket = Database.GetTicket(id);
+
+            if (ticket == null)
+            {
+                res = new { error = "Couldn't retrieve ticket!" };
+            }
+            else
+            {
+                res = ticket;
+            }
+
+            return JsonConvert.SerializeObject(res);
         }
-        public dynamic GetTicketChildren(int id)
+
+        public string GetTicketChildren(int id)
         {
-            return Database.GetTicketChildren(id);
+            dynamic res = null;
+            dynamic children = Database.GetTicketChildren(id);
+
+            if (children == null)
+            {
+                res = new { error = "Couldn't retrieve ticket's children!" };
+            }
+            else
+            {
+                res = children;
+            }
+
+            return JsonConvert.SerializeObject(res);
         }
-        public dynamic GetAuthorTickets(int id, string status)
+
+        public string GetAuthorTickets(int id, string status)
         {
-            return Database.GetAuthorTickets(id, status);
+            dynamic res = null;
+            dynamic tickets = Database.GetAuthorTickets(id, status);
+
+            if (tickets == null)
+            {
+                res = new { error = "Couldn't retrieve tickets!" };
+            }
+            else
+            {
+                res = tickets;
+            }
+
+            return JsonConvert.SerializeObject(res);
         }
-        public dynamic GetSolverTickets(int id, string status)
+
+        public string GetSolverTickets(int id, string status)
         {
-            return Database.GetSolverTickets(id, status);
+            dynamic res = null;
+            dynamic tickets = Database.GetSolverTickets(id, status);
+
+            if (tickets == null)
+            {
+                res = new { error = "Couldn't retrieve tickets!" };
+            }
+            else
+            {
+                res = tickets;
+            }
+
+            return JsonConvert.SerializeObject(res);
         }
-        public dynamic GetUnassignedTickets()
+
+        public string GetUnassignedTickets()
         {
-            return Database.GetUnassignedTickets();
+            dynamic res = null;
+            dynamic tickets = Database.GetUnassignedTickets();
+
+            if (tickets == null)
+            {
+                res = new { error = "Couldn't retrieve tickets!" };
+            }
+            else
+            {
+                res = tickets;
+            }
+
+            return JsonConvert.SerializeObject(res);
         }
+
+        public string GetUserByEmail(string email)
+        {
+            dynamic res = null;
+            dynamic user = Database.GetUser(email);
+            if (user == null)
+            {
+                res = new { error = "Couldn't retrieve tickets!" };
+            }
+            else
+            {
+                res = user;
+            }
+            res = new { id = user.id, name = user.name, email = user.email, department = user.department };
+
+            return JsonConvert.SerializeObject(res);
+        }
+
+        public string GetUserById(int id)
+        {
+            dynamic res = null;
+            dynamic user = Database.GetUser(id);
+            if (user == null)
+            {
+                res = new { error = "Couldn't retrieve tickets!" };
+            }
+            else
+            {
+                res = user;
+            }
+            res = new { id = user.id, name = user.name, email = user.email, department = user.department };
+
+            return JsonConvert.SerializeObject(res);
+        }
+
         #endregion
 
         #region Auth

@@ -57,6 +57,12 @@
     <Compile Include="AssignedTicket.Designer.cs">
       <DependentUpon>AssignedTicket.cs</DependentUpon>
     </Compile>
+    <Compile Include="TTCallback.cs" />
+    <Compile Include="Connected Services\TTCallbacks\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\TTSvc\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -113,6 +119,10 @@
     <EmbeddedResource Include="UnassignedTicket.resx">
       <DependentUpon>UnassignedTicket.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Connected Services\TTCallbacks\service.wsdl" />
+    <None Include="Connected Services\TTCallbacks\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\TTSvc\service.wsdl" />
     <None Include="Connected Services\TTSvc\service.xsd">
       <SubType>Designer</SubType>
@@ -138,6 +148,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\TTCallbacks\" />
     <WCFMetadataStorage Include="Connected Services\TTSvc\" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +159,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\TTSvc\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TTCallbacks\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TTCallbacks\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TTCallbacks\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

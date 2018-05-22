@@ -71,32 +71,17 @@ namespace TTService
                 {
                     c.Open();
 
-                    string sql;
-                    if (parent != null)
-                    {
-                        sql = @"
-                            INSERT INTO Ticket (Title, Description, Author, Parent, CreatedAt)
-                            VALUES (@title, @description, @author, @parent, datetime())
-                        ";
-                    }
-                    else
-                    {
-                        sql = @"
-                            INSERT INTO Ticket (Title, Description, Author, CreatedAt)
-                            VALUES (@title, @description, @author, datetime())
-                        ";
-                    }                    
+                    string sql = @"
+                        INSERT INTO Ticket (Title, Description, Author, Parent, CreatedAt)
+                        VALUES (@title, @description, @author, @parent, datetime())
+                    ";                
 
                     SQLiteCommand cmd = new SQLiteCommand(sql, c);
 
                     cmd.Parameters.AddWithValue("title", title);
                     cmd.Parameters.AddWithValue("description", description);
                     cmd.Parameters.AddWithValue("author", author);
-
-                    if (parent != null)
-                    {
-                        cmd.Parameters.AddWithValue("parent", parent);
-                    }
+                    cmd.Parameters.AddWithValue("parent", parent);
 
                     result = cmd.ExecuteNonQuery();
                     
@@ -329,7 +314,7 @@ namespace TTService
                             SELECT Id
                             FROM Ticket
                             WHERE Author = @id
-                            AND Status = '@status'
+                            AND Status = @status
                         ";
                     }
                     else
@@ -390,7 +375,7 @@ namespace TTService
                             SELECT Id
                             FROM Ticket
                             WHERE Assignee = @id
-                            AND Status = '@status'
+                            AND Status = @status
                         ";
                     }
                     else
@@ -555,6 +540,7 @@ namespace TTService
                 }
                 catch(SQLiteException ex)
                 {
+                    Debug.WriteLine(ex);
                     result = null;
                 }
                 finally
