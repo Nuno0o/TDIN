@@ -76,6 +76,13 @@ namespace TTService
         [OperationContract]
         dynamic GetSolverTickets(int id, string status);
 
+        /// <summary>
+        /// Gets the ids of all the tickets that are unassigned.
+        /// </summary>
+        /// <returns>List of all ids of all the  unassigned tickets.</returns>
+        [OperationContract]
+        dynamic GetUnassignedTickets();
+
         #endregion
 
         #region Department

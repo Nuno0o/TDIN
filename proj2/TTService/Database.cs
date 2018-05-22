@@ -435,6 +435,47 @@ namespace TTService
             return result;
         }
 
+        public static dynamic GetUnassignedTickets()
+        {
+            dynamic result = null;
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
+            {
+                try
+                {
+                    c.Open();
+
+                    string sql = @"
+                        SELECT Id
+                        FROM Ticket
+                        WHERE Status = 'unassigned'
+                    ";
+
+                    SQLiteCommand cmd = new SQLiteCommand(sql, c);
+
+                    SQLiteDataReader reader = cmd.ExecuteReader();
+
+                    result = new List<dynamic>();
+
+                    while (reader.Read())
+                    {
+                        result.Add(new
+                        {
+                            id = reader["Id"]
+                        });
+                    }
+                }
+                catch (SQLiteException ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
         #endregion
 
         #region Department

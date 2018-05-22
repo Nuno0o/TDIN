@@ -53,6 +53,10 @@ namespace TTService
         {
             return Database.GetSolverTickets(id, status);
         }
+        public dynamic GetUnassignedTickets()
+        {
+            return Database.GetUnassignedTickets();
+        }
         #endregion
 
         #region Auth
