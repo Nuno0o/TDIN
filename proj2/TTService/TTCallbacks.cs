@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace TTService
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
-    class TTCallbacks : ITTServContracts
+    public class TTCallbacks : ITTServContracts
     {
         #region events
 
