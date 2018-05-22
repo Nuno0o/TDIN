@@ -540,6 +540,7 @@ namespace TTService
                 }
                 catch(SQLiteException ex)
                 {
+                    Debug.WriteLine(ex);
                     result = null;
                 }
                 finally

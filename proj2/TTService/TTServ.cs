@@ -176,6 +176,40 @@ namespace TTService
             return JsonConvert.SerializeObject(res);
         }
 
+        public string GetUserByEmail(string email)
+        {
+            dynamic res = null;
+            dynamic user = Database.GetUser(email);
+            if (user == null)
+            {
+                res = new { error = "Couldn't retrieve tickets!" };
+            }
+            else
+            {
+                res = user;
+            }
+            res = new { id = user.id, name = user.name, email = user.email, department = user.department };
+
+            return JsonConvert.SerializeObject(res);
+        }
+
+        public string GetUserById(int id)
+        {
+            dynamic res = null;
+            dynamic user = Database.GetUser(id);
+            if (user == null)
+            {
+                res = new { error = "Couldn't retrieve tickets!" };
+            }
+            else
+            {
+                res = user;
+            }
+            res = new { id = user.id, name = user.name, email = user.email, department = user.department };
+
+            return JsonConvert.SerializeObject(res);
+        }
+
         #endregion
 
         #region Auth

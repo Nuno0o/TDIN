@@ -25,10 +25,15 @@ namespace TTServHost
                 // start the services.  
                 //host.Open();
                 //host2.Open();
-                
+
+                TTSvc.TTServClient proxy = new TTSvc.TTServClient();
+                proxy.InitDb(true);
+
                 Console.WriteLine("The services are ready.");
                 Console.WriteLine("Press <ENTER> to terminate services.");
                 Console.ReadLine();
+
+                
 
                 // close the ServiceHostBase to shutdown the service.  
                 //host.Close();

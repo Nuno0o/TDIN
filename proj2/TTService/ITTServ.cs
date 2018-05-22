@@ -83,6 +83,12 @@ namespace TTService
         [OperationContract]
         string GetUnassignedTickets();
 
+        [OperationContract]
+        string GetUserByEmail(string email);
+
+        [OperationContract]
+        string GetUserById(int id);
+
         #endregion
 
         #region Department
