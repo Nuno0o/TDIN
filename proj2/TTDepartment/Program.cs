@@ -11,12 +11,16 @@ namespace TTDepartment
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        /// 
+        public static Login login;
+
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main());
+            login = new Login();
+            Application.Run(login);
         }
     }
 }

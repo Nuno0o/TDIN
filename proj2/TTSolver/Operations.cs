@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Messaging;
 using TTSolver.TTSvc;
 using System.Security.Cryptography;
@@ -11,10 +8,13 @@ using Newtonsoft.Json;
 namespace TTSolver
 {
     static class Operations
-    {
+    {      
 
-        private static TTServClient serv_proxy = new TTServClient();
-        private static AuthServClient auth_proxy = new AuthServClient();
+        static Operations()
+        {
+            auth_proxy.Open();
+            serv_proxy.Open();
+        }
 
         public static bool sendMessageToDepartment(string department, string message)
         {
@@ -36,6 +36,8 @@ namespace TTSolver
             return true;  
         }
 
+        private static TTServClient serv_proxy = new TTServClient();
+        private static AuthServClient auth_proxy = new AuthServClient();
         private static string token;
 
         public static string GetToken()
@@ -49,23 +51,28 @@ namespace TTSolver
 
             try
             {
-                auth_proxy.Open();
+                //auth_proxy.Open();
 
                 string json;
                 dynamic res;
 
-                json = auth_proxy.getSalt(email); ;
+                json = auth_proxy.getSalt(email);
                 res = JsonConvert.DeserializeObject(json);
 
                 string salt = res.salt;
                 string hash = Hash(password + salt);
 
                 json = auth_proxy.login(email, hash);
-                if (!json.Contains("token")) throw new Exception();
-                res = JsonConvert.DeserializeObject(json);
-
-                token = res.token;
-                ret = true;
+                if (json.Contains("token"))
+                {
+                    res = JsonConvert.DeserializeObject(json);
+                    token = res.token;
+                    ret = true;
+                }
+                else
+                {
+                    ret = false;
+                }                   
             }
             catch (Exception ex)
             {
@@ -73,7 +80,7 @@ namespace TTSolver
             }
             finally
             {
-                auth_proxy.Close();
+                //auth_proxy.Close();
             }
 
             return ret;
@@ -85,12 +92,12 @@ namespace TTSolver
 
             try
             {
-                auth_proxy.Open();                
-               
+                //auth_proxy.Open();                
+
                 string salt = Salt();
                 string hash = Hash(password + salt);
 
-                string json = auth_proxy.register(name, email, hash, salt, department); ;
+                string json = auth_proxy.register(name, email, hash, salt, department);
 
                 ret = json.Contains("success");
             }
@@ -100,7 +107,7 @@ namespace TTSolver
             }
             finally
             {
-                auth_proxy.Close();
+                //auth_proxy.Close();
             }
 
             return ret;

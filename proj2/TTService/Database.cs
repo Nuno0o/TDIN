@@ -495,14 +495,14 @@ namespace TTService
 
         public static dynamic AddUser(string name, string email, string hash, string salt, int department)
         {
-            dynamic result = null;
+            dynamic result;
             using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
                 {
                     c.Open();
                     string sql = 
-                        @"insert into User(Name, Email, Password, Department)
+                        @"insert into User(Name, Email, Hash, Salt, Department)
                         values (@name, @email, @hash, @salt, @department)";
                     SQLiteCommand cmd = new SQLiteCommand(sql, c);
                     cmd.Parameters.AddWithValue("name", name);
@@ -514,7 +514,7 @@ namespace TTService
                 }
                 catch(SQLiteException ex)
                 {
-
+                    result = null;
                 }
                 finally
                 {
@@ -526,7 +526,7 @@ namespace TTService
 
         public static dynamic GetUser(int id)
         {
-            dynamic result = null;
+            dynamic result;
             using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
@@ -536,22 +536,20 @@ namespace TTService
                     SQLiteCommand cmd = new SQLiteCommand(sql, c);
                     cmd.Parameters.AddWithValue("id", id);
                     SQLiteDataReader reader = cmd.ExecuteReader();
-                    result = new List<dynamic>();
-                    while (reader.Read())
+                    result = new
                     {
-                        result.Add(new
-                        {
-                            id = reader["Id"],
-                            name = reader["Name"],
-                            email = reader["Email"],
-                            password = reader["Password"],
-                            department = reader["Department"]
-                        });
-                    }
+                        id = reader["Id"],
+                        name = reader["Name"],
+                        email = reader["Email"],
+                        hash = reader["Hash"],
+                        salt = reader["Salt"],
+                        department = reader["Department"]
+                    };
+                    
                 }
                 catch (SQLiteException ex)
                 {
-
+                    result = null;
                 }
                 finally
                 {
@@ -563,7 +561,7 @@ namespace TTService
 
         public static dynamic GetUser(string email)
         {
-            dynamic result = null;
+            dynamic result;
             using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
@@ -573,22 +571,20 @@ namespace TTService
                     SQLiteCommand cmd = new SQLiteCommand(sql, c);
                     cmd.Parameters.AddWithValue("email", email);
                     SQLiteDataReader reader = cmd.ExecuteReader();
-                    result = new List<dynamic>();
-                    while (reader.Read())
+                    reader.Read();                    
+                    result = new
                     {
-                        result.Add(new
-                        {
-                            id = reader["Id"],
-                            name = reader["Name"],
-                            email = reader["Email"],
-                            password = reader["Password"],
-                            department = reader["Department"]
-                        });
-                    }
+                        id = reader["Id"],
+                        name = reader["Name"],
+                        email = reader["Email"],
+                        hash = reader["Hash"],
+                        salt = reader["Salt"],
+                        department = reader["Department"]
+                    };                    
                 }
                 catch (SQLiteException ex)
                 {
-
+                    result = null;
                 }
                 finally
                 {
