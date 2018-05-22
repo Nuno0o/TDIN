@@ -17,15 +17,6 @@ namespace TTSolver
         {
             InitializeComponent();
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            TTCallback cb = new TTCallback();
-            InstanceContext icntxt = new InstanceContext(cb);
-
-            TTCallbacks.TTServContractsClient c = new TTCallbacks.TTServContractsClient(icntxt);
-            c.Subscribe();
-
-            TTSvc.TTServClient c2 = new TTSvc.TTServClient();
-
-            c2.HelloWorld("me");
         }
 
         private void label1_Click(object sender, EventArgs e)
