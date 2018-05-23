@@ -173,7 +173,12 @@ namespace TTSolver
 
         #region solver
 
-        private static void getInformation()
+        public static void updateInterface()
+        {
+            main.updateInterface();
+        }
+
+        public static void getInformation()
         {
             try
             {

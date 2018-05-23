@@ -53,7 +53,7 @@ namespace TTService
             {
                 res = new { success = "Ticket added!" };
             }
-
+            TTCallbacks.m_event();
             return JsonConvert.SerializeObject(res);
         }
 
@@ -70,7 +70,7 @@ namespace TTService
             {
                 res = new { success = "Ticket added!" };
             }
-
+            TTCallbacks.m_event();
             return JsonConvert.SerializeObject(res);
         }
 
@@ -87,7 +87,7 @@ namespace TTService
             {
                 res = new { success = "Ticket assigned!" };
             }
-
+            TTCallbacks.m_event();
             return JsonConvert.SerializeObject(res);            
         }
 
@@ -104,7 +104,7 @@ namespace TTService
             {
                 res = new { success = "Ticket answered!" };
             }
-
+            TTCallbacks.m_event();
             return JsonConvert.SerializeObject(res);
         }
 
@@ -121,7 +121,7 @@ namespace TTService
             {
                 res = new { success = "Ticket answered!" };
             }
-
+            TTCallbacks.m_event();
             return JsonConvert.SerializeObject(res);
         }
 

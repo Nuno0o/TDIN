@@ -63,6 +63,10 @@ namespace TTSolver
             depart_grid.Columns[2].Name = "Answer";
 
             FormClosing += Main_FormClosing;
+            HandleCreated += oncreated;
+        }
+        public void oncreated(object sender, EventArgs e)
+        {
             updateInterface();
         }
 
@@ -73,64 +77,68 @@ namespace TTSolver
 
         public void updateInterface()
         {
-            try
+            Invoke(new Action(() =>
             {
-                //update departments
-                comboBox1.Items.Clear();
-                foreach (dynamic department in Operations.departments)
+                try
                 {
-                    comboBox1.Items.Add(department.name);
-                }
-                //update unassigned tickets
-                unassigned_grid.Rows.Clear();
-                foreach (dynamic ticket in Operations.unassigned_tickets)
-                {
-                    dynamic user = JsonConvert.DeserializeObject(Operations.serv_proxy.GetUserById((int)ticket.author));
-                    unassigned_grid.Rows.Add(new[]
+                    //update departments
+                    comboBox1.Items.Clear();
+                    foreach (dynamic department in Operations.departments)
                     {
+                        comboBox1.Items.Add(department.name);
+                    }
+                    //update unassigned tickets
+                    unassigned_grid.Rows.Clear();
+                    foreach (dynamic ticket in Operations.unassigned_tickets)
+                    {
+                        dynamic user = JsonConvert.DeserializeObject(Operations.serv_proxy.GetUserById((int)ticket.author));
+                        unassigned_grid.Rows.Add(new[]
+                        {
                         ticket.id,
                         user.name,
                         ticket.title
                     });
-                }
-                //assigned tickets
-                assigned_grid.Rows.Clear();
-                foreach (dynamic ticket in Operations.assigned_tickets)
-                {
-                    dynamic user = JsonConvert.DeserializeObject(Operations.serv_proxy.GetUserById((int)ticket.author));
-                    assigned_grid.Rows.Add(new[]
+                    }
+                    //assigned tickets
+                    assigned_grid.Rows.Clear();
+                    foreach (dynamic ticket in Operations.assigned_tickets)
                     {
+                        dynamic user = JsonConvert.DeserializeObject(Operations.serv_proxy.GetUserById((int)ticket.author));
+                        assigned_grid.Rows.Add(new[]
+                        {
                         ticket.id,
                         user.name,
                         ticket.title,
                         ticket.status
                     });
-                }
-                //department tickets
-                depart_grid.Rows.Clear();
-                foreach(dynamic ticket in Operations.department_tickets)
-                {
-                    string depname = "";
-                    foreach (dynamic department in Operations.departments)
-                    {
-                        if ((int)department.id == (int)ticket.department)
-                            depname = department.name;
                     }
-                    depart_grid.Rows.Add(new[]
+                    //department tickets
+                    depart_grid.Rows.Clear();
+                    foreach (dynamic ticket in Operations.department_tickets)
                     {
+                        string depname = "";
+                        foreach (dynamic department in Operations.departments)
+                        {
+                            if ((int)department.id == (int)ticket.department)
+                                depname = department.name;
+                        }
+                        depart_grid.Rows.Add(new[]
+                        {
                         depname,
                         ticket.description,
                         ticket.answer
                     }
-                    );
-                }
+                        );
+                    }
 
-            }
-            catch(Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+            }));
+
+
         }
 
         public void Main_FormClosing(object sender, EventArgs e)

@@ -11,7 +11,8 @@ namespace TTSolver
     {
         public void EventCall()
         {
-            //Debug.WriteLine("teste");
+            Operations.getInformation();
+            Operations.updateInterface();
         }
     }
 }

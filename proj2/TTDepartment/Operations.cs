@@ -38,7 +38,6 @@ namespace TTDepartment
                 Message[] m = q.GetAllMessages();
                 if(m.Length != messages.Length)
                 {
-                    Debug.WriteLine(m.Length);
                     messages = m;
                     updateInterface();
                 }
@@ -80,7 +79,6 @@ namespace TTDepartment
                 if (ticket.id == id.ToString())
                 {
                     toremoveid = m.Id;
-                    updateInterface();
                 }
             }
             if(toremoveid == null)
