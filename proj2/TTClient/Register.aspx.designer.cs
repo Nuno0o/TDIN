@@ -40,13 +40,31 @@ namespace TTClient {
         protected global::System.Web.UI.WebControls.TextBox email_input;
         
         /// <summary>
-        /// department_selector control.
+        /// password_input control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList department_selector;
+        protected global::System.Web.UI.WebControls.TextBox password_input;
+        
+        /// <summary>
+        /// repeat_password_input control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox repeat_password_input;
+        
+        /// <summary>
+        /// department_drop_down control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList department_drop_down;
         
         /// <summary>
         /// register_button control.
@@ -65,5 +83,14 @@ namespace TTClient {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button back_button;
+        
+        /// <summary>
+        /// status_display control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label status_display;
     }
 }

@@ -13,5 +13,25 @@ namespace TTClient
         {
 
         }
+
+        protected void login_button_Click(object sender, EventArgs e)
+        {
+            string email = email_input.Text;
+            string password = password_input.Text;
+
+            if (Operations.Login(email, password))
+            {
+                Response.Redirect("Tickets.aspx", true);
+            }
+            else
+            {
+                status_display.Text = "Invalid Credentials!";
+            }
+        }
+
+        protected void register_button_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Register.aspx", true);
+        }
     }
 }

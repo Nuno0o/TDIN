@@ -15,15 +15,18 @@
     <form id="form1" runat="server">
         <div>
             Email:<br />
-            <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+            <asp:TextBox ID="email_input" runat="server" Width="200px"></asp:TextBox>
             <br />
             Password:<br />
-            <asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
+            <asp:TextBox ID="password_input" runat="server" Width="200px"></asp:TextBox>
             <br />
             <br />
-            <asp:Button ID="Button1" runat="server" Text="Login" Width="70px" />
+            <asp:Button ID="login_button" runat="server" Text="Login" Width="100px" OnClick="login_button_Click" />
             <br />
-            <asp:Button ID="Button2" runat="server" Text="Register" />
+            <asp:Button ID="register_button" runat="server" Text="Register" OnClick="register_button_Click" Width="100px" />
+            <br />
+            <br />
+            <asp:Label ID="status_display" runat="server"></asp:Label>
         </div>
     </form>
 </body>

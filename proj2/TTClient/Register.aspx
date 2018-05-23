@@ -10,17 +10,19 @@
     <form id="form1" runat="server">
         <div>
             Name:<br />
-            <asp:TextBox ID="name_input" runat="server"></asp:TextBox>
+            <asp:TextBox ID="name_input" runat="server" Width="200px"></asp:TextBox>
             <br />
             Email:<br />
-            <asp:TextBox ID="email_input" runat="server"></asp:TextBox>
+            <asp:TextBox ID="email_input" runat="server" TextMode="Email" Width="200px"></asp:TextBox>
             <br />
             Password:<br />
-            <input id="password_input" type="password" /><br />
+            <asp:TextBox ID="password_input" runat="server" TextMode="Password" Width="200px"></asp:TextBox>
+            <br />
             Repeat Password:<br />
-            <input id="repeat_password_input" type="password" /><br />
+            <asp:TextBox ID="repeat_password_input" runat="server" TextMode="Password" Width="200px"></asp:TextBox>
+            <br />
             Department:<br />
-            <asp:DropDownList ID="department_selector" runat="server" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged">
+            <asp:DropDownList ID="department_drop_down" runat="server" Width="200px">
                 <asp:ListItem Value="1">Information Technology</asp:ListItem>
                 <asp:ListItem Value="2">Human Resources</asp:ListItem>
                 <asp:ListItem Value="3">Sales and Marketing</asp:ListItem>
@@ -30,9 +32,12 @@
             </asp:DropDownList>
             <br />
             <br />
-            <asp:Button ID="register_button" runat="server" Text="Register" />
+            <asp:Button ID="register_button" runat="server" Text="Register" OnClick="register_button_Click" Width="100px" />
             <br />
-            <asp:Button ID="back_button" runat="server" Text="Back" Width="70px" />
+            <asp:Button ID="back_button" runat="server" Text="Back" Width="100px" OnClick="back_button_Click" />
+            <br />
+            <br />
+            <asp:Label ID="status_display" runat="server"></asp:Label>
         </div>
     </form>
 </body>
