@@ -176,7 +176,7 @@ namespace TTSolver
             {
                 if (ticket.id == Convert.ToInt32(row.Cells[0].Value))
                 {
-                    AssignedTicket a = new AssignedTicket(ticket.id, ticket.title, ticket.description, row.Cells[1].Value.ToString());
+                    AssignedTicket a = new AssignedTicket((int)ticket.id, (string)ticket.title, (string)ticket.description, row.Cells[1].Value.ToString());
                     a.ShowDialog();
                 }
             }

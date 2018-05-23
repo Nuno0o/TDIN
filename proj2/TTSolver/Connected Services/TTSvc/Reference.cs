@@ -27,6 +27,12 @@ namespace TTSolver.TTSvc {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/InitDb", ReplyAction="http://tempuri.org/ITTServ/InitDbResponse")]
         System.Threading.Tasks.Task<string> InitDbAsync(bool overwrite);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/SendEmail", ReplyAction="http://tempuri.org/ITTServ/SendEmailResponse")]
+        string SendEmail(int ticketid);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/SendEmail", ReplyAction="http://tempuri.org/ITTServ/SendEmailResponse")]
+        System.Threading.Tasks.Task<string> SendEmailAsync(int ticketid);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddTicket", ReplyAction="http://tempuri.org/ITTServ/AddTicketResponse")]
         string AddTicket(string title, string description, string token, System.Nullable<int> parent);
         
@@ -115,8 +121,8 @@ namespace TTSolver.TTSvc {
         string GetDepartments();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetDepartments", ReplyAction="http://tempuri.org/ITTServ/GetDepartmentsResponse")]
-        System.Threading.Tasks.Task<string> GetDepartmentsAsync();        
-
+        System.Threading.Tasks.Task<string> GetDepartmentsAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddDepartment", ReplyAction="http://tempuri.org/ITTServ/AddDepartmentResponse")]
         string AddDepartment(string name);
         
@@ -165,6 +171,14 @@ namespace TTSolver.TTSvc {
         
         public System.Threading.Tasks.Task<string> InitDbAsync(bool overwrite) {
             return base.Channel.InitDbAsync(overwrite);
+        }
+        
+        public string SendEmail(int ticketid) {
+            return base.Channel.SendEmail(ticketid);
+        }
+        
+        public System.Threading.Tasks.Task<string> SendEmailAsync(int ticketid) {
+            return base.Channel.SendEmailAsync(ticketid);
         }
         
         public string AddTicket(string title, string description, string token, System.Nullable<int> parent) {

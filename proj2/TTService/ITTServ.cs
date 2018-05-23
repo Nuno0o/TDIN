@@ -11,6 +11,9 @@ namespace TTService
         [OperationContract]
         string InitDb(bool overwrite);
 
+        [OperationContract]
+        string SendEmail(int ticketid);
+
         #region Ticket
 
         /// <summary>

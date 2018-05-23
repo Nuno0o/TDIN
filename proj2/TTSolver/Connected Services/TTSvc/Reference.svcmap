@@ -22,8 +22,8 @@
     <MetadataSource Address="http://localhost:8000/TTSystem/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="1cbe628f-8da2-4d87-a185-092f00228910" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
-    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="e599c969-3721-43e0-952d-4e2c75a20e38" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
+    <MetadataFile FileName="service1.wsdl" MetadataType="Wsdl" ID="a3f21128-9c8d-4c26-a0af-453bed7ec577" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
+    <MetadataFile FileName="service2.xsd" MetadataType="Schema" ID="3db497a0-c11d-4dd2-babf-128dcf2e9157" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
     <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="c26ec6e9-25a0-4920-9db5-803fcfa7a8b3" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
   </Metadata>
   <Extensions>

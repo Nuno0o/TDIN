@@ -2,6 +2,9 @@
 using System.Linq;
 using Newtonsoft.Json;
 using System.Collections;
+using System.Net.Mail;
+using System.Diagnostics;
+using System.Text;
 
 namespace TTService
 {
@@ -19,6 +22,39 @@ namespace TTService
         {
             Database.Init(overwrite);
             return null;
+        }
+
+        public string SendEmail(int ticketid)
+        {
+            dynamic res = null;
+            try
+            {
+                dynamic ticket = Database.GetTicket(ticketid);
+                dynamic author = Database.GetUser((int)ticket.author);
+                SmtpClient client = new SmtpClient();
+                client.Port = 587;
+                client.Host = "smtp.gmail.com";
+                client.EnableSsl = true;
+                client.Timeout = 10000;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new System.Net.NetworkCredential("tdin.sender@gmail.com", "tdin4321");
+                var mail = new MailMessage("tdin.sender@gmail.com", author.email, "re: " + ticket.title, ticket.answer);
+                mail.BodyEncoding = UTF8Encoding.UTF8;
+                mail.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
+                client.Send(mail);
+
+                res = new { success = "Email sent!" };
+
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex);
+                res = new { error = "Couldn't send email" };
+            }
+
+
+            return JsonConvert.SerializeObject(res);
         }
 
         public string AddDepartment(string name)

@@ -94,6 +94,7 @@ namespace TTSolver
             try
             {
                 Operations.serv_proxy.AnswerTicket(id, message);
+                Operations.serv_proxy.SendEmail(id);
                 this.Dispose();
             }
             catch (Exception ex)

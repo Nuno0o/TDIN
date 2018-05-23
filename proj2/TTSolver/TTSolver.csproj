@@ -123,11 +123,11 @@
     <None Include="Connected Services\TTCallbacks\service.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\TTSvc\service.wsdl" />
-    <None Include="Connected Services\TTSvc\service.xsd">
+    <None Include="Connected Services\TTSvc\service1.wsdl" />
+    <None Include="Connected Services\TTSvc\service1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\TTSvc\service1.xsd">
+    <None Include="Connected Services\TTSvc\service2.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />

@@ -28,6 +28,20 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="SendEmail">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ticketid" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SendEmailResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SendEmailResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="AddTicket">
     <xs:complexType>
       <xs:sequence>
@@ -232,7 +246,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-<<<<<<< HEAD
   <xs:element name="GetDepartments">
     <xs:complexType>
       <xs:sequence />
@@ -245,8 +258,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-=======
->>>>>>> login-web
   <xs:element name="AddDepartment">
     <xs:complexType>
       <xs:sequence>
