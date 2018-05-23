@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="3035a71e-cdb0-4fd7-b6e7-fc2e38098c25" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="1e0c5599-fb84-4e38-829f-bbd48d321de1" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,12 +19,12 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:8080/TTSystem/mex" Protocol="mex" SourceId="1" />
+    <MetadataSource Address="http://localhost:8000/TTSystem/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="3ae27727-b375-45ae-b729-56be698b394b" SourceId="1" SourceUrl="http://localhost:8080/TTSystem/mex" />
-    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="a5b94acc-72f4-4d6f-88f9-0e14ec524392" SourceId="1" SourceUrl="http://localhost:8080/TTSystem/mex" />
-    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="7ddda355-a3aa-42c4-b0a1-840659d79a34" SourceId="1" SourceUrl="http://localhost:8080/TTSystem/mex" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="d4f19731-e037-4ccc-a2b1-d53978b122e3" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="97f76bec-d972-4bb3-8e4a-9470510c9e83" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="c5ad3eed-c5cf-4c72-b6ab-7354e1bc99d5" SourceId="1" SourceUrl="http://localhost:8000/TTSystem/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

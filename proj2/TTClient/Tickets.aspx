@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Tickets.aspx.cs" Inherits="TTClient.Main" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Tickets.aspx.cs" Inherits="TTClient.Tickets" %>
 
 <!DOCTYPE html>
 
@@ -6,14 +6,7 @@
 <head runat="server">
     <title></title>
     <style type="text/css">
-        #TextArea1 {
-            height: 149px;
-            width: 315px;
-        }
-        #ticket_input {
-            height: 150px;
-            width: 300px;
-        }
+
         #title_input {
             width: 300px;
         }
@@ -22,33 +15,26 @@
 <body>
     <form id="form1" runat="server">
         <div>
+        <div>
             Ticket Title:<br />
-            <input id="title_input" type="text" /><br />
-            <br />
-            Ticket Body:<br />
-            <textarea id="ticket_input" name="S1"></textarea><br />
-            <br />
-            <asp:Button ID="send_button" runat="server" Text="Send" />
+            <asp:TextBox ID="title_input" runat="server" Width="300px"></asp:TextBox>
             <br />
             <br />
+            Ticket Description:<br />
+            <asp:TextBox ID="description_input" runat="server" Height="150px" TextMode="MultiLine" Width="300px"></asp:TextBox>
             <br />
-            My Tickets:<table id="tickets_table" style="width:100%;">
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-            </table>
+            <br />
+            <asp:Button ID="send_button" runat="server" Text="Send" OnClick="send_button_Click" />
+            <br />
+            <asp:Label ID="status_display" runat="server"></asp:Label>
+            <br />
+            <br />
+            My Tickets:<asp:Table ID="tickets_table" runat="server" BorderStyle="Solid" BorderWidth="1px" CellPadding="5" CellSpacing="5" GridLines="Both">
+            </asp:Table>
+            <br />
+            <asp:Button ID="logout_button" runat="server" OnClick="logout_button_Click" Text="Logout" />
+            <br />
+        </div>
         </div>
     </form>
 </body>

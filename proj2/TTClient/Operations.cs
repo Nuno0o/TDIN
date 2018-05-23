@@ -3,41 +3,92 @@ using TTClient.TTSvc;
 using Newtonsoft.Json;
 using System.Text;
 using System.Security.Cryptography;
+using System.Collections.Generic;
 
 namespace TTClient
 {
     static class Operations
-    {     
+    {
         #region Auth
 
-        private static string token;
-        private static TTServClient serv_proxy = new TTServClient();
-        private static AuthServClient auth_proxy = new AuthServClient();
+        public static TTServClient serv_proxy = new TTServClient();
+        public static AuthServClient auth_proxy = new AuthServClient();
+        private static string token = null;
 
-        public static string GetToken()
+        public static List<dynamic> GetTickets()
         {
-            return token;
+            List<dynamic> tickets = new List<dynamic>();
+
+            try
+            {
+                string json = serv_proxy.GetAuthorTickets(token, null);
+                dynamic res = JsonConvert.DeserializeObject(json);
+
+                if (res == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    foreach (dynamic ticket in res)
+                    {
+                        json = serv_proxy.GetTicket((int)ticket.id.Value);
+                        res = JsonConvert.DeserializeObject(json);
+                        if (res == null) continue;
+                        tickets.Add(new
+                        {
+                            id = res.id,
+                            title = res.title,
+                            date = res.createdAt,
+                            status = res.status
+                        });
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+
+            }           
+
+            return tickets;
         }
+
+        public static bool SendTicket(string title, string description)
+        {
+            bool ret;
+
+            try
+            {
+                string json = serv_proxy.AddTicket(title, description, token, null);
+                ret = json.Contains("success");
+            }
+            catch (Exception ex)
+            {
+                ret = false;
+            }
+            finally
+            {
+            }
+
+            return ret;
+        }       
 
         public static bool Login(string email, string password)
         {
             bool ret;
-            AuthServClient proxy = new AuthServClient();
 
             try
             {
-                proxy.Open();
-
                 string json;
                 dynamic res;
 
-                json = auth_proxy.getSalt(email);
+                json = auth_proxy.GetSalt(email);
                 res = JsonConvert.DeserializeObject(json);
 
                 string salt = res.salt;
                 string hash = Hash(password + salt);
 
-                json = auth_proxy.login(email, hash);
+                json = auth_proxy.Login(email, hash);
                 if (json.Contains("token"))
                 {
                     res = JsonConvert.DeserializeObject(json);
@@ -55,7 +106,6 @@ namespace TTClient
             }
             finally
             {
-                proxy.Close();
             }
 
             return ret;
@@ -64,16 +114,13 @@ namespace TTClient
         public static bool Register(string name, string email, string password, int department)
         {
             bool ret;
-            AuthServClient proxy = new AuthServClient();
 
             try
             {
-                proxy.Open();
-
                 string salt = Salt();
                 string hash = Hash(password + salt);
 
-                string json = auth_proxy.register(name, email, hash, salt, department);
+                string json = auth_proxy.Register(name, email, hash, salt, department);
 
                 ret = json.Contains("success");
             }
@@ -83,7 +130,33 @@ namespace TTClient
             }
             finally
             {
-                proxy.Close();
+            }
+
+            return ret;
+        }
+
+        public static string GetToken()
+        {
+            return token;
+        }
+
+        public static bool Logout()
+        {
+            bool ret;
+
+            try
+            {
+                string json = auth_proxy.Logout(token);
+                ret = json.Contains("success");
+                if (ret) token = null;
+            }
+            catch (Exception ex)
+            {
+                ret = false;
+            }
+            finally
+            {
+                
             }
 
             return ret;

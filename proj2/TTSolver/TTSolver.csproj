@@ -57,13 +57,13 @@
     <Compile Include="AssignedTicket.Designer.cs">
       <DependentUpon>AssignedTicket.cs</DependentUpon>
     </Compile>
-    <Compile Include="TTCallback.cs" />
-    <Compile Include="Connected Services\TTCallbacks\Reference.cs">
+    <Compile Include="Connected Services\TTSvc\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Connected Services\TTSvc\Reference.cs">
+    <Compile Include="TTCallback.cs" />
+    <Compile Include="Connected Services\TTCallbacks\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -152,18 +152,6 @@
     <WCFMetadataStorage Include="Connected Services\TTSvc\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TTSvc\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\TTSvc\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\TTSvc\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Connected Services\TTCallbacks\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +159,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\TTCallbacks\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TTSvc\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TTSvc\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TTSvc\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

@@ -10,7 +10,7 @@
 namespace TTClient {
     
     
-    public partial class Main {
+    public partial class Tickets {
         
         /// <summary>
         /// form1 control.
@@ -22,6 +22,24 @@ namespace TTClient {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// title_input control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox title_input;
+        
+        /// <summary>
+        /// description_input control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox description_input;
+        
+        /// <summary>
         /// send_button control.
         /// </summary>
         /// <remarks>
@@ -29,5 +47,32 @@ namespace TTClient {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button send_button;
+        
+        /// <summary>
+        /// status_display control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label status_display;
+        
+        /// <summary>
+        /// tickets_table control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Table tickets_table;
+        
+        /// <summary>
+        /// logout_button control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button logout_button;
     }
 }

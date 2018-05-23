@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="aYbXefbfYg2rnix127CknaXwQk8=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="TJd/Wy0CirVV12DSgJVsgcjZCSs=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="wsHttpBinding" name="WSHttpBinding_ITTServ">
       <properties>
@@ -251,10 +251,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="WSHttpBinding_ITTServ" contract="TTSvc.ITTServ" bindingType="wsHttpBinding" address="http://localhost:8080/TTSystem/" bindingConfiguration="WSHttpBinding_ITTServ">
+    <endpoint name="WSHttpBinding_ITTServ" contract="TTSvc.ITTServ" bindingType="wsHttpBinding" address="http://localhost:8000/TTSystem/" bindingConfiguration="WSHttpBinding_ITTServ">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:8080/TTSystem/</serializedValue>
+          <serializedValue>http://localhost:8000/TTSystem/</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -336,10 +336,10 @@
         </property>
       </properties>
     </endpoint>
-    <endpoint name="WSHttpBinding_IAuthServ" contract="TTSvc.IAuthServ" bindingType="wsHttpBinding" address="http://localhost:8080/TTSystem/auth" bindingConfiguration="WSHttpBinding_IAuthServ">
+    <endpoint name="WSHttpBinding_IAuthServ" contract="TTSvc.IAuthServ" bindingType="wsHttpBinding" address="http://localhost:8000/TTSystem/auth" bindingConfiguration="WSHttpBinding_IAuthServ">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:8080/TTSystem/auth</serializedValue>
+          <serializedValue>http://localhost:8000/TTSystem/auth</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

@@ -2,8 +2,6 @@
 using System.Linq;
 using Newtonsoft.Json;
 using System.Collections;
-using System.Threading;
-using System.ServiceModel;
 
 namespace TTService
 {
@@ -38,21 +36,31 @@ namespace TTService
             }
 
             return JsonConvert.SerializeObject(res);
-        }
+        }              
 
-        public string AddTicket(string title, string description, int author, int? parent)
+        public string AddTicket(string title, string description, string token, int? parent)
         {
             dynamic res = null;
-            dynamic rows = Database.AddTicket(title, description, author, parent);
+            int id = isValidToken(token);
 
-            if (rows == null || rows <= 0)
+            if (id < 0)
             {
-                res = new { error = "Couldn't add a new ticket!" };
+                res = new { error = "Invalid Token!" };
             }
             else
             {
-                res = new { success = "Ticket added!" };
+                dynamic rows = Database.AddTicket(title, description, id, parent);
+
+                if (rows == null || rows <= 0)
+                {
+                    res = new { error = "Couldn't add a new ticket!" };
+                }
+                else
+                {
+                    res = new { success = "Ticket added!" };
+                }
             }
+           
 
             return JsonConvert.SerializeObject(res);
         }
@@ -125,19 +133,28 @@ namespace TTService
             return JsonConvert.SerializeObject(res);
         }
 
-        public string GetAuthorTickets(int id, string status)
+        public string GetAuthorTickets(string token, string status)
         {
             dynamic res = null;
-            dynamic tickets = Database.GetAuthorTickets(id, status);
+            int id = isValidToken(token);
 
-            if (tickets == null)
+            if (id < 0)
             {
-                res = new { error = "Couldn't retrieve tickets!" };
+                res = new { error = "Invalid Token!" };
             }
             else
             {
-                res = tickets;
-            }
+                dynamic tickets = Database.GetAuthorTickets(id, status);
+
+                if (tickets == null)
+                {
+                    res = new { error = "Couldn't retrieve tickets!" };
+                }
+                else
+                {
+                    res = tickets;
+                }
+            }           
 
             return JsonConvert.SerializeObject(res);
         }
@@ -214,7 +231,7 @@ namespace TTService
 
         #region Auth
 
-        public string login(string email, string hash)
+        public string Login(string email, string hash)
         {
             dynamic res = null;
             dynamic user = Database.GetUser(email);
@@ -231,7 +248,10 @@ namespace TTService
             {
                 string token = createToken();
                 //mut.WaitOne();
-                sessions.Add(token, user.id);
+                sessions[token] = new {
+                    id = user.id,
+                    time = DateTime.Now
+                };
                 //mut.Close();
                 res = new { token = token };
             }
@@ -239,7 +259,7 @@ namespace TTService
             return JsonConvert.SerializeObject(res);
         }
 
-        public string register(string name, string email, string hash, string salt, int department)
+        public string Register(string name, string email, string hash, string salt, int department)
         {
             dynamic res = null;
             dynamic user = Database.AddUser(name, email, hash, salt, department);
@@ -258,7 +278,7 @@ namespace TTService
             return json;
         }
 
-        public string logout(string token)
+        public string Logout(string token)
         {
             dynamic res = null;
 
@@ -275,7 +295,7 @@ namespace TTService
             return JsonConvert.SerializeObject(res);
         }
 
-        public string getSalt(string email)
+        public string GetSalt(string email)
         {
             dynamic res = null;
             dynamic user = Database.GetUser(email);
@@ -295,32 +315,30 @@ namespace TTService
         /* session management stuff */
         private static Hashtable sessions = new Hashtable();
         //private static Mutex mut = new Mutex();
-        public static int tokenLifetime = 300; // in seconds
+        private static int tokenLifetime = 300; // in seconds
 
-        public static bool isValidToken(int id, string token)
+        private static int isValidToken(string token)
         {
-            if (!sessions.ContainsKey(token)) return false;
-            if (tokenIsExpired(token)) return false;
-            token = createToken();
+            if (!sessions.ContainsKey(token)) return -1;
+            dynamic session = sessions[token];
+            DateTime before = session.time;
+            DateTime now = DateTime.Now;
+            int id = (int)session.id;
+            if (before.AddSeconds(tokenLifetime) < now) return -1;
             //mut.WaitOne();
-            sessions.Add(token, id);
+            sessions[token] = new {
+                id = id,
+                time = now
+            };
             //mut.Close();
-            return true;
+            return id;
         }
 
         private static string createToken()
-        {
-            byte[] time = BitConverter.GetBytes(DateTime.UtcNow.ToBinary());
+        {            
             byte[] key = Guid.NewGuid().ToByteArray();
-            string token = Convert.ToBase64String(time.Concat(key).ToArray());
+            string token = Convert.ToBase64String(key);
             return token;
-        }
-
-        private static bool tokenIsExpired(string token)
-        {
-            byte[] data = Convert.FromBase64String(token);
-            DateTime when = DateTime.FromBinary(BitConverter.ToInt64(data, 0));
-            return when < DateTime.UtcNow.AddSeconds(-tokenLifetime);
         }
 
         #endregion

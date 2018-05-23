@@ -15,10 +15,10 @@
     <form id="form1" runat="server">
         <div>
             Email:<br />
-            <asp:TextBox ID="email_input" runat="server" Width="200px"></asp:TextBox>
+            <asp:TextBox ID="email_input" runat="server" Width="200px" TextMode="Email"></asp:TextBox>
             <br />
             Password:<br />
-            <asp:TextBox ID="password_input" runat="server" Width="200px"></asp:TextBox>
+            <asp:TextBox ID="password_input" runat="server" Width="200px" TextMode="Password"></asp:TextBox>
             <br />
             <br />
             <asp:Button ID="login_button" runat="server" Text="Login" Width="100px" OnClick="login_button_Click" />

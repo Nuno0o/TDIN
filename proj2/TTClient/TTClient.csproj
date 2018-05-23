@@ -81,9 +81,17 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="Login.aspx" />
-    <Content Include="Tickets.aspx" />
+    <Content Include="Ticket.aspx" />
     <Content Include="Register.aspx" />
+    <Content Include="Tickets.aspx" />
     <Content Include="web.config" />
+    <None Include="Connected Services\TTSvc\service.wsdl" />
+    <None Include="Connected Services\TTSvc\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TTSvc\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -104,12 +112,12 @@
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Tickets.aspx.cs">
-      <DependentUpon>Tickets.aspx</DependentUpon>
+    <Compile Include="Ticket.aspx.cs">
+      <DependentUpon>Ticket.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Tickets.aspx.designer.cs">
-      <DependentUpon>Tickets.aspx</DependentUpon>
+    <Compile Include="Ticket.aspx.designer.cs">
+      <DependentUpon>Ticket.aspx</DependentUpon>
     </Compile>
     <Compile Include="Operations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -120,15 +128,15 @@
     <Compile Include="Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Tickets.aspx.cs">
+      <DependentUpon>Tickets.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Tickets.aspx.designer.cs">
+      <DependentUpon>Tickets.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\TTSvc\service.wsdl" />
-    <None Include="Connected Services\TTSvc\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\TTSvc\service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

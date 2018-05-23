@@ -104,13 +104,13 @@ namespace TTDepartment
                 string json;
                 dynamic res;
 
-                json = auth_proxy.getSalt(email);
+                json = auth_proxy.GetSalt(email);
                 res = JsonConvert.DeserializeObject(json);
 
                 string salt = res.salt;
                 string hash = Hash(password + salt);
 
-                json = auth_proxy.login(email, hash);
+                json = auth_proxy.Login(email, hash);
                 if (json.Contains("token"))
                 {
                     res = JsonConvert.DeserializeObject(json);
@@ -146,7 +146,7 @@ namespace TTDepartment
                 string salt = Salt();
                 string hash = Hash(password + salt);
 
-                string json = auth_proxy.register(name, email, hash, salt, department);
+                string json = auth_proxy.Register(name, email, hash, salt, department);
 
                 ret = json.Contains("success");
             }

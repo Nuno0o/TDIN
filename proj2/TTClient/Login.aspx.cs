@@ -21,6 +21,7 @@ namespace TTClient
 
             if (Operations.Login(email, password))
             {
+                Session["token"] = Operations.GetToken();
                 Response.Redirect("Tickets.aspx", true);
             }
             else

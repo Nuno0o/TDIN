@@ -91,7 +91,7 @@ namespace TTService
                         HoldTicket((int) parent);
                     }       
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -125,7 +125,7 @@ namespace TTService
 
                     result = cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -159,7 +159,7 @@ namespace TTService
 
                     result = cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -192,7 +192,7 @@ namespace TTService
 
                     result = cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -225,27 +225,24 @@ namespace TTService
 
                     SQLiteDataReader reader = cmd.ExecuteReader();
 
-                    result = new List<dynamic>();
-
-                    while (reader.Read())
+                    reader.Read();                    
+                    result = new
                     {
-                        result.Add(new
-                        {
-                            id = reader["Id"],
-                            title = reader["Title"],
-                            description = reader["Description"],
-                            author = reader["Author"],
-                            createdAt = reader["CreatedAt"],
-                            status = reader["Status"],
-                            parent = reader["Parent"],
-                            answer = reader["Answer"],
-                            assignee = reader["Assignee"]
-                        });
-                    }
+                        id = reader["Id"],
+                        title = reader["Title"],
+                        description = reader["Description"],
+                        author = reader["Author"],
+                        createdAt = reader["CreatedAt"],
+                        status = reader["Status"],
+                        parent = reader["Parent"],
+                        answer = reader["Answer"],
+                        assignee = reader["Assignee"]
+                    };                    
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
+                    result = null;
                 }
                 finally
                 {
@@ -286,7 +283,7 @@ namespace TTService
                         });
                     }
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -347,7 +344,7 @@ namespace TTService
                         });
                     }
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -408,7 +405,7 @@ namespace TTService
                         });
                     }
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -449,7 +446,7 @@ namespace TTService
                         });
                     }
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -478,7 +475,7 @@ namespace TTService
                     cmd.Parameters.AddWithValue("name", name);
                     result = cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
 
                 }
@@ -503,7 +500,7 @@ namespace TTService
                     cmd.Parameters.AddWithValue("id", id);
                     result = cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
 
                 }
@@ -538,7 +535,7 @@ namespace TTService
                     cmd.Parameters.AddWithValue("department", department);
                     result = cmd.ExecuteNonQuery();
                 }
-                catch(SQLiteException ex)
+                catch(Exception ex)
                 {
                     Debug.WriteLine(ex);
                     result = null;
@@ -574,7 +571,7 @@ namespace TTService
                     };
                     
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     result = null;
                 }
@@ -598,7 +595,7 @@ namespace TTService
                     SQLiteCommand cmd = new SQLiteCommand(sql, c);
                     cmd.Parameters.AddWithValue("email", email);
                     SQLiteDataReader reader = cmd.ExecuteReader();
-                    reader.Read();                    
+                    reader.Read();
                     result = new
                     {
                         id = reader["Id"],
@@ -609,7 +606,7 @@ namespace TTService
                         department = reader["Department"]
                     };                    
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     result = null;
                 }
