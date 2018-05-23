@@ -205,9 +205,10 @@ namespace TTSolver
                     description = text
                 };
                 Operations.sendMessageToDepartment(selectedid.ToString(), JsonConvert.SerializeObject(message));
+                label5.Text = "Success";
             }catch(Exception ex)
             {
-
+                label5.Text = "Error";
             }
         }
     }

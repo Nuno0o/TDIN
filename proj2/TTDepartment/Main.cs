@@ -32,31 +32,40 @@ namespace TTDepartment
             dataGridView1.Columns[0].Name = "Id";
             dataGridView1.Columns[1].Name = "Description";
 
+            HandleCreated += oncreated;
+            
+        }
+
+        public void oncreated(object sender, EventArgs e)
+        {
             updateInterface();
         }
 
         public void updateInterface()
         {
-            try
+            Invoke(new Action(() =>
             {
-                dataGridView1.Rows.Clear();
-                comboBox1.Items.Clear();
-                foreach(System.Messaging.Message m in Operations.messages)
+                try
                 {
-                    dynamic info = JsonConvert.DeserializeObject(m.Body.ToString());
-                    dataGridView1.Rows.Add(new[]
+                    dataGridView1.Rows.Clear();
+                    comboBox1.Items.Clear();
+                    foreach (System.Messaging.Message m in Operations.messages)
                     {
+                        dynamic info = JsonConvert.DeserializeObject(m.Body.ToString());
+                        dataGridView1.Rows.Add(new[]
+                        {
                         info.id,
                         info.description
                     });
-                    comboBox1.Items.Add(info.id);
-                }
+                        comboBox1.Items.Add(info.id);
+                    }
 
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            };
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                };
+            }));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -67,7 +76,6 @@ namespace TTDepartment
             }
             string answer = textBox1.Text;
             int id = Convert.ToInt32(comboBox1.SelectedItem.ToString());
-            Debug.WriteLine(id + answer);
             try
             {
                 Operations.serv_proxy.AnswerTicketDepartment(id, answer);

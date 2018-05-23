@@ -80,6 +80,7 @@ namespace TTDepartment
                 if (ticket.id == id.ToString())
                 {
                     toremoveid = m.Id;
+                    updateInterface();
                 }
             }
             if(toremoveid == null)
@@ -131,10 +132,7 @@ namespace TTDepartment
         {
             if (main == null)
                 return;
-            foreach(Message m in messages)
-            {
-                main.updateInterface();
-            }
+            main.updateInterface();
         }
         
 

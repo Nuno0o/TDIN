@@ -207,7 +207,6 @@ namespace TTService
         public static dynamic AnswerTicketDepartment(int id, string answer)
         {
             dynamic result = null;
-            Debug.WriteLine("test");
             using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
             {
                 try
@@ -224,9 +223,7 @@ namespace TTService
 
                     cmd.Parameters.AddWithValue("id", id);
                     cmd.Parameters.AddWithValue("answer", answer);
-                    Debug.WriteLine("test2");
                     result = cmd.ExecuteNonQuery();
-                    Debug.WriteLine("test3");
                 }
                 catch (Exception ex)
                 {
