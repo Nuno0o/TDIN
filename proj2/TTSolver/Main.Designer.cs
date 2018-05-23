@@ -38,6 +38,8 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.unassigned_grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.assigned_grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.depart_grid)).BeginInit();
@@ -51,7 +53,7 @@
             this.unassigned_grid.Location = new System.Drawing.Point(12, 34);
             this.unassigned_grid.Name = "unassigned_grid";
             this.unassigned_grid.ReadOnly = true;
-            this.unassigned_grid.Size = new System.Drawing.Size(245, 305);
+            this.unassigned_grid.Size = new System.Drawing.Size(245, 276);
             this.unassigned_grid.TabIndex = 0;
             // 
             // label1
@@ -72,7 +74,7 @@
             this.assigned_grid.Location = new System.Drawing.Point(263, 34);
             this.assigned_grid.Name = "assigned_grid";
             this.assigned_grid.ReadOnly = true;
-            this.assigned_grid.Size = new System.Drawing.Size(225, 305);
+            this.assigned_grid.Size = new System.Drawing.Size(225, 276);
             this.assigned_grid.TabIndex = 2;
             // 
             // label2
@@ -97,9 +99,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(551, 18);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(127, 13);
+            this.label3.Size = new System.Drawing.Size(131, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Questions to departments";
+            this.label3.Text = "Answers from departments";
             // 
             // button1
             // 
@@ -135,11 +137,33 @@
             this.label4.TabIndex = 9;
             this.label4.Text = "Question to department";
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(333, 316);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 10;
+            this.button2.Text = "See Ticket";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(99, 316);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 11;
+            this.button3.Text = "See Ticket";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(750, 352);
+            this.ClientSize = new System.Drawing.Size(750, 349);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.textBox1);
@@ -173,5 +197,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
     }
 }

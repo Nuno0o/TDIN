@@ -50,11 +50,10 @@ namespace TTSolver
         public static bool Login(string email, string password)
         {
             bool ret;
-            AuthServClient proxy = new AuthServClient();
 
             try
             {
-                proxy.Open();
+                auth_proxy.Open();
 
                 string json;
                 dynamic res;
@@ -85,7 +84,6 @@ namespace TTSolver
             }
             finally
             {
-                proxy.Close();
             }
 
             return ret;
@@ -188,14 +186,24 @@ namespace TTSolver
                 dynamic userinfo = JsonConvert.DeserializeObject(serv_proxy.GetUserByEmail(useremail));
                 if (userinfo == null)
                     return;
+                //user info
                 name = userinfo.name;
                 userid = userinfo.id;
                 department = userinfo.department;
-                Debug.WriteLine(serv_proxy.GetUnassignedTickets());
-
+                //unassigned and assigned tickets
                 departments = JsonConvert.DeserializeObject<List<dynamic>>(serv_proxy.GetDepartments());
-                unassigned_tickets = JsonConvert.DeserializeObject<List<dynamic>>(serv_proxy.GetUnassignedTickets());
-                assigned_tickets = JsonConvert.DeserializeObject<List<dynamic>>(serv_proxy.GetSolverTickets(userid, null));
+                unassigned_tickets = new List<dynamic>();
+                List<dynamic> unassigned_tickets_ids = JsonConvert.DeserializeObject<List<dynamic>>(serv_proxy.GetUnassignedTickets());
+                foreach(dynamic ticket in unassigned_tickets_ids)
+                {
+                    unassigned_tickets.Add(JsonConvert.DeserializeObject(serv_proxy.GetTicket(ticket)));
+                }
+                assigned_tickets = new List<dynamic>();
+                List<dynamic> assigned_tickets_ids = JsonConvert.DeserializeObject<List<dynamic>>(serv_proxy.GetSolverTickets(userid, null));
+                foreach (dynamic ticket in assigned_tickets_ids)
+                {
+                    unassigned_tickets.Add(JsonConvert.DeserializeObject(serv_proxy.GetTicket(ticket)));
+                }
             }
             catch (Exception e)
             {
@@ -203,6 +211,23 @@ namespace TTSolver
             }
             
 
+
+        }
+
+        public static void assignTicket(int id, int assignee)
+        {
+            try
+            {
+                serv_proxy.AssignTicket(id, assignee);
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        private static void updateInterface()
+        {
 
         }
 
