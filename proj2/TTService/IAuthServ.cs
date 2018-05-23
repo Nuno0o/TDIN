@@ -6,15 +6,15 @@ namespace TTService
     public interface IAuthServ
     {
         [OperationContract]
-        string login(string email, string hash);
+        string Login(string email, string hash);
 
         [OperationContract]
-        string register(string name, string email, string hash, string salt, int department);
+        string Register(string name, string email, string hash, string salt, int department);
 
         [OperationContract]
-        string logout(string token);
+        string Logout(string token);
 
         [OperationContract]
-        string getSalt(string email);
+        string GetSalt(string email);
     }
 }

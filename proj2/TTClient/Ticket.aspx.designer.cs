@@ -11,7 +11,7 @@ namespace TTClient
 {
 
 
-    public partial class MainPage
+    public partial class Ticket
     {
 
         /// <summary>

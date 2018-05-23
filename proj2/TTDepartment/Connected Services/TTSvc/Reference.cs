@@ -28,10 +28,10 @@ namespace TTDepartment.TTSvc {
         System.Threading.Tasks.Task<string> InitDbAsync(bool overwrite);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddTicket", ReplyAction="http://tempuri.org/ITTServ/AddTicketResponse")]
-        string AddTicket(string title, string description, int author, System.Nullable<int> parent);
+        string AddTicket(string title, string description, string token, System.Nullable<int> parent);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddTicket", ReplyAction="http://tempuri.org/ITTServ/AddTicketResponse")]
-        System.Threading.Tasks.Task<string> AddTicketAsync(string title, string description, int author, System.Nullable<int> parent);
+        System.Threading.Tasks.Task<string> AddTicketAsync(string title, string description, string token, System.Nullable<int> parent);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddTicketDepartment", ReplyAction="http://tempuri.org/ITTServ/AddTicketDepartmentResponse")]
         string AddTicketDepartment(string description, int author, int department);
@@ -76,10 +76,10 @@ namespace TTDepartment.TTSvc {
         System.Threading.Tasks.Task<string> GetTicketChildrenAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetAuthorTickets", ReplyAction="http://tempuri.org/ITTServ/GetAuthorTicketsResponse")]
-        string GetAuthorTickets(int id, string status);
+        string GetAuthorTickets(string token, string status);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetAuthorTickets", ReplyAction="http://tempuri.org/ITTServ/GetAuthorTicketsResponse")]
-        System.Threading.Tasks.Task<string> GetAuthorTicketsAsync(int id, string status);
+        System.Threading.Tasks.Task<string> GetAuthorTicketsAsync(string token, string status);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetAuthorTicketsDepartment", ReplyAction="http://tempuri.org/ITTServ/GetAuthorTicketsDepartmentResponse")]
         string GetAuthorTicketsDepartment(int id);
@@ -115,8 +115,8 @@ namespace TTDepartment.TTSvc {
         string GetDepartments();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetDepartments", ReplyAction="http://tempuri.org/ITTServ/GetDepartmentsResponse")]
-        System.Threading.Tasks.Task<string> GetDepartmentsAsync();
-        
+        System.Threading.Tasks.Task<string> GetDepartmentsAsync();        
+
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddDepartment", ReplyAction="http://tempuri.org/ITTServ/AddDepartmentResponse")]
         string AddDepartment(string name);
         
@@ -167,12 +167,12 @@ namespace TTDepartment.TTSvc {
             return base.Channel.InitDbAsync(overwrite);
         }
         
-        public string AddTicket(string title, string description, int author, System.Nullable<int> parent) {
-            return base.Channel.AddTicket(title, description, author, parent);
+        public string AddTicket(string title, string description, string token, System.Nullable<int> parent) {
+            return base.Channel.AddTicket(title, description, token, parent);
         }
         
-        public System.Threading.Tasks.Task<string> AddTicketAsync(string title, string description, int author, System.Nullable<int> parent) {
-            return base.Channel.AddTicketAsync(title, description, author, parent);
+        public System.Threading.Tasks.Task<string> AddTicketAsync(string title, string description, string token, System.Nullable<int> parent) {
+            return base.Channel.AddTicketAsync(title, description, token, parent);
         }
         
         public string AddTicketDepartment(string description, int author, int department) {
@@ -231,12 +231,12 @@ namespace TTDepartment.TTSvc {
             return base.Channel.GetTicketChildrenAsync(id);
         }
         
-        public string GetAuthorTickets(int id, string status) {
-            return base.Channel.GetAuthorTickets(id, status);
+        public string GetAuthorTickets(string token, string status) {
+            return base.Channel.GetAuthorTickets(token, status);
         }
         
-        public System.Threading.Tasks.Task<string> GetAuthorTicketsAsync(int id, string status) {
-            return base.Channel.GetAuthorTicketsAsync(id, status);
+        public System.Threading.Tasks.Task<string> GetAuthorTicketsAsync(string token, string status) {
+            return base.Channel.GetAuthorTicketsAsync(token, status);
         }
         
         public string GetAuthorTicketsDepartment(int id) {
@@ -285,8 +285,8 @@ namespace TTDepartment.TTSvc {
         
         public System.Threading.Tasks.Task<string> GetDepartmentsAsync() {
             return base.Channel.GetDepartmentsAsync();
-        }
-        
+        }        
+
         public string AddDepartment(string name) {
             return base.Channel.AddDepartment(name);
         }
@@ -300,29 +300,29 @@ namespace TTDepartment.TTSvc {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="TTSvc.IAuthServ")]
     public interface IAuthServ {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/login", ReplyAction="http://tempuri.org/IAuthServ/loginResponse")]
-        string login(string email, string hash);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/Login", ReplyAction="http://tempuri.org/IAuthServ/LoginResponse")]
+        string Login(string email, string hash);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/login", ReplyAction="http://tempuri.org/IAuthServ/loginResponse")]
-        System.Threading.Tasks.Task<string> loginAsync(string email, string hash);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/Login", ReplyAction="http://tempuri.org/IAuthServ/LoginResponse")]
+        System.Threading.Tasks.Task<string> LoginAsync(string email, string hash);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/register", ReplyAction="http://tempuri.org/IAuthServ/registerResponse")]
-        string register(string name, string email, string hash, string salt, int department);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/Register", ReplyAction="http://tempuri.org/IAuthServ/RegisterResponse")]
+        string Register(string name, string email, string hash, string salt, int department);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/register", ReplyAction="http://tempuri.org/IAuthServ/registerResponse")]
-        System.Threading.Tasks.Task<string> registerAsync(string name, string email, string hash, string salt, int department);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/Register", ReplyAction="http://tempuri.org/IAuthServ/RegisterResponse")]
+        System.Threading.Tasks.Task<string> RegisterAsync(string name, string email, string hash, string salt, int department);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/logout", ReplyAction="http://tempuri.org/IAuthServ/logoutResponse")]
-        string logout(string token);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/Logout", ReplyAction="http://tempuri.org/IAuthServ/LogoutResponse")]
+        string Logout(string token);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/logout", ReplyAction="http://tempuri.org/IAuthServ/logoutResponse")]
-        System.Threading.Tasks.Task<string> logoutAsync(string token);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/Logout", ReplyAction="http://tempuri.org/IAuthServ/LogoutResponse")]
+        System.Threading.Tasks.Task<string> LogoutAsync(string token);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/getSalt", ReplyAction="http://tempuri.org/IAuthServ/getSaltResponse")]
-        string getSalt(string email);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/GetSalt", ReplyAction="http://tempuri.org/IAuthServ/GetSaltResponse")]
+        string GetSalt(string email);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/getSalt", ReplyAction="http://tempuri.org/IAuthServ/getSaltResponse")]
-        System.Threading.Tasks.Task<string> getSaltAsync(string email);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IAuthServ/GetSalt", ReplyAction="http://tempuri.org/IAuthServ/GetSaltResponse")]
+        System.Threading.Tasks.Task<string> GetSaltAsync(string email);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -352,36 +352,36 @@ namespace TTDepartment.TTSvc {
                 base(binding, remoteAddress) {
         }
         
-        public string login(string email, string hash) {
-            return base.Channel.login(email, hash);
+        public string Login(string email, string hash) {
+            return base.Channel.Login(email, hash);
         }
         
-        public System.Threading.Tasks.Task<string> loginAsync(string email, string hash) {
-            return base.Channel.loginAsync(email, hash);
+        public System.Threading.Tasks.Task<string> LoginAsync(string email, string hash) {
+            return base.Channel.LoginAsync(email, hash);
         }
         
-        public string register(string name, string email, string hash, string salt, int department) {
-            return base.Channel.register(name, email, hash, salt, department);
+        public string Register(string name, string email, string hash, string salt, int department) {
+            return base.Channel.Register(name, email, hash, salt, department);
         }
         
-        public System.Threading.Tasks.Task<string> registerAsync(string name, string email, string hash, string salt, int department) {
-            return base.Channel.registerAsync(name, email, hash, salt, department);
+        public System.Threading.Tasks.Task<string> RegisterAsync(string name, string email, string hash, string salt, int department) {
+            return base.Channel.RegisterAsync(name, email, hash, salt, department);
         }
         
-        public string logout(string token) {
-            return base.Channel.logout(token);
+        public string Logout(string token) {
+            return base.Channel.Logout(token);
         }
         
-        public System.Threading.Tasks.Task<string> logoutAsync(string token) {
-            return base.Channel.logoutAsync(token);
+        public System.Threading.Tasks.Task<string> LogoutAsync(string token) {
+            return base.Channel.LogoutAsync(token);
         }
         
-        public string getSalt(string email) {
-            return base.Channel.getSalt(email);
+        public string GetSalt(string email) {
+            return base.Channel.GetSalt(email);
         }
         
-        public System.Threading.Tasks.Task<string> getSaltAsync(string email) {
-            return base.Channel.getSaltAsync(email);
+        public System.Threading.Tasks.Task<string> GetSaltAsync(string email) {
+            return base.Channel.GetSaltAsync(email);
         }
     }
 }

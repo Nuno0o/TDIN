@@ -18,11 +18,11 @@ namespace TTService
         /// </summary>
         /// <param name="title">Title of the ticket.</param>
         /// <param name="description">Description of the ticket.</param>
-        /// <param name="author">Id of the user who posted this ticket.</param>
+        /// <param name="token">Token of the user who posted this ticket.</param>
         /// <param name="parent">Id of the parent (ticket) of this ticket - can be null.</param>
-        /// <returns>Success or error message.</returns>
+        /// <returns>Success or error message.</returns>        
         [OperationContract]
-        string AddTicket(string title, string description, int author, int? parent);
+        string AddTicket(string title, string description, string token, int? parent);
 
         [OperationContract]
         string AddTicketDepartment(string description, int author, int department);
@@ -70,11 +70,11 @@ namespace TTService
         /// <summary>
         /// Gets the ids of all the tickets a user posted.
         /// </summary>
-        /// <param name="id">User id.</param>
+        /// <param name="token">Token of the user.</param>
         /// <param name="status">Filter tickets by status - null to get all tickets.</param>
         /// <returns>List of all the ids of the tickets posted by the user.</returns>
         [OperationContract]
-        string GetAuthorTickets(int id, string status);
+        string GetAuthorTickets(string token, string status);
 
         [OperationContract]
         string GetAuthorTicketsDepartment(int id);

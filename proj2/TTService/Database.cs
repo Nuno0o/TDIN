@@ -123,6 +123,7 @@ namespace TTService
                     result = cmd.ExecuteNonQuery();
                 }
                 catch (Exception ex)
+
                 {
                     Debug.WriteLine(ex);
                 }
@@ -358,6 +359,7 @@ namespace TTService
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
+                    result = null;
                 }
                 finally
                 {
@@ -798,7 +800,7 @@ namespace TTService
                     SQLiteCommand cmd = new SQLiteCommand(sql, c);
                     cmd.Parameters.AddWithValue("email", email);
                     SQLiteDataReader reader = cmd.ExecuteReader();
-                    reader.Read();                    
+                    reader.Read();
                     result = new
                     {
                         id = reader["Id"],
