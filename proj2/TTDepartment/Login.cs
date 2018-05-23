@@ -17,8 +17,10 @@ namespace TTDepartment
 
             if(Operations.Login(email, password))
             {
-                new Main().Show();
+                Operations.main = new Main();
                 Hide();
+                Operations.main.ShowDialog();
+                Show();
                 status_display.Text = "";
                 password_input.Text = "";
             }
@@ -30,8 +32,8 @@ namespace TTDepartment
 
         private void register_button_Click(object sender, EventArgs e)
         {
-            new Register().Show();
-            Hide();
+            Register r = new Register();
+            r.ShowDialog();
             password_input.Text = "";
         }
     }

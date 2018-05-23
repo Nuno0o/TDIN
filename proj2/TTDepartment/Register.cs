@@ -18,8 +18,7 @@ namespace TTDepartment
 
         private void back_button_Click(object sender, EventArgs e)
         {
-            Program.login.Show();
-            Close();
+            Dispose();
         }
 
         private void register_button_Click(object sender, EventArgs e)
@@ -36,8 +35,7 @@ namespace TTDepartment
             }
             else if (Operations.Register(name, email, password, department))
             {
-                Program.login.Show();
-                Close();
+                Dispose();
             }
             else
             {

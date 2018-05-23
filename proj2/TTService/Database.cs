@@ -70,7 +70,6 @@ namespace TTService
                 try
                 {
                     c.Open();
-
                     string sql = @"
                         INSERT INTO Ticket (Title, Description, Author, Parent, CreatedAt)
                         VALUES (@title, @description, @author, @parent, datetime())
@@ -84,7 +83,6 @@ namespace TTService
                     cmd.Parameters.AddWithValue("parent", parent);
 
                     result = cmd.ExecuteNonQuery();
-                    
                     // hold parent ticket - waiting for answers
                     if (parent != null)
                     {
@@ -102,6 +100,41 @@ namespace TTService
             }
             return result;
         }
+
+        public static dynamic AddTicketDepartment(string description, int author, int department)
+        {
+            dynamic result = null;
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
+            {
+                try
+                {
+                    c.Open();
+                    string sql = @"
+                        INSERT INTO TicketDepartment (Description, Author, Department)
+                        VALUES (@description, @author, @department)
+                    ";
+
+                    SQLiteCommand cmd = new SQLiteCommand(sql, c);
+
+                    cmd.Parameters.AddWithValue("description", description);
+                    cmd.Parameters.AddWithValue("author", author);
+                    cmd.Parameters.AddWithValue("department", department);
+
+                    result = cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
+
 
         public static dynamic AssignTicket(int id, int assignee)
         {
@@ -171,6 +204,43 @@ namespace TTService
             return result;
         }
 
+        public static dynamic AnswerTicketDepartment(int id, string answer)
+        {
+            dynamic result = null;
+            Debug.WriteLine("test");
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
+            {
+                try
+                {
+                    c.Open();
+
+                    string sql = @"
+                        UPDATE TicketDepartment
+                        SET Answer = @answer
+                        WHERE Id = @id
+                    ";
+
+                    SQLiteCommand cmd = new SQLiteCommand(sql, c);
+
+                    cmd.Parameters.AddWithValue("id", id);
+                    cmd.Parameters.AddWithValue("answer", answer);
+                    Debug.WriteLine("test2");
+                    result = cmd.ExecuteNonQuery();
+                    Debug.WriteLine("test3");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
+
         private static dynamic HoldTicket(int id)
         {
             dynamic result = null;
@@ -225,11 +295,9 @@ namespace TTService
 
                     SQLiteDataReader reader = cmd.ExecuteReader();
 
-                    result = new List<dynamic>();
-
                     while (reader.Read())
                     {
-                        result.Add(new
+                        result = (new
                         {
                             id = reader["Id"],
                             title = reader["Title"],
@@ -242,6 +310,53 @@ namespace TTService
                             assignee = reader["Assignee"]
                         });
                     }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
+        public static dynamic GetTicketDepartment(int id)
+        {
+            dynamic result = null;
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
+            {
+                try
+                {
+                    c.Open();
+
+                    string sql = @"
+                        SELECT *
+                        FROM TicketDepartment
+                        WHERE Id = @id
+                    ";
+
+                    SQLiteCommand cmd = new SQLiteCommand(sql, c);
+
+                    cmd.Parameters.AddWithValue("id", id);
+
+                    SQLiteDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        result = (new
+                        {
+                            id = reader["Id"],
+                            description = reader["Description"],
+                            author = reader["Author"],
+                            department = reader["Department"],
+                            answer = reader["Answer"]
+                        });
+                    }
+                    reader.Close();
                 }
                 catch (Exception ex)
                 {
@@ -285,6 +400,7 @@ namespace TTService
                             id = reader["Id"]
                         });
                     }
+                    reader.Close();
                 }
                 catch (Exception ex)
                 {
@@ -346,6 +462,53 @@ namespace TTService
                             id = reader["Id"]
                         });
                     }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
+        public static dynamic GetAuthorTicketsDepartment(int id)
+        {
+            dynamic result = null;
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
+            {
+                try
+                {
+                    c.Open();
+
+                    string sql;
+
+                        sql = @"
+                            SELECT Id
+                            FROM TicketDepartment
+                            WHERE Author = @id
+                        ";
+
+                    SQLiteCommand cmd = new SQLiteCommand(sql, c);
+
+                    cmd.Parameters.AddWithValue("id", id);
+
+                    SQLiteDataReader reader = cmd.ExecuteReader();
+
+                    result = new List<dynamic>();
+
+                    while (reader.Read())
+                    {
+                        result.Add(new
+                        {
+                            id = reader["Id"]
+                        });
+                    }
+                    reader.Close();
                 }
                 catch (Exception ex)
                 {
@@ -407,6 +570,7 @@ namespace TTService
                             id = reader["Id"]
                         });
                     }
+                    reader.Close();
                 }
                 catch (Exception ex)
                 {
@@ -448,6 +612,7 @@ namespace TTService
                             id = reader["Id"]
                         });
                     }
+                    reader.Close();
                 }
                 catch (Exception ex)
                 {
@@ -536,6 +701,7 @@ namespace TTService
                             name = reader["Name"]
                         });
                     }
+                    reader.Close();
 
                 }
                 catch (Exception ex)
@@ -598,6 +764,7 @@ namespace TTService
                     SQLiteCommand cmd = new SQLiteCommand(sql, c);
                     cmd.Parameters.AddWithValue("id", id);
                     SQLiteDataReader reader = cmd.ExecuteReader();
+                    reader.Read();
                     result = new
                     {
                         id = reader["Id"],
@@ -607,10 +774,11 @@ namespace TTService
                         salt = reader["Salt"],
                         department = reader["Department"]
                     };
-                    
+                    reader.Close();
                 }
                 catch (Exception ex)
                 {
+                    Debug.WriteLine(ex);
                     result = null;
                 }
                 finally
@@ -642,7 +810,8 @@ namespace TTService
                         hash = reader["Hash"],
                         salt = reader["Salt"],
                         department = reader["Department"]
-                    };                    
+                    };
+                    reader.Close();
                 }
                 catch (Exception ex)
                 {

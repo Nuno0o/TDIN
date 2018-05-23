@@ -12,8 +12,7 @@ namespace TTSolver
 
         private void back_button_Click(object sender, EventArgs e)
         {
-            new Login().Show();
-            Close();
+            Dispose();
         }
 
         private void register_button_Click(object sender, EventArgs e)
@@ -30,8 +29,7 @@ namespace TTSolver
             }
             else if (Operations.Register(name, email, password, department))
             {
-                new Login().Show();
-                Close();
+                Dispose();
             }
             else
             {

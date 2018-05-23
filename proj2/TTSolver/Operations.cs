@@ -53,7 +53,6 @@ namespace TTSolver
 
             try
             {
-                auth_proxy.Open();
 
                 string json;
                 dynamic res;
@@ -92,11 +91,9 @@ namespace TTSolver
         public static bool Register(string name, string email, string password, int department)
         {
             bool ret;
-            AuthServClient proxy = new AuthServClient();
 
             try
             {
-                proxy.Open();
 
                 string salt = Salt();
                 string hash = Hash(password + salt);
@@ -111,7 +108,6 @@ namespace TTSolver
             }
             finally
             {
-                proxy.Close();
             }
 
             return ret;
@@ -187,6 +183,7 @@ namespace TTSolver
                 if (userinfo == null)
                     return;
                 //user info
+
                 name = userinfo.name;
                 userid = userinfo.id;
                 department = userinfo.department;
@@ -196,22 +193,25 @@ namespace TTSolver
                 List<dynamic> unassigned_tickets_ids = JsonConvert.DeserializeObject<List<dynamic>>(serv_proxy.GetUnassignedTickets());
                 foreach(dynamic ticket in unassigned_tickets_ids)
                 {
-                    unassigned_tickets.Add(JsonConvert.DeserializeObject(serv_proxy.GetTicket(ticket)));
+                    unassigned_tickets.Add(JsonConvert.DeserializeObject(serv_proxy.GetTicket((int)ticket.id)));
                 }
                 assigned_tickets = new List<dynamic>();
                 List<dynamic> assigned_tickets_ids = JsonConvert.DeserializeObject<List<dynamic>>(serv_proxy.GetSolverTickets(userid, null));
                 foreach (dynamic ticket in assigned_tickets_ids)
                 {
-                    unassigned_tickets.Add(JsonConvert.DeserializeObject(serv_proxy.GetTicket(ticket)));
+                    assigned_tickets.Add(JsonConvert.DeserializeObject(serv_proxy.GetTicket((int)ticket.id)));
+                }
+                department_tickets = new List<dynamic>();
+                List<dynamic> department_tickets_ids = JsonConvert.DeserializeObject<List<dynamic>>(serv_proxy.GetAuthorTicketsDepartment(userid));
+                foreach(dynamic ticket in department_tickets_ids)
+                {
+                    department_tickets.Add(JsonConvert.DeserializeObject(serv_proxy.GetTicketDepartment((int)ticket.id)));
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-
+                Debug.WriteLine(ex);
             }
-            
-
-
         }
 
         public static void assignTicket(int id, int assignee)
@@ -224,11 +224,6 @@ namespace TTSolver
             {
 
             }
-        }
-
-        private static void updateInterface()
-        {
-
         }
 
         #endregion

@@ -99,9 +99,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(551, 18);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(131, 13);
+            this.label3.Size = new System.Drawing.Size(115, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Answers from departments";
+            this.label3.Text = "Tickets to departments";
             // 
             // button1
             // 
@@ -111,6 +111,7 @@
             this.button1.TabIndex = 6;
             this.button1.Text = "Submit";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBox1
             // 

@@ -57,6 +57,23 @@ namespace TTService
             return JsonConvert.SerializeObject(res);
         }
 
+        public string AddTicketDepartment(string description, int author, int department)
+        {
+            dynamic res = null;
+            dynamic rows = Database.AddTicketDepartment( description, author, department);
+
+            if (rows == null || rows <= 0)
+            {
+                res = new { error = "Couldn't add a new ticket!" };
+            }
+            else
+            {
+                res = new { success = "Ticket added!" };
+            }
+
+            return JsonConvert.SerializeObject(res);
+        }
+
         public string AssignTicket(int id, int assignee)
         {
             dynamic res = null;
@@ -91,10 +108,44 @@ namespace TTService
             return JsonConvert.SerializeObject(res);
         }
 
+        public string AnswerTicketDepartment(int id, string answer)
+        {
+            dynamic res = null;
+            dynamic rows = Database.AnswerTicketDepartment(id, answer);
+
+            if (rows == null || rows <= 0)
+            {
+                res = new { error = "Couldn't answer ticket!" };
+            }
+            else
+            {
+                res = new { success = "Ticket answered!" };
+            }
+
+            return JsonConvert.SerializeObject(res);
+        }
+
         public string GetTicket(int id)
         {
             dynamic res = null;
             dynamic ticket = Database.GetTicket(id);
+
+            if (ticket == null)
+            {
+                res = new { error = "Couldn't retrieve ticket!" };
+            }
+            else
+            {
+                res = ticket;
+            }
+
+            return JsonConvert.SerializeObject(res);
+        }
+
+        public string GetTicketDepartment(int id)
+        {
+            dynamic res = null;
+            dynamic ticket = Database.GetTicketDepartment(id);
 
             if (ticket == null)
             {
@@ -129,6 +180,23 @@ namespace TTService
         {
             dynamic res = null;
             dynamic tickets = Database.GetAuthorTickets(id, status);
+
+            if (tickets == null)
+            {
+                res = new { error = "Couldn't retrieve tickets!" };
+            }
+            else
+            {
+                res = tickets;
+            }
+
+            return JsonConvert.SerializeObject(res);
+        }
+
+        public string GetAuthorTicketsDepartment(int id)
+        {
+            dynamic res = null;
+            dynamic tickets = Database.GetAuthorTicketsDepartment(id);
 
             if (tickets == null)
             {

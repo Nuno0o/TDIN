@@ -23,7 +23,10 @@ namespace TTService
         /// <returns>Success or error message.</returns>
         [OperationContract]
         string AddTicket(string title, string description, int author, int? parent);
-        
+
+        [OperationContract]
+        string AddTicketDepartment(string description, int author, int department);
+
         /// <summary>
         /// Assigns a ticket to a user.
         /// </summary>
@@ -41,7 +44,10 @@ namespace TTService
         /// <returns>Success or error message.</returns>
         [OperationContract]
         string AnswerTicket(int id, string answer);
-        
+
+        [OperationContract]
+        string AnswerTicketDepartment(int id, string answer);
+
         /// <summary>
         /// Gets a ticket's information.
         /// </summary>
@@ -49,6 +55,9 @@ namespace TTService
         /// <returns>Ticket information.</returns>
         [OperationContract]
         string GetTicket(int id);
+
+        [OperationContract]
+        string GetTicketDepartment(int id);
 
         /// <summary>
         /// Gets the ids of all the children of a ticket.
@@ -66,6 +75,9 @@ namespace TTService
         /// <returns>List of all the ids of the tickets posted by the user.</returns>
         [OperationContract]
         string GetAuthorTickets(int id, string status);
+
+        [OperationContract]
+        string GetAuthorTicketsDepartment(int id);
 
         /// <summary>
         /// Gets the ids of all the tickets a user is assigned to.

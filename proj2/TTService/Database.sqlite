@@ -37,3 +37,14 @@ CREATE TABLE Ticket (
 	FOREIGN KEY (Parent) REFERENCES Ticket(Id),
 	FOREIGN KEY (Assignee) REFERENCES User(Id)
 );
+
+DROP TABLE IF EXISTS TicketDepartment;
+CREATE TABLE TicketDepartment (
+	Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+	Description TEXT NOT NULL,
+	Author INT NOT NULL,
+	Department INT NOT NULL,
+	Answer TEXT,
+	FOREIGN KEY (Author) REFERENCES User(Id),
+	FOREIGN KEY (Department) REFERENCES Department(Id)
+);

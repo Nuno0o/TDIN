@@ -18,8 +18,9 @@ namespace TTSolver
             if (Operations.Login(email, password))
             {
                 Operations.main = new Main();
-                Operations.main.Show();
                 Hide();
+                Operations.main.ShowDialog();
+                Show();
                 status_display.Text = "";
                 password_input.Text = "";
             }
@@ -31,8 +32,8 @@ namespace TTSolver
 
         private void register_button_Click(object sender, EventArgs e)
         {
-            new Register().Show();
-            Hide();
+            Register r = new Register();
+            r.ShowDialog();
             password_input.Text = "";
         }
     }

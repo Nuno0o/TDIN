@@ -10,8 +10,19 @@ namespace TTDepartment
 {
     static class Operations
     {
-        public static string department = "";
-        public static Message[] messages;
+        //auth
+        public static string token;
+        public static TTServClient serv_proxy = new TTServClient();
+        public static AuthServClient auth_proxy = new AuthServClient();
+        //interface
+        public static Login login = null;
+        public static Main main = null;
+        //all information
+        public static int userid = -1;
+        public static string name = "";
+        public static string useremail = "";
+        public static int department = -1;
+        public static Message[] messages = new Message[0];
 
         public static bool receiveMessageDepartment()
         {
@@ -25,7 +36,13 @@ namespace TTDepartment
                 MessageQueue q = new MessageQueue(path);
                 q.Formatter = new BinaryMessageFormatter();
                 Message[] m = q.GetAllMessages();
-                messages = m;
+                if(m.Length != messages.Length)
+                {
+                    Debug.WriteLine(m.Length);
+                    messages = m;
+                    updateInterface();
+                }
+                    
             }
             catch (Exception ex)
             {
@@ -54,8 +71,21 @@ namespace TTDepartment
 
             }
         }
-        public static void removeMessageFromQueue(string id)
+        public static void removeMessageFromQueue(int id)
         {
+            String toremoveid = null;
+            foreach(Message m in messages)
+            {
+                dynamic ticket = JsonConvert.DeserializeObject(m.Body.ToString());
+                if (ticket.id == id.ToString())
+                {
+                    toremoveid = m.Id;
+                }
+            }
+            if(toremoveid == null)
+            {
+                return;
+            }
             try
             {
                 string path = ".\\private$\\dep" + department;
@@ -65,8 +95,7 @@ namespace TTDepartment
                 }
                 MessageQueue q = new MessageQueue(path);
                 q.Formatter = new BinaryMessageFormatter();
-                Message m = q.ReceiveById(id);
-                Debug.WriteLine(m.Body);
+                Message m = q.ReceiveById(toremoveid);
             }
             catch (Exception ex)
             {
@@ -80,12 +109,38 @@ namespace TTDepartment
             receiveMessageDepartment();
             q.BeginPeek();
         }
+        public static void getInformation()
+        {
+            if (useremail == "")
+                return;
+            dynamic userinfo = JsonConvert.DeserializeObject(serv_proxy.GetUserByEmail(useremail));
+            if (userinfo == null)
+                return;
+            //user info
+
+            name = userinfo.name;
+            userid = userinfo.id;
+            department = userinfo.department;
+
+            receiveMessageDepartment();
+
+            beginAsyncReceiveMessages();
+        }
+
+        public static void updateInterface()
+        {
+            if (main == null)
+                return;
+            foreach(Message m in messages)
+            {
+                main.updateInterface();
+            }
+        }
+        
 
         #region Auth
 
-        private static string token;
-        private static TTServClient serv_proxy = new TTServClient();
-        private static AuthServClient auth_proxy = new AuthServClient();
+        
 
         public static string GetToken()
         {
@@ -95,11 +150,9 @@ namespace TTDepartment
         public static bool Login(string email, string password)
         {
             bool ret;
-            AuthServClient proxy = new AuthServClient();
 
             try
             {
-                proxy.Open();
 
                 string json;
                 dynamic res;
@@ -115,6 +168,8 @@ namespace TTDepartment
                 {
                     res = JsonConvert.DeserializeObject(json);
                     token = res.token;
+                    useremail = email;
+                    getInformation();
                     ret = true;
                 }
                 else
@@ -128,7 +183,6 @@ namespace TTDepartment
             }
             finally
             {
-                proxy.Close();
             }
 
             return ret;
@@ -137,11 +191,10 @@ namespace TTDepartment
         public static bool Register(string name, string email, string password, int department)
         {
             bool ret;
-            AuthServClient proxy = new AuthServClient();
 
             try
             {
-                proxy.Open();
+                auth_proxy.Open();
 
                 string salt = Salt();
                 string hash = Hash(password + salt);
@@ -156,7 +209,6 @@ namespace TTDepartment
             }
             finally
             {
-                proxy.Close();
             }
 
             return ret;
