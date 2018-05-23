@@ -175,6 +175,10 @@ namespace TTSolver
 
         public static void updateInterface()
         {
+            if(main == null)
+            {
+                return;
+            }
             main.updateInterface();
         }
 
@@ -182,7 +186,7 @@ namespace TTSolver
         {
             try
             {
-                if (useremail == "")
+                if (useremail == null || useremail == "")
                     return;
                 dynamic userinfo = JsonConvert.DeserializeObject(serv_proxy.GetUserByEmail(useremail));
                 if (userinfo == null)
