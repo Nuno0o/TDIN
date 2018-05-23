@@ -144,6 +144,8 @@ namespace TTSolver
         public void Main_FormClosing(object sender, EventArgs e)
         {
             Operations.login.Show();
+            Operations.useremail = null;
+            Operations.main = null;
         }
 
         private void Main_Load(object sender, EventArgs e)
