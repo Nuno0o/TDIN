@@ -42,10 +42,10 @@ namespace TTClient
                 date = new TableCell();
                 title = new TableCell();
                 status = new TableCell();
-                HyperLink hl = new HyperLink();
-                hl.Text = Convert.ToString((int)ticket.id);
-                hl.NavigateUrl = "Ticket.aspx";
-                hl.ID = Convert.ToString((int)ticket.id);
+                HyperLink hl = new HyperLink();                
+                hl.Text = Convert.ToString((int)ticket.id);                
+                hl.NavigateUrl = "Ticket.aspx?id=" + hl.Text;
+                
                 id.Controls.Add(hl);
                 date.Text = ticket.date;
                 title.Text = ticket.title;

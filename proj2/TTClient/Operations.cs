@@ -15,26 +15,87 @@ namespace TTClient
         public static AuthServClient auth_proxy = new AuthServClient();
         private static string token = null;
 
+        public static List<dynamic> GetQuestions(int id)
+        {
+            List<dynamic> tickets = new List<dynamic>();
+
+            try
+            {
+                string json = serv_proxy.GetTicketChildren(id);
+
+                if (json.Contains("error"))
+                {
+                    return null;
+                }
+                else
+                {
+                    dynamic res = JsonConvert.DeserializeObject(json);
+
+                    foreach (dynamic ticket in res)
+                    {
+                        json = serv_proxy.GetTicket((int)ticket.id.Value);
+                        if (json.Contains("error")) continue;
+
+                        res = JsonConvert.DeserializeObject(json);
+                        tickets.Add(new
+                        {                            
+                            question = res.description,
+                            answer = res.answer
+                        });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                tickets = null;
+            }
+
+            return tickets;
+        }
+
+        public static dynamic GetTicket(int id)
+        {
+            dynamic res;
+            try
+            {
+                string json = serv_proxy.GetTicket(id);
+                res = JsonConvert.DeserializeObject(json);
+
+                if (res == null)
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                res = null;
+            }
+
+            return res;
+        }
+
         public static List<dynamic> GetTickets()
         {
             List<dynamic> tickets = new List<dynamic>();
 
             try
             {
-                string json = serv_proxy.GetAuthorTickets(token, null);
-                dynamic res = JsonConvert.DeserializeObject(json);
+                string json = serv_proxy.GetAuthorTickets(token, null);                
 
-                if (res == null)
+                if (json.Contains("error"))
                 {
                     return null;
                 }
                 else
                 {
+                    dynamic res = JsonConvert.DeserializeObject(json);
+
                     foreach (dynamic ticket in res)
                     {
-                        json = serv_proxy.GetTicket((int)ticket.id.Value);
+                        json = serv_proxy.GetTicket((int)ticket.id.Value);                        
+                        if (json.Contains("error")) continue;
                         res = JsonConvert.DeserializeObject(json);
-                        if (res == null) continue;
+
                         tickets.Add(new
                         {
                             id = res.id,
@@ -47,7 +108,7 @@ namespace TTClient
             }
             catch(Exception e)
             {
-
+                tickets = null;
             }           
 
             return tickets;
@@ -71,7 +132,27 @@ namespace TTClient
             }
 
             return ret;
-        }       
+        }
+
+        public static bool SendQuestion(string question)
+        {
+            bool ret;
+
+            try
+            {
+                string json = serv_proxy.AddTicket("", question, token, null);
+                ret = json.Contains("success");
+            }
+            catch (Exception ex)
+            {
+                ret = false;
+            }
+            finally
+            {
+            }
+
+            return ret;
+        }
 
         public static bool Login(string email, string password)
         {
