@@ -89,6 +89,9 @@ namespace TTService
         [OperationContract]
         string GetUserById(int id);
 
+        [OperationContract]
+        string GetDepartments();
+
         #endregion
 
         #region Department

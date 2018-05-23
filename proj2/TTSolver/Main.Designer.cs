@@ -32,7 +32,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.assigned_grid = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.depart_grid = new System.Windows.Forms.DataGridView();
             this.label3 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -40,7 +40,7 @@
             this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.unassigned_grid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.assigned_grid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.depart_grid)).BeginInit();
             this.SuspendLayout();
             // 
             // unassigned_grid
@@ -84,13 +84,13 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "My Tickets";
             // 
-            // dataGridView1
+            // depart_grid
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(495, 34);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(243, 150);
-            this.dataGridView1.TabIndex = 4;
+            this.depart_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.depart_grid.Location = new System.Drawing.Point(495, 34);
+            this.depart_grid.Name = "depart_grid";
+            this.depart_grid.Size = new System.Drawing.Size(243, 150);
+            this.depart_grid.TabIndex = 4;
             // 
             // label3
             // 
@@ -145,16 +145,17 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.depart_grid);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.assigned_grid);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.unassigned_grid);
             this.Name = "Main";
             this.Text = "Main";
+            this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.unassigned_grid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.assigned_grid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.depart_grid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -166,7 +167,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView assigned_grid;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView depart_grid;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox1;

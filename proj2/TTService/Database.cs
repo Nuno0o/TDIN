@@ -91,7 +91,7 @@ namespace TTService
                         HoldTicket((int) parent);
                     }       
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -125,7 +125,7 @@ namespace TTService
 
                     result = cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -159,7 +159,7 @@ namespace TTService
 
                     result = cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -192,7 +192,7 @@ namespace TTService
 
                     result = cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -243,7 +243,7 @@ namespace TTService
                         });
                     }
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -286,7 +286,7 @@ namespace TTService
                         });
                     }
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -347,7 +347,7 @@ namespace TTService
                         });
                     }
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -408,7 +408,7 @@ namespace TTService
                         });
                     }
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -449,7 +449,7 @@ namespace TTService
                         });
                     }
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex);
                 }
@@ -478,7 +478,7 @@ namespace TTService
                     cmd.Parameters.AddWithValue("name", name);
                     result = cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
 
                 }
@@ -503,9 +503,44 @@ namespace TTService
                     cmd.Parameters.AddWithValue("id", id);
                     result = cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
 
+                }
+                finally
+                {
+                    c.Close();
+                }
+            }
+            return result;
+        }
+
+        public static dynamic GetDepartments()
+        {
+            dynamic result = null;
+            using (SQLiteConnection c = new SQLiteConnection("Data Source=" + DB_PATH + ";Version=3;foreign keys=true;"))
+            {
+                try
+                {
+                    c.Open();
+                    string sql = "select * from Department";
+                    SQLiteCommand cmd = new SQLiteCommand(sql, c);
+                    SQLiteDataReader reader = cmd.ExecuteReader();
+                    result = new List<dynamic>();
+
+                    while (reader.Read())
+                    {
+                        result.Add(new
+                        {
+                            id = reader["Id"],
+                            name = reader["Name"]
+                        });
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    result = null;
                 }
                 finally
                 {
@@ -538,7 +573,7 @@ namespace TTService
                     cmd.Parameters.AddWithValue("department", department);
                     result = cmd.ExecuteNonQuery();
                 }
-                catch(SQLiteException ex)
+                catch(Exception ex)
                 {
                     Debug.WriteLine(ex);
                     result = null;
@@ -574,7 +609,7 @@ namespace TTService
                     };
                     
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     result = null;
                 }
@@ -609,7 +644,7 @@ namespace TTService
                         department = reader["Department"]
                     };                    
                 }
-                catch (SQLiteException ex)
+                catch (Exception ex)
                 {
                     result = null;
                 }

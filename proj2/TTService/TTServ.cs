@@ -182,14 +182,12 @@ namespace TTService
             dynamic user = Database.GetUser(email);
             if (user == null)
             {
-                res = new { error = "Couldn't retrieve tickets!" };
+                res = new { error = "Couldn't retrieve users!" };
             }
             else
             {
-                res = user;
+                res = new { id = user.id, name = user.name, email = user.email, department = user.department };
             }
-            res = new { id = user.id, name = user.name, email = user.email, department = user.department };
-
             return JsonConvert.SerializeObject(res);
         }
 
@@ -199,14 +197,27 @@ namespace TTService
             dynamic user = Database.GetUser(id);
             if (user == null)
             {
-                res = new { error = "Couldn't retrieve tickets!" };
+                res = new { error = "Couldn't retrieve users!" };
             }
             else
             {
-                res = user;
+                res = new { id = user.id, name = user.name, email = user.email, department = user.department };
             }
-            res = new { id = user.id, name = user.name, email = user.email, department = user.department };
+            return JsonConvert.SerializeObject(res);
+        }
 
+        public string GetDepartments()
+        {
+            dynamic res = null;
+            dynamic departments = Database.GetDepartments();
+            if(departments == null)
+            {
+                res = new { error = "Couldn't retrieve users!" };
+            }
+            else
+            {
+                res = departments;
+            }
             return JsonConvert.SerializeObject(res);
         }
 

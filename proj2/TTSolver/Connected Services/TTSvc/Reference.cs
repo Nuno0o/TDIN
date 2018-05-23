@@ -75,6 +75,24 @@ namespace TTSolver.TTSvc {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetUnassignedTickets", ReplyAction="http://tempuri.org/ITTServ/GetUnassignedTicketsResponse")]
         System.Threading.Tasks.Task<string> GetUnassignedTicketsAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetUserByEmail", ReplyAction="http://tempuri.org/ITTServ/GetUserByEmailResponse")]
+        string GetUserByEmail(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetUserByEmail", ReplyAction="http://tempuri.org/ITTServ/GetUserByEmailResponse")]
+        System.Threading.Tasks.Task<string> GetUserByEmailAsync(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetUserById", ReplyAction="http://tempuri.org/ITTServ/GetUserByIdResponse")]
+        string GetUserById(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetUserById", ReplyAction="http://tempuri.org/ITTServ/GetUserByIdResponse")]
+        System.Threading.Tasks.Task<string> GetUserByIdAsync(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetDepartments", ReplyAction="http://tempuri.org/ITTServ/GetDepartmentsResponse")]
+        string GetDepartments();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetDepartments", ReplyAction="http://tempuri.org/ITTServ/GetDepartmentsResponse")]
+        System.Threading.Tasks.Task<string> GetDepartmentsAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddDepartment", ReplyAction="http://tempuri.org/ITTServ/AddDepartmentResponse")]
         string AddDepartment(string name);
         
@@ -187,6 +205,30 @@ namespace TTSolver.TTSvc {
         
         public System.Threading.Tasks.Task<string> GetUnassignedTicketsAsync() {
             return base.Channel.GetUnassignedTicketsAsync();
+        }
+        
+        public string GetUserByEmail(string email) {
+            return base.Channel.GetUserByEmail(email);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetUserByEmailAsync(string email) {
+            return base.Channel.GetUserByEmailAsync(email);
+        }
+        
+        public string GetUserById(int id) {
+            return base.Channel.GetUserById(id);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetUserByIdAsync(int id) {
+            return base.Channel.GetUserByIdAsync(id);
+        }
+        
+        public string GetDepartments() {
+            return base.Channel.GetDepartments();
+        }
+        
+        public System.Threading.Tasks.Task<string> GetDepartmentsAsync() {
+            return base.Channel.GetDepartmentsAsync();
         }
         
         public string AddDepartment(string name) {

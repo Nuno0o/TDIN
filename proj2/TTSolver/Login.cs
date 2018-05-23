@@ -17,7 +17,8 @@ namespace TTSolver
 
             if (Operations.Login(email, password))
             {
-                new Main().Show();
+                Operations.main = new Main();
+                Operations.main.Show();
                 Hide();
                 status_display.Text = "";
                 password_input.Text = "";

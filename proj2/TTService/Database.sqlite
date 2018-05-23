@@ -4,12 +4,12 @@ CREATE TABLE Department (
 	Name TEXT NOT NULL
 );
 
-INSERT INTO Department VALUES (NULL,"Information Technology");
-INSERT INTO Department VALUES (NULL,"Human Relations");
-INSERT INTO Department VALUES (NULL,"Sales and Marketing");
-INSERT INTO Department VALUES (NULL,"Financial and Accounting");
-INSERT INTO Department VALUES (NULL,"Research and Development");
-INSERT INTO Department VALUES (NULL,"Production and SCM");
+INSERT INTO Department (Name) VALUES ("Information Technology");
+INSERT INTO Department (Name) VALUES ("Human Relations");
+INSERT INTO Department (Name) VALUES ("Sales and Marketing");
+INSERT INTO Department (Name) VALUES ("Financial and Accounting");
+INSERT INTO Department (Name) VALUES ("Research and Development");
+INSERT INTO Department (Name) VALUES ("Production and SCM");
 
 DROP TABLE IF EXISTS User;
 CREATE TABLE User (
@@ -37,8 +37,3 @@ CREATE TABLE Ticket (
 	FOREIGN KEY (Parent) REFERENCES Ticket(Id),
 	FOREIGN KEY (Assignee) REFERENCES User(Id)
 );
-
-INSERT INTO Department(Name) VALUES ("IT");
-INSERT INTO Department(Name) VALUES ("Legal");
-
-INSERT INTO User(Name, Email, Hash, Salt, Department) VALUES ("Nuno", "Nuno@hotmail.com", "aa", "dd", 1);

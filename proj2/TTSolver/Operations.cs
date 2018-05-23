@@ -5,6 +5,8 @@ using TTSolver.TTSvc;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
 using System.ServiceModel;
+using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace TTSolver
 {
@@ -18,6 +20,19 @@ namespace TTSolver
         public static TTCallback cb = new TTCallback();
         public static InstanceContext icntxt = new InstanceContext(cb);
         public static TTCallbacks.TTServContractsClient c = new TTCallbacks.TTServContractsClient(icntxt);
+        //interface
+        public static Login login = null;
+        public static Main main = null;
+        //all information
+        public static int userid = -1;
+        public static string name = "";
+        public static string useremail = "";
+        public static int department = -1;
+        public static List<dynamic> departments;
+        public static List<dynamic> unassigned_tickets;
+        public static List<dynamic> assigned_tickets;
+        public static List<dynamic> department_tickets;
+
 
         public static void init()
         {
@@ -55,6 +70,8 @@ namespace TTSolver
                 {
                     res = JsonConvert.DeserializeObject(json);
                     token = res.token;
+                    useremail = email;
+                    getInformation();
                     ret = true;
                 }
                 else
@@ -162,7 +179,32 @@ namespace TTSolver
 
         #region solver
 
+        private static void getInformation()
+        {
+            try
+            {
+                if (useremail == "")
+                    return;
+                dynamic userinfo = JsonConvert.DeserializeObject(serv_proxy.GetUserByEmail(useremail));
+                if (userinfo == null)
+                    return;
+                name = userinfo.name;
+                userid = userinfo.id;
+                department = userinfo.department;
+                Debug.WriteLine(serv_proxy.GetUnassignedTickets());
 
+                departments = JsonConvert.DeserializeObject<List<dynamic>>(serv_proxy.GetDepartments());
+                unassigned_tickets = JsonConvert.DeserializeObject<List<dynamic>>(serv_proxy.GetUnassignedTickets());
+                assigned_tickets = JsonConvert.DeserializeObject<List<dynamic>>(serv_proxy.GetSolverTickets(userid, null));
+            }
+            catch (Exception e)
+            {
+
+            }
+            
+
+
+        }
 
         #endregion
     }
