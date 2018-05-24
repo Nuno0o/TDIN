@@ -18,15 +18,12 @@ namespace TTClient
             TableCell id = new TableCell();
             TableCell date = new TableCell();
             TableCell title = new TableCell();
-            TableCell status = new TableCell();
             id.Text = "Id";
             date.Text = "Date";
             title.Text = "Title";
-            status.Text = "Status";
             row.Cells.Add(id);
             row.Cells.Add(date);
             row.Cells.Add(title);
-            row.Cells.Add(status);
             tickets_table.Rows.Add(row);
 
             List<dynamic> tickets = Operations.GetTickets();
@@ -43,7 +40,6 @@ namespace TTClient
                 id = new TableCell();
                 date = new TableCell();
                 title = new TableCell();
-                status = new TableCell();
                 HyperLink hl = new HyperLink();                
                 hl.Text = Convert.ToString((int)ticket.id);                
                 hl.NavigateUrl = "Ticket.aspx?id=" + hl.Text;
@@ -51,11 +47,9 @@ namespace TTClient
                 id.Controls.Add(hl);
                 date.Text = ticket.date;
                 title.Text = ticket.title;
-                status.Text = ticket.status;
                 row.Cells.Add(id);
                 row.Cells.Add(date);
                 row.Cells.Add(title);
-                row.Cells.Add(status);
                 tickets_table.Rows.Add(row);
             }
 
