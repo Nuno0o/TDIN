@@ -33,6 +33,12 @@ namespace TTClient.TTSvc {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddTicket", ReplyAction="http://tempuri.org/ITTServ/AddTicketResponse")]
         System.Threading.Tasks.Task<string> AddTicketAsync(string title, string description, string token, System.Nullable<int> parent);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddTicketDepartment", ReplyAction="http://tempuri.org/ITTServ/AddTicketDepartmentResponse")]
+        string AddTicketDepartment(string description, int author, int department);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddTicketDepartment", ReplyAction="http://tempuri.org/ITTServ/AddTicketDepartmentResponse")]
+        System.Threading.Tasks.Task<string> AddTicketDepartmentAsync(string description, int author, int department);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AssignTicket", ReplyAction="http://tempuri.org/ITTServ/AssignTicketResponse")]
         string AssignTicket(int id, int assignee);
         
@@ -45,11 +51,23 @@ namespace TTClient.TTSvc {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AnswerTicket", ReplyAction="http://tempuri.org/ITTServ/AnswerTicketResponse")]
         System.Threading.Tasks.Task<string> AnswerTicketAsync(int id, string answer);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AnswerTicketDepartment", ReplyAction="http://tempuri.org/ITTServ/AnswerTicketDepartmentResponse")]
+        string AnswerTicketDepartment(int id, string answer);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AnswerTicketDepartment", ReplyAction="http://tempuri.org/ITTServ/AnswerTicketDepartmentResponse")]
+        System.Threading.Tasks.Task<string> AnswerTicketDepartmentAsync(int id, string answer);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetTicket", ReplyAction="http://tempuri.org/ITTServ/GetTicketResponse")]
         string GetTicket(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetTicket", ReplyAction="http://tempuri.org/ITTServ/GetTicketResponse")]
         System.Threading.Tasks.Task<string> GetTicketAsync(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetTicketDepartment", ReplyAction="http://tempuri.org/ITTServ/GetTicketDepartmentResponse")]
+        string GetTicketDepartment(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetTicketDepartment", ReplyAction="http://tempuri.org/ITTServ/GetTicketDepartmentResponse")]
+        System.Threading.Tasks.Task<string> GetTicketDepartmentAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetTicketChildren", ReplyAction="http://tempuri.org/ITTServ/GetTicketChildrenResponse")]
         string GetTicketChildren(int id);
@@ -62,6 +80,12 @@ namespace TTClient.TTSvc {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetAuthorTickets", ReplyAction="http://tempuri.org/ITTServ/GetAuthorTicketsResponse")]
         System.Threading.Tasks.Task<string> GetAuthorTicketsAsync(string token, string status);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetAuthorTicketsDepartment", ReplyAction="http://tempuri.org/ITTServ/GetAuthorTicketsDepartmentResponse")]
+        string GetAuthorTicketsDepartment(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetAuthorTicketsDepartment", ReplyAction="http://tempuri.org/ITTServ/GetAuthorTicketsDepartmentResponse")]
+        System.Threading.Tasks.Task<string> GetAuthorTicketsDepartmentAsync(int id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetSolverTickets", ReplyAction="http://tempuri.org/ITTServ/GetSolverTicketsResponse")]
         string GetSolverTickets(int id, string status);
@@ -86,6 +110,12 @@ namespace TTClient.TTSvc {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetUserById", ReplyAction="http://tempuri.org/ITTServ/GetUserByIdResponse")]
         System.Threading.Tasks.Task<string> GetUserByIdAsync(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetDepartments", ReplyAction="http://tempuri.org/ITTServ/GetDepartmentsResponse")]
+        string GetDepartments();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/GetDepartments", ReplyAction="http://tempuri.org/ITTServ/GetDepartmentsResponse")]
+        System.Threading.Tasks.Task<string> GetDepartmentsAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITTServ/AddDepartment", ReplyAction="http://tempuri.org/ITTServ/AddDepartmentResponse")]
         string AddDepartment(string name);
@@ -145,6 +175,14 @@ namespace TTClient.TTSvc {
             return base.Channel.AddTicketAsync(title, description, token, parent);
         }
         
+        public string AddTicketDepartment(string description, int author, int department) {
+            return base.Channel.AddTicketDepartment(description, author, department);
+        }
+        
+        public System.Threading.Tasks.Task<string> AddTicketDepartmentAsync(string description, int author, int department) {
+            return base.Channel.AddTicketDepartmentAsync(description, author, department);
+        }
+        
         public string AssignTicket(int id, int assignee) {
             return base.Channel.AssignTicket(id, assignee);
         }
@@ -161,12 +199,28 @@ namespace TTClient.TTSvc {
             return base.Channel.AnswerTicketAsync(id, answer);
         }
         
+        public string AnswerTicketDepartment(int id, string answer) {
+            return base.Channel.AnswerTicketDepartment(id, answer);
+        }
+        
+        public System.Threading.Tasks.Task<string> AnswerTicketDepartmentAsync(int id, string answer) {
+            return base.Channel.AnswerTicketDepartmentAsync(id, answer);
+        }
+        
         public string GetTicket(int id) {
             return base.Channel.GetTicket(id);
         }
         
         public System.Threading.Tasks.Task<string> GetTicketAsync(int id) {
             return base.Channel.GetTicketAsync(id);
+        }
+        
+        public string GetTicketDepartment(int id) {
+            return base.Channel.GetTicketDepartment(id);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetTicketDepartmentAsync(int id) {
+            return base.Channel.GetTicketDepartmentAsync(id);
         }
         
         public string GetTicketChildren(int id) {
@@ -183,6 +237,14 @@ namespace TTClient.TTSvc {
         
         public System.Threading.Tasks.Task<string> GetAuthorTicketsAsync(string token, string status) {
             return base.Channel.GetAuthorTicketsAsync(token, status);
+        }
+        
+        public string GetAuthorTicketsDepartment(int id) {
+            return base.Channel.GetAuthorTicketsDepartment(id);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetAuthorTicketsDepartmentAsync(int id) {
+            return base.Channel.GetAuthorTicketsDepartmentAsync(id);
         }
         
         public string GetSolverTickets(int id, string status) {
@@ -215,6 +277,14 @@ namespace TTClient.TTSvc {
         
         public System.Threading.Tasks.Task<string> GetUserByIdAsync(int id) {
             return base.Channel.GetUserByIdAsync(id);
+        }
+        
+        public string GetDepartments() {
+            return base.Channel.GetDepartments();
+        }
+        
+        public System.Threading.Tasks.Task<string> GetDepartmentsAsync() {
+            return base.Channel.GetDepartmentsAsync();
         }
         
         public string AddDepartment(string name) {

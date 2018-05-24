@@ -11,7 +11,15 @@ namespace TTClient
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            dynamic departments = Operations.GetDepartments();
+            foreach (dynamic department in departments)
+            {
+                ListItem item = new ListItem(
+                    (string)department.name,
+                    (string)department.id
+                );
+                department_drop_down.Items.Add(item);
+            }            
         }
 
         protected void register_button_Click(object sender, EventArgs e)
@@ -20,7 +28,7 @@ namespace TTClient
             string email = email_input.Text;
             string password = password_input.Text;
             string repeat_password = repeat_password_input.Text;
-            int department = department_drop_down.SelectedIndex + 2;
+            int department = Convert.ToInt32(department_drop_down.SelectedItem.Value);
 
             if (password != repeat_password)
             {

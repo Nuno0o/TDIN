@@ -23,12 +23,6 @@
             <br />
             Department:<br />
             <asp:DropDownList ID="department_drop_down" runat="server" Width="200px">
-                <asp:ListItem Value="1">Information Technology</asp:ListItem>
-                <asp:ListItem Value="2">Human Resources</asp:ListItem>
-                <asp:ListItem Value="3">Sales and Marketing</asp:ListItem>
-                <asp:ListItem Value="4">Financial and Accounting</asp:ListItem>
-                <asp:ListItem Value="5">Research and Development</asp:ListItem>
-                <asp:ListItem Value="6">Production and SCM</asp:ListItem>
             </asp:DropDownList>
             <br />
             <br />

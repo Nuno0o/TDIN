@@ -24,7 +24,9 @@
             <asp:TextBox ID="description_input" runat="server" Height="150px" TextMode="MultiLine" Width="300px"></asp:TextBox>
             <br />
             <br />
-            <asp:Button ID="send_button" runat="server" Text="Send" OnClick="send_button_Click" />
+            <asp:Button ID="send_button" runat="server" Text="Send" OnClick="send_button_Click" Width="100px" />
+            <br />
+            <asp:Button ID="logout_button" runat="server" OnClick="logout_button_Click" Text="Logout" Width="100px" />
             <br />
             <asp:Label ID="status_display" runat="server"></asp:Label>
             <br />
@@ -32,7 +34,6 @@
             My Tickets:<asp:Table ID="tickets_table" runat="server" BorderStyle="Solid" BorderWidth="1px" CellPadding="5" CellSpacing="5" GridLines="Both">
             </asp:Table>
             <br />
-            <asp:Button ID="logout_button" runat="server" OnClick="logout_button_Click" Text="Logout" />
             <br />
         </div>
         </div>
