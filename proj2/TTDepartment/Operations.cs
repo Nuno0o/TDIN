@@ -24,6 +24,33 @@ namespace TTDepartment
         public static int department = -1;
         public static Message[] messages = new Message[0];
 
+        public static dynamic GetDepartments()
+        {
+            dynamic departments;
+
+            try
+            {
+
+                string json = serv_proxy.GetDepartments();
+
+                if (json.Contains("error"))
+                {
+                    return null;
+                }
+                else
+                {
+                    departments = JsonConvert.DeserializeObject(json);
+
+                }
+            }
+            catch (Exception e)
+            {
+                departments = null;
+            }
+
+            return departments;
+        }
+
         public static bool receiveMessageDepartment()
         {
             try

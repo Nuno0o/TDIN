@@ -210,6 +210,44 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_AddTicketDepartment_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_AddTicketDepartment_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_AssignTicket_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -286,6 +324,44 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_AnswerTicketDepartment_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_AnswerTicketDepartment_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_GetTicket_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -306,6 +382,44 @@
     </wsp:ExactlyOne>
   </wsp:Policy>
   <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_GetTicket_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_GetTicketDepartment_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_GetTicketDepartment_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -382,6 +496,44 @@
     </wsp:ExactlyOne>
   </wsp:Policy>
   <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_GetAuthorTickets_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_GetAuthorTicketsDepartment_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_GetAuthorTicketsDepartment_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -534,6 +686,44 @@
     </wsp:ExactlyOne>
   </wsp:Policy>
   <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_GetUserById_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_GetDepartments_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_ITTServ_GetDepartments_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -862,6 +1052,12 @@
   <wsdl:message name="ITTServ_AddTicket_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddTicketResponse" />
   </wsdl:message>
+  <wsdl:message name="ITTServ_AddTicketDepartment_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddTicketDepartment" />
+  </wsdl:message>
+  <wsdl:message name="ITTServ_AddTicketDepartment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddTicketDepartmentResponse" />
+  </wsdl:message>
   <wsdl:message name="ITTServ_AssignTicket_InputMessage">
     <wsdl:part name="parameters" element="tns:AssignTicket" />
   </wsdl:message>
@@ -874,11 +1070,23 @@
   <wsdl:message name="ITTServ_AnswerTicket_OutputMessage">
     <wsdl:part name="parameters" element="tns:AnswerTicketResponse" />
   </wsdl:message>
+  <wsdl:message name="ITTServ_AnswerTicketDepartment_InputMessage">
+    <wsdl:part name="parameters" element="tns:AnswerTicketDepartment" />
+  </wsdl:message>
+  <wsdl:message name="ITTServ_AnswerTicketDepartment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AnswerTicketDepartmentResponse" />
+  </wsdl:message>
   <wsdl:message name="ITTServ_GetTicket_InputMessage">
     <wsdl:part name="parameters" element="tns:GetTicket" />
   </wsdl:message>
   <wsdl:message name="ITTServ_GetTicket_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetTicketResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITTServ_GetTicketDepartment_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTicketDepartment" />
+  </wsdl:message>
+  <wsdl:message name="ITTServ_GetTicketDepartment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTicketDepartmentResponse" />
   </wsdl:message>
   <wsdl:message name="ITTServ_GetTicketChildren_InputMessage">
     <wsdl:part name="parameters" element="tns:GetTicketChildren" />
@@ -891,6 +1099,12 @@
   </wsdl:message>
   <wsdl:message name="ITTServ_GetAuthorTickets_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetAuthorTicketsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITTServ_GetAuthorTicketsDepartment_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAuthorTicketsDepartment" />
+  </wsdl:message>
+  <wsdl:message name="ITTServ_GetAuthorTicketsDepartment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAuthorTicketsDepartmentResponse" />
   </wsdl:message>
   <wsdl:message name="ITTServ_GetSolverTickets_InputMessage">
     <wsdl:part name="parameters" element="tns:GetSolverTickets" />
@@ -915,6 +1129,12 @@
   </wsdl:message>
   <wsdl:message name="ITTServ_GetUserById_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetUserByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="ITTServ_GetDepartments_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDepartments" />
+  </wsdl:message>
+  <wsdl:message name="ITTServ_GetDepartments_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDepartmentsResponse" />
   </wsdl:message>
   <wsdl:message name="ITTServ_AddDepartment_InputMessage">
     <wsdl:part name="parameters" element="tns:AddDepartment" />
@@ -959,6 +1179,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/AddTicket" message="tns:ITTServ_AddTicket_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITTServ/AddTicketResponse" message="tns:ITTServ_AddTicket_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="AddTicketDepartment">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/AddTicketDepartment" message="tns:ITTServ_AddTicketDepartment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITTServ/AddTicketDepartmentResponse" message="tns:ITTServ_AddTicketDepartment_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="AssignTicket">
       <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/AssignTicket" message="tns:ITTServ_AssignTicket_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITTServ/AssignTicketResponse" message="tns:ITTServ_AssignTicket_OutputMessage" />
@@ -967,9 +1191,17 @@
       <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/AnswerTicket" message="tns:ITTServ_AnswerTicket_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITTServ/AnswerTicketResponse" message="tns:ITTServ_AnswerTicket_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="AnswerTicketDepartment">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/AnswerTicketDepartment" message="tns:ITTServ_AnswerTicketDepartment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITTServ/AnswerTicketDepartmentResponse" message="tns:ITTServ_AnswerTicketDepartment_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetTicket">
       <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/GetTicket" message="tns:ITTServ_GetTicket_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITTServ/GetTicketResponse" message="tns:ITTServ_GetTicket_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTicketDepartment">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/GetTicketDepartment" message="tns:ITTServ_GetTicketDepartment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITTServ/GetTicketDepartmentResponse" message="tns:ITTServ_GetTicketDepartment_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetTicketChildren">
       <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/GetTicketChildren" message="tns:ITTServ_GetTicketChildren_InputMessage" />
@@ -978,6 +1210,10 @@
     <wsdl:operation name="GetAuthorTickets">
       <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/GetAuthorTickets" message="tns:ITTServ_GetAuthorTickets_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITTServ/GetAuthorTicketsResponse" message="tns:ITTServ_GetAuthorTickets_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthorTicketsDepartment">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/GetAuthorTicketsDepartment" message="tns:ITTServ_GetAuthorTicketsDepartment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITTServ/GetAuthorTicketsDepartmentResponse" message="tns:ITTServ_GetAuthorTicketsDepartment_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetSolverTickets">
       <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/GetSolverTickets" message="tns:ITTServ_GetSolverTickets_InputMessage" />
@@ -994,6 +1230,10 @@
     <wsdl:operation name="GetUserById">
       <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/GetUserById" message="tns:ITTServ_GetUserById_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ITTServ/GetUserByIdResponse" message="tns:ITTServ_GetUserById_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDepartments">
+      <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/GetDepartments" message="tns:ITTServ_GetDepartments_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ITTServ/GetDepartmentsResponse" message="tns:ITTServ_GetDepartments_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="AddDepartment">
       <wsdl:input wsaw:Action="http://tempuri.org/ITTServ/AddDepartment" message="tns:ITTServ_AddDepartment_InputMessage" />
@@ -1054,6 +1294,17 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="AddTicketDepartment">
+      <soap12:operation soapAction="http://tempuri.org/ITTServ/AddTicketDepartment" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSHttpBinding_ITTServ_AddTicketDepartment_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSHttpBinding_ITTServ_AddTicketDepartment_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="AssignTicket">
       <soap12:operation soapAction="http://tempuri.org/ITTServ/AssignTicket" style="document" />
       <wsdl:input>
@@ -1076,6 +1327,17 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="AnswerTicketDepartment">
+      <soap12:operation soapAction="http://tempuri.org/ITTServ/AnswerTicketDepartment" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSHttpBinding_ITTServ_AnswerTicketDepartment_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSHttpBinding_ITTServ_AnswerTicketDepartment_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetTicket">
       <soap12:operation soapAction="http://tempuri.org/ITTServ/GetTicket" style="document" />
       <wsdl:input>
@@ -1084,6 +1346,17 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#WSHttpBinding_ITTServ_GetTicket_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTicketDepartment">
+      <soap12:operation soapAction="http://tempuri.org/ITTServ/GetTicketDepartment" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSHttpBinding_ITTServ_GetTicketDepartment_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSHttpBinding_ITTServ_GetTicketDepartment_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -1106,6 +1379,17 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#WSHttpBinding_ITTServ_GetAuthorTickets_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthorTicketsDepartment">
+      <soap12:operation soapAction="http://tempuri.org/ITTServ/GetAuthorTicketsDepartment" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSHttpBinding_ITTServ_GetAuthorTicketsDepartment_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSHttpBinding_ITTServ_GetAuthorTicketsDepartment_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -1150,6 +1434,17 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#WSHttpBinding_ITTServ_GetUserById_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDepartments">
+      <soap12:operation soapAction="http://tempuri.org/ITTServ/GetDepartments" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSHttpBinding_ITTServ_GetDepartments_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSHttpBinding_ITTServ_GetDepartments_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

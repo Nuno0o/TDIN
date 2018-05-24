@@ -9,11 +9,13 @@ namespace TTDepartment
         {
             InitializeComponent();
 
-            department_drop_down.Items.Add("Human Relations");
-            department_drop_down.Items.Add("Sales and Marketing");
-            department_drop_down.Items.Add("Financial and Accounting");
-            department_drop_down.Items.Add("Research and Development");
-            department_drop_down.Items.Add("Production and SCM");
+            dynamic departments = Operations.GetDepartments();
+            foreach (dynamic department in departments)
+            {
+                if (department.name == "Information Technology")
+                    continue;
+                department_drop_down.Items.Add(department.name);
+            }
         }
 
         private void back_button_Click(object sender, EventArgs e)

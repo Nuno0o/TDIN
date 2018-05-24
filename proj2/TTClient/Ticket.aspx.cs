@@ -22,7 +22,7 @@ namespace TTClient
                 Response.Redirect("Tickets.aspx", true);
 
             id_text.Text = ticket.id;
-            date_text.Text = ticket.date;
+            date_text.Text = ticket.createdAt;
             title_text.Text = ticket.title;
             description_text.Text = ticket.description;
             answer_text.Text = ticket.answer;
@@ -59,8 +59,9 @@ namespace TTClient
         protected void send_button_Click(object sender, EventArgs e)
         {
             string question = question_input.Text;
+            int id = Convert.ToInt32(Request.QueryString["id"]);
 
-            if (Operations.SendQuestion(question))
+            if (Operations.SendQuestion(question, id))
             {
                 Response.Redirect(Request.Url.PathAndQuery, true);
             }

@@ -15,6 +15,33 @@ namespace TTClient
         public static AuthServClient auth_proxy = new AuthServClient();
         private static string token = null;
 
+        public static dynamic GetDepartments()
+        {
+            dynamic departments;
+            
+            try
+            {
+
+                string json = serv_proxy.GetDepartments();
+
+                if (json.Contains("error"))
+                {
+                    return null;
+                }
+                else
+                {
+                    departments = JsonConvert.DeserializeObject(json);
+
+                }
+            }
+            catch (Exception e)
+            {
+                departments = null;
+            }
+
+            return departments;
+        }
+
         public static List<dynamic> GetQuestions(int id)
         {
             List<dynamic> tickets = new List<dynamic>();
@@ -134,13 +161,13 @@ namespace TTClient
             return ret;
         }
 
-        public static bool SendQuestion(string question)
+        public static bool SendQuestion(string question, int parent)
         {
             bool ret;
 
             try
             {
-                string json = serv_proxy.AddTicket("", question, token, null);
+                string json = serv_proxy.AddTicket("", question, token, parent);
                 ret = json.Contains("success");
             }
             catch (Exception ex)

@@ -37,6 +37,8 @@ namespace TTClient
             }
             foreach (dynamic ticket in tickets)
             {
+                if (ticket.title == "") continue;
+
                 row = new TableRow();
                 id = new TableCell();
                 date = new TableCell();

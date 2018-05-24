@@ -10,19 +10,19 @@
     <form id="form1" runat="server">
         <div>
             Ticket Id:<br />
-            <asp:TextBox ID="id_text" runat="server" ReadOnly="True" Width="300px"></asp:TextBox>
+            <asp:TextBox ID="id_text" runat="server" BackColor="#CCCCCC" ReadOnly="True" Width="300px"></asp:TextBox>
             <br />
             Ticket Date:<br />
-            <asp:TextBox ID="date_text" runat="server" ReadOnly="True" Width="300px"></asp:TextBox>
+            <asp:TextBox ID="date_text" runat="server" BackColor="#CCCCCC" ReadOnly="True" Width="300px"></asp:TextBox>
             <br />
             Ticket Title:<br />
-            <asp:TextBox ID="title_text" runat="server" ReadOnly="True" Width="300px"></asp:TextBox>
+            <asp:TextBox ID="title_text" runat="server" BackColor="#CCCCCC" ReadOnly="True" Width="300px"></asp:TextBox>
             <br />
             Ticket Description:<br />
-            <asp:TextBox ID="description_text" runat="server" Height="150px" ReadOnly="True" TextMode="MultiLine" Width="300px"></asp:TextBox>
+            <asp:TextBox ID="description_text" runat="server" BackColor="#CCCCCC" Height="150px" ReadOnly="True" TextMode="MultiLine" Width="300px"></asp:TextBox>
             <br />
             Ticket Answer:<br />
-            <asp:TextBox ID="answer_text" runat="server" Height="150px" ReadOnly="True" TextMode="MultiLine" Width="300px"></asp:TextBox>
+            <asp:TextBox ID="answer_text" runat="server" BackColor="#CCCCCC" Height="150px" ReadOnly="True" TextMode="MultiLine" Width="300px"></asp:TextBox>
             <br />
             <br />
             Additional Question:<br />
