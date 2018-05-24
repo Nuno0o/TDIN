@@ -217,8 +217,6 @@ namespace TTDepartment
 
             try
             {
-                auth_proxy.Open();
-
                 string salt = Salt();
                 string hash = Hash(password + salt);
 

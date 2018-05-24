@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace TTDepartment
@@ -30,6 +31,7 @@ namespace TTDepartment
             string password = password_input.Text;
             string repeat_password = repeat_password_input.Text;
             int department = department_drop_down.SelectedIndex + 2;
+            Debug.WriteLine(department);
 
             if(password != repeat_password)
             {
