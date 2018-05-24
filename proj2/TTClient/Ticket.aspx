@@ -19,14 +19,14 @@
             <asp:TextBox ID="title_text" runat="server" BackColor="#CCCCCC" ReadOnly="True" Width="300px"></asp:TextBox>
             <br />
             Ticket Description:<br />
-            <asp:TextBox ID="description_text" runat="server" BackColor="#CCCCCC" Height="150px" ReadOnly="True" TextMode="MultiLine" Width="300px"></asp:TextBox>
+            <asp:TextBox ID="description_text" runat="server" BackColor="#CCCCCC" Height="100px" ReadOnly="True" TextMode="MultiLine" Width="300px"></asp:TextBox>
             <br />
             Ticket Answer:<br />
-            <asp:TextBox ID="answer_text" runat="server" BackColor="#CCCCCC" Height="150px" ReadOnly="True" TextMode="MultiLine" Width="300px"></asp:TextBox>
+            <asp:TextBox ID="answer_text" runat="server" BackColor="#CCCCCC" Height="100px" ReadOnly="True" TextMode="MultiLine" Width="300px"></asp:TextBox>
             <br />
             <br />
             Additional Question:<br />
-            <asp:TextBox ID="question_input" runat="server" Height="150px" TextMode="MultiLine" Width="300px"></asp:TextBox>
+            <asp:TextBox ID="question_input" runat="server" Height="100px" TextMode="MultiLine" Width="300px"></asp:TextBox>
             <br />
             <br />
             <asp:Button ID="send_button" runat="server" OnClick="send_button_Click" Text="Send" Width="100px" />
