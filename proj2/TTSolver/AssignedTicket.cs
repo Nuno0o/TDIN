@@ -31,8 +31,8 @@ namespace TTSolver
             dataGridView1.ColumnCount = 4;
             dataGridView1.Columns[0].Name = "Id";
             dataGridView1.Columns[1].Name = "Name";
-            dataGridView1.Columns[2].Name = "Title";
-            dataGridView1.Columns[3].Name = "Description";
+            dataGridView1.Columns[2].Name = "Description";
+            dataGridView1.Columns[3].Name = "Answer";
             dataGridView1.Columns["Id"].Visible = false;
 
             this.textBox4.Text = title;
@@ -48,7 +48,6 @@ namespace TTSolver
             }
             foreach(dynamic question in secondary_questions)
             {
-                if(question.status != "solved")
                 {
                     dataGridView1.Rows.Add(new[]
                     {
@@ -91,6 +90,19 @@ namespace TTSolver
         {
             string message = textBox2.Text;
             int id = this.id;
+            var cansend = true;
+            foreach(DataGridViewRow row in dataGridView1.Rows)
+            {
+                if(row.Cells[2].Value.ToString() == "")
+                {
+                    cansend = false;
+                }
+            }
+            if(cansend == false)
+            {
+                label9.Text = "Answer all questions first";
+                return;
+            }
             try
             {
                 Operations.serv_proxy.AnswerTicket(id, message);

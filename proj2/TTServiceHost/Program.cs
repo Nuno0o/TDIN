@@ -23,21 +23,20 @@ namespace TTServHost
             try
             {
                 // start the services.  
-                //host.Open();
-                //host2.Open();
+                host.Open();
+                host2.Open();
 
                 TTSvc.TTServClient proxy = new TTSvc.TTServClient();
+                //clear db(change true to false to not reset the db)
                 proxy.InitDb(true);
 
                 Console.WriteLine("The services are ready.");
                 Console.WriteLine("Press <ENTER> to terminate services.");
                 Console.ReadLine();
 
-                
-
                 // close the ServiceHostBase to shutdown the service.  
-                //host.Close();
-                //host2.Close();
+                host.Close();
+                host2.Close();
             }
             catch (CommunicationException ce)
             {
