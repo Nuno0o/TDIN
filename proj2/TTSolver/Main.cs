@@ -42,11 +42,10 @@ namespace TTSolver
             assigned_grid.ReadOnly = true;
             assigned_grid.MultiSelect = false;
 
-            assigned_grid.ColumnCount = 4;
+            assigned_grid.ColumnCount = 3;
             assigned_grid.Columns[0].Name = "Id";
             assigned_grid.Columns[1].Name = "Name";
             assigned_grid.Columns[2].Name = "Title";
-            assigned_grid.Columns[3].Name = "Status";
 
             //depart_grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             depart_grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -108,8 +107,7 @@ namespace TTSolver
                         {
                         ticket.id,
                         user.name,
-                        ticket.title,
-                        ticket.status
+                        ticket.title
                     });
                     }
                     //department tickets

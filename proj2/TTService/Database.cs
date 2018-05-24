@@ -595,8 +595,10 @@ namespace TTService
                     string sql = @"
                         SELECT Id
                         FROM Ticket
-                        WHERE Status = 'unassigned'
+                        WHERE Parent is null and Assignee is null
                     ";
+
+                    
 
                     SQLiteCommand cmd = new SQLiteCommand(sql, c);
 

@@ -202,6 +202,7 @@ namespace TTSolver
                 List<dynamic> unassigned_tickets_ids = JsonConvert.DeserializeObject<List<dynamic>>(serv_proxy.GetUnassignedTickets());
                 foreach(dynamic ticket in unassigned_tickets_ids)
                 {
+                    Debug.WriteLine(serv_proxy.GetTicket((int)ticket.id));
                     unassigned_tickets.Add(JsonConvert.DeserializeObject(serv_proxy.GetTicket((int)ticket.id)));
                 }
                 assigned_tickets = new List<dynamic>();

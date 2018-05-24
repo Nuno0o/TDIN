@@ -44,7 +44,7 @@ namespace TTSolver
             List<dynamic> secondary_tickets_ids = JsonConvert.DeserializeObject<List<dynamic>>(Operations.serv_proxy.GetTicketChildren(this.id));
             foreach (dynamic ticket in secondary_tickets_ids)
             {
-                secondary_questions.Add(JsonConvert.DeserializeObject(Operations.serv_proxy.GetTicket(ticket)));
+                secondary_questions.Add(JsonConvert.DeserializeObject(Operations.serv_proxy.GetTicket((int)ticket.id)));
             }
             foreach(dynamic question in secondary_questions)
             {

@@ -30,7 +30,14 @@ namespace TTSolver
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Operations.assignTicket(this.id, Operations.userid);
+            try
+            {
+                Operations.assignTicket(this.id, Operations.userid);
+            }catch(Exception ex)
+            {
+
+            }
+            Dispose();
         }
     }
 }
