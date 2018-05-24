@@ -53,8 +53,8 @@ namespace TTSolver
                     {
                         question.id,
                         sender,
-                        question.title,
-                        question.description
+                        question.description,
+                        question.answer
                     });
                     comboBox1.Items.Add(question.id);
                 }

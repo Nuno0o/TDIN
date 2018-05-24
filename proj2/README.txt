@@ -10,4 +10,6 @@ In deploy mode:
 
 Move App.config and Database.sql from TTService to TTServiceHost
 
+Remove commented lines in TTServiceHost with host.open() and host2.open()
+
 Run Binaries
